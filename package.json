@@ -1,0 +1,21 @@
+{
+  "name": "space-dashboard-api",
+  "version": "1.0.0",
+  "description": "A REST API for SpaceX Telemetry",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "author": "Shahar603",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "joi": "^14.3.1",
+    "joigoose": "^4.0.4",
+    "mongoose": "^5.4.8"
+  }
+}
