@@ -1,4 +1,4 @@
-// Import mongoose and create a Schema for courses
+// Import mongoose and create a Schema
 const mongoose = require("mongoose");
 // Get the Schema object from mongoose
 const Schema = mongoose.Schema;
