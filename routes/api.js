@@ -1,7 +1,7 @@
 // Imports
 const express = require("express");
 const mongoose = require("mongoose");
-const Launches = require("../models/launch");
+const Launch = require("../models/launch");
 // Create an express router
 const router = express.Router();
 

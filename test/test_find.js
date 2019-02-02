@@ -14,7 +14,12 @@ describe("Finding record", function(){
 
     // Add a record to the database
     beforeEach(function(done){
-        let launch1 = new Launch({
+
+        function addLaunch(data){
+            return Launch.create(data);
+        }
+
+        addLaunch({
                 id: "crs-12",
                 name: "SpaceX CRS-12",
                 flight_number: 1337,
@@ -34,11 +39,32 @@ describe("Finding record", function(){
                         ]
                     }
                 ]
+        }).then(function(result){
+            addLaunch({
+                id: "crs-13",
+                name: "SpaceX CRS-13",
+                flight_number: 420,
+                raw: [
+                    {
+                        stage: 0,
+                        telemetry: [
+                            {time: 0, velocity: 1, altitude: 2},
+                            {time: 4, velocity: 5, altitude: 6}
+                        ]
+                    },
+                    {
+                        stage: 1,
+                        telemetry: [
+                            {time: 7, velocity: 8, altitude: 9},
+                            {time: 10, velocity: 11, altitude: 12}
+                        ]
+                    }
+                ]
+            }).then((res) => done());
         });
 
-        launch1.save().then(function(){
-            done();
-        });
+
+
     });
 
 
