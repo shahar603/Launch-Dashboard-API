@@ -12,9 +12,6 @@ const router = express.Router();
 
 
 
-
-
-
 // Get information about all avavilable launches
 router.get("/launches", function(req, res, next){
     // Get all launches

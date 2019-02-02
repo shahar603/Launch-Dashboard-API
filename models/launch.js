@@ -1,8 +1,5 @@
-// Import Joi for schema validation
-const Joi = require("joi");
 // Import mongoose and create a Schema for courses
 const mongoose = require("mongoose");
-const joigoose = require("joigoose")(mongoose);
 // Get the Schema object from mongoose
 const Schema = mongoose.Schema;
 
@@ -11,51 +8,64 @@ const Schema = mongoose.Schema;
 
 
 // Raw telemetry of a specific stage
-const StageRawTelemetrySchema = Joi.object().keys({
-    stage: Joi.number().integer().min(0),
+const StageRawTelemetrySchema = new Schema({
+    stage: Number,
     telemetry: [{
-        time: Joi.number(),
-        velocity: Joi.number(),
-        altitude: Joi.number()
+        time: Number,
+        velocity: Number,
+        altitude: Number
     }]
 });
 
 // Analysed telemetry of a specific stage
-const StageAnalysedTelemetrySchema = Joi.object().keys({
-    stage: Joi.number().integer().min(0),
+const StageAnalysedTelemetrySchema = new Schema({
+    stage: {
+        type: Number,
+        min: 0
+    },
     telemetry: [{
-        time: Joi.number(),
-        velocity: Joi.number(),
-        altitude: Joi.number(),
-        velocity_y: Joi.number(),
-        velocity_x: Joi.number(),
-        acceleration: Joi.number(),
-        downrange_distance: Joi.number(),
-        angle: Joi.number(),
-        q: Joi.number()
+        time: Number,
+        velocity: Number,
+        altitude: Number,
+        velocity_y: Number,
+        velocity_x: Number,
+        acceleration: Number,
+        downrange_distance: Number,
+        angle: Number,
+        q: Number
     }]
 });
 
 // Define the event schema
-const EventSchema = Joi.object().keys({
-    key: Joi.string(),
-    time: Joi.number()
+const EventSchema = new Schema({
+    key: String,
+    time: Number
 });
 
 // Define launch schema
-const LaunchSchema = Joi.object().keys({
-    id: Joi.string().required(),
-    name: Joi.string().required(),
-    flight_number: Joi.number().integer().min(0).required(),
+const LaunchSchema = new Schema({
+    id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    flight_number: {
+        type: Number,
+        required: true,
+        min: 0
+    },
     raw: [StageRawTelemetrySchema],
     analysed: [StageAnalysedTelemetrySchema],
     events: [EventSchema]
-});
+}, { collection: "launches"});
 
 
 
 
 // Create the raw telemetry model
-const Launch = mongoose.model("launch", joigoose.convert(LaunchSchema));
+const Launch = mongoose.model("launch", LaunchSchema);
 // Export the raw telemetry model
 module.exports = Launch;
