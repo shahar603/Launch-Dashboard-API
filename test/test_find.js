@@ -5,7 +5,8 @@ const mocha = require("mocha");
 const assert = require("assert");
 // Import the MarioChar model
 const Launch = Promise.promisifyAll(require("../models/launch"));
-
+// Import lodash for utility functions
+const _ = require("lodash");
 
 
 
@@ -20,7 +21,7 @@ describe("Finding record", function(){
         }
 
         addLaunch({
-                id: "crs-12",
+                mission_id: "crs-12",
                 name: "SpaceX CRS-12",
                 flight_number: 1337,
                 raw: [
@@ -41,7 +42,7 @@ describe("Finding record", function(){
                 ]
         }).then(function(result){
             addLaunch({
-                id: "crs-13",
+                mission_id: "crs-13",
                 name: "SpaceX CRS-13",
                 flight_number: 420,
                 raw: [
@@ -68,9 +69,9 @@ describe("Finding record", function(){
     });
 
 
-    // Find one record from the database using the id
-    it("Finds one record from the database by id", function(done){
-        Launch.findOne({ id: "crs-12" }).then(function(result){
+    // Find one record from the database using the mission_id
+    it("Finds one record from the database by mission_id", function(done){
+        Launch.findOne({ mission_id: "crs-12" }).then(function(result){
             assert(result.name === "SpaceX CRS-12");
             done();
         });
@@ -90,9 +91,9 @@ describe("Finding record", function(){
 
 
 
-    // Finds one record from the database by flight number and id
-    it("Finds one record from the database by flight number and id", function(done){
-        Launch.findOne({ id: "crs-12", flight_number: 1337 }).then(function(result){
+    // Finds one record from the database by flight number and mission_id
+    it("Finds one record from the database by flight number and mission_id", function(done){
+        Launch.findOne({ mission_id: "crs-12", flight_number: 1337 }).then(function(result){
             assert(result.name === "SpaceX CRS-12");
             done();
         });
@@ -100,9 +101,9 @@ describe("Finding record", function(){
 
 
 
-    // Give incorrect id and correct flight number
-    it("Find nothing due to incorrect id and correct flight number", function(done){
-        Launch.findOne({ id: "Hello", flight_number: 1337 }).then(function(result){
+    // Give incorrect mission_id and correct flight number
+    it("Find nothing due to incorrect mission_id and correct flight number", function(done){
+        Launch.findOne({ mission_id: "Hello", flight_number: 1337 }).then(function(result){
             assert(result === null);
             done();
         });
@@ -110,9 +111,9 @@ describe("Finding record", function(){
 
 
 
-    // Give correct id and incorrect flight number
-    it("Find nothing due to correct id and incorrect flight number", function(done){
-        Launch.findOne({ id: "crs-12", flight_number: 11111 }).then(function(result){
+    // Give correct mission_id and incorrect flight number
+    it("Find nothing due to correct mission_id and incorrect flight number", function(done){
+        Launch.findOne({ mission_id: "crs-12", flight_number: 11111 }).then(function(result){
             assert(result === null);
             done();
         });
@@ -121,8 +122,8 @@ describe("Finding record", function(){
 
 
     // Mongo check if flight_number is undefined
-    it("Find nothing due to correct id but undefined flight_number", function(done){
-        Launch.findOne({ id: "crs-12", flight_number: undefined }).then(function(result){
+    it("Find nothing due to correct mission_id but undefined flight_number", function(done){
+        Launch.findOne({ mission_id: "crs-12", flight_number: undefined }).then(function(result){
             assert(result === null);
             done();
         });
@@ -132,8 +133,17 @@ describe("Finding record", function(){
 
     // Add additional keys that are not in the database and find nothing
     it("Add additional keys that are not in the database and find nothing", function(done){
-        Launch.findOne({ id: "crs-12", start: 1234 }).then(function(result){
+        Launch.findOne({ mission_id: "crs-12", start: 1234 }).then(function(result){
             assert(result === null);
+            done();
+        });
+    });
+
+
+    // Remove additional keys and find an element
+    it("Remove additional keys and find an element", function(done){
+        Launch.findOne(_.pick({ mission_id: "crs-12", start: 1234 }, ["mission_id"])).then(function(result){
+            assert(result.name === "SpaceX CRS-12");
             done();
         });
     });
@@ -142,7 +152,7 @@ describe("Finding record", function(){
 
     // Test case sensitivity of strings in mongo
     it("Is mongo case sensetive?", function(done){
-        Launch.findOne({ id: "CRS-12", flight_number: 11111 }).then(function(result){
+        Launch.findOne({ mission_id: "CRS-12", flight_number: 11111 }).then(function(result){
             assert(result === null);
             done();
         });

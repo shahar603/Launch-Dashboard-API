@@ -1,7 +1,8 @@
-// Imports
+// Import poackages
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+// Import middleware
+const bodyParser = require("body-parser");
 
 
 // Set the database connection string
@@ -24,7 +25,8 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.json());
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({ extended: true }));
-
+// Add request splitting middleware
+app.use(require("./middleware/middleware"));
 
 
 // Use the routes we set up on routes/api.js

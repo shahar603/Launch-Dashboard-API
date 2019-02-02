@@ -44,7 +44,7 @@ const EventSchema = new Schema({
 
 // Define launch schema
 const LaunchSchema = new Schema({
-    id: {
+    mission_id: {
         type: String,
         required: true
     },
