@@ -3,7 +3,7 @@ const Promise = require("bluebird");
 // Import mocha and assert to unit test the database
 const mocha = require("mocha");
 const assert = require("assert");
-// Import the MarioChar model
+// Import the Launch model
 const Launch = Promise.promisifyAll(require("../models/launch"));
 // Import lodash for utility functions
 const _ = require("lodash");
@@ -160,5 +160,14 @@ describe("Finding record", function(){
 
 
 
+
+
+    // Does find returns an array?
+    it("Perform find that returns one element and check if it is an array", function(done){
+        Launch.find({ mission_id: "crs-12" }).then(function(result){
+            assert(Array.isArray(result));
+            done();
+        });
+    });
 
 });
