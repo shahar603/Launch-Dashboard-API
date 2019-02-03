@@ -4,7 +4,7 @@ const Promise = require("bluebird");
 const mocha = require("mocha");
 const assert = require("assert");
 // Import the Launch model
-const Launch = Promise.promisifyAll(require("../../models/launch"));
+const Launch = Promise.promisifyAll(require("../../src/models/launch"));
 // Import lodash for utility functions
 const _ = require("lodash");
 
