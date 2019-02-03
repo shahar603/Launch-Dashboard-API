@@ -5,35 +5,22 @@ const launches = require("../controllers/launches");
 const router = express.Router();
 
 
+// Get all the available data about a launch
+router.get("/", launches.getOne);
+
+// Add a launch to the database
+router.post("/", launches.addOne);
+
+// Update launch data
+router.put("/", launches.updateOne);
+
+// Delete a launch from the database
+router.delete("/", launches.deleteOne);
+
+// Get information about launches (all/single)
+router.get("/info", launches.launches);
 
 
-
-// Get information about all avavilable launches
-router.get("/", launches.launches);
-
-
-// Add another launch to the database
-router.post("/", function(req, res, next){
-
-});
-
-
-// Get the raw data from a launch
-router.get("/raw", function(req, res, next){
-
-});
-
-
-// Get the analysed data from a launch
-router.get("/analysed", function(req, res, next){
-
-});
-
-
-// Get the events from a specific launch
-router.get("/events", function(req, res, next){
-
-});
 
 
 module.exports = router;
