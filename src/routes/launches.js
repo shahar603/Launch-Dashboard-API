@@ -1,7 +1,6 @@
-// Imports
+// Import
 const express = require("express");
-const _ = require("lodash");
-const Launch = require("../models/launch");
+const launches = require("../controlers/launches");
 // Create an express router
 const router = express.Router();
 
@@ -10,21 +9,7 @@ const router = express.Router();
 
 
 // Get information about all avavilable launches
-router.get("/launches", function(req, res, next){
-    // Get all launches
-    if (_.isEmpty(req.identifiers)){
-        Launch.find({}, "mission_id name flight_number").then(function(result){
-            res.send(result);
-        });
-    }
-    // Get a specific launches
-    else{
-        Launch.findOne(req.identifiers, "mission_id name flight_number").then(function(result){
-            res.send(result);
-        });
-    }
-
-});
+router.get("/launches", launches.launches);
 
 
 // Add another launch to the database
