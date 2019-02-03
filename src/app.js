@@ -52,5 +52,16 @@ app.use(errorHandler);
 
 
 
-// Start the server on port 3000
-app.listen(process.env.PORT || 3000);
+(function(){
+    // Connect to monsgoose and create/connect to the db
+    mongoose.connect("mongodb://localhost:27017/mongotest", {useNewUrlParser: true});
+
+    mongoose.connection.once("open", function(){
+        // Start the server on port 3000
+        app.listen(process.env.PORT || 3000, () => {
+            console.log("Running on port 3000");
+        });
+    }).on("error", function(err){
+        console.log(`Connection Error: ${err}`);
+    });
+})();
