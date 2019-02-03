@@ -1,4 +1,4 @@
-// Import poackages
+// Import packages
 const express = require("express");
 const mongoose = require("mongoose");
 // Import middleware
@@ -6,9 +6,8 @@ const bodyParser = require("body-parser");
 
 
 // Set the database connection string
-global.DATABASE_NAME = "telemetry"
-global.CONNECTION_STRING = `mongodb://localhost/${global.DATABASE_NAME}`
-
+global.DATABASE_NAME = "telemetry";
+global.CONNECTION_STRING = `mongodb://localhost/${global.DATABASE_NAME}`;
 
 
 // Create an express app
@@ -33,7 +32,6 @@ app.use(require("./middleware/middleware"));
 app.use("/api/", require("./routes/api"));
 // Promise rejection handling
 app.use(function(err, req, res, next){
-    //console.log(err);
     res.
         status(422).
         send({error: err._message});

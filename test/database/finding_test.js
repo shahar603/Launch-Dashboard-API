@@ -1,7 +1,6 @@
 // Import bluebird for promises
 const Promise = require("bluebird");
-// Import mocha and assert to unit test the database
-const mocha = require("mocha");
+// Import assert to unit test the database
 const assert = require("assert");
 // Import the Launch model
 const Launch = Promise.promisifyAll(require("../../src/models/launch"));
@@ -41,6 +40,8 @@ describe("Finding record", function(){
                     }
                 ]
         }).then(function(result){
+            assert(result !== null);
+
             addLaunch({
                 mission_id: "crs-13",
                 name: "SpaceX CRS-13",
@@ -61,7 +62,10 @@ describe("Finding record", function(){
                         ]
                     }
                 ]
-            }).then((res) => done());
+            }).then(function(result){
+                assert(result !== null);
+                done();
+            });
         });
 
 
