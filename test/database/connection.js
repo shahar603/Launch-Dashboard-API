@@ -24,7 +24,6 @@ after(function(){
 
 
 
-
 // Drop the launches collection before each character test
 beforeEach(function(done){
     mongoose.connection.collections.launches.drop().then(function(){

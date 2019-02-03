@@ -2,13 +2,13 @@
   "name": "space-dashboard-api",
   "version": "1.0.0",
   "description": "A REST API for SpaceX Telemetry",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "mocha --recursive"
   },
   "repository": {
     "type": "git",
-    "url": "."
+    "url": "https://github.com/shahar603/SpaceX-Telemetry-API.git"
   },
   "author": "Shahar603",
   "license": "ISC",
