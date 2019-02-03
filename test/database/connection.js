@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 // Connect to the database before any test run
 before(function(done){
     // Connect to monsgoose and create/connect to the db
-    mongoose.connect("mongodb://localhost:27017/mongotest", {useNewUrlParser: true});
+    mongoose.connect("mongodb://localhost:27017/telemetry", {useNewUrlParser: true});
 
     mongoose.connection.once("open", function(){
         console.log("Successfuly connected to the database!");
@@ -23,8 +23,8 @@ after(function(){
 });
 
 
-
-// Drop the launches collection before each character test
+/* Don't drop the launches collection before each test
+// Drop the launches collection before each test
 beforeEach(function(done){
     mongoose.connection.collections.launches.drop().then(function(){
         done();
@@ -33,3 +33,4 @@ beforeEach(function(done){
         done();
     });
 });
+*/

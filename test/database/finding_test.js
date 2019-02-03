@@ -12,6 +12,7 @@ const _ = require("lodash");
 // Create a series of tests
 describe("Finding record", function(){
 
+    /* Don't add any record to the database
     // Add a record to the database
     beforeEach(function(done){
 
@@ -71,7 +72,7 @@ describe("Finding record", function(){
 
 
     });
-    
+    */
 
 
     // Find one record from the database using the mission_id
