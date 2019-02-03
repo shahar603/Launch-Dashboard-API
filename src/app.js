@@ -11,7 +11,7 @@ const launches = require("./routes/launches");
 
 // Set the database connection string
 global.DATABASE_NAME = "telemetry";
-global.CONNECTION_STRING = `mongodb://localhost/${global.DATABASE_NAME}`;
+global.CONNECTION_STRING = `mongodb://localhost:27017/${global.DATABASE_NAME}`;
 
 
 // Create an express app
@@ -54,7 +54,7 @@ app.use(errorHandler);
 
 (function(){
     // Connect to monsgoose and create/connect to the db
-    mongoose.connect("mongodb://localhost:27017/mongotest", {useNewUrlParser: true});
+    mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
 
     mongoose.connection.once("open", function(){
         // Start the server on port 3000

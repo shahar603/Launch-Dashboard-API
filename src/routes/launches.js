@@ -18,7 +18,7 @@ router.put("/", launches.updateOne);
 router.delete("/", launches.deleteOne);
 
 // Get information about launches (all/single)
-router.get("/info", launches.launches);
+router.get("/info", launches.info);
 
 
 
