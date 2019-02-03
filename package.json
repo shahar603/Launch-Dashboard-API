@@ -4,7 +4,7 @@
   "description": "A REST API for SpaceX Telemetry",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --recursive"
   },
   "repository": {
     "type": "git",

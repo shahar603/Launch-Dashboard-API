@@ -4,7 +4,7 @@ const Promise = require("bluebird");
 const mocha = require("mocha");
 const assert = require("assert");
 // Import the Launch model
-const Launch = Promise.promisifyAll(require("../models/launch"));
+const Launch = Promise.promisifyAll(require("../../models/launch"));
 // Import lodash for utility functions
 const _ = require("lodash");
 
@@ -169,5 +169,19 @@ describe("Finding record", function(){
             done();
         });
     });
+
+
+
+    // Does find returns an array?
+    it("Check whether select perform selection of the elements in the array", function(done){
+        Launch.find({}, "mission_id name flight_number").then(function(result){
+            let firstResultKeys = Object.keys(result[0].toObject());
+
+            ["_id", "mission_id", "name", "flight_number"].forEach(elm => assert(firstResultKeys.includes(elm)));
+            done();
+        });
+    });
+
+
 
 });

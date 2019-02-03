@@ -16,14 +16,18 @@ const router = express.Router();
 // Get information about all avavilable launches
 router.get("/launches", function(req, res, next){
     // Get all launches
-    if (req.query.mission_id === null && req.query.flight_number){
-
+    if (_.isEmpty(req.identifiers)){
+        Launch.find({}, "mission_id name flight_number").then(function(result){
+            res.send(result);
+        });
     }
     // Get a specific launches
     else{
-
+        Launch.findOne(req.identifiers, "mission_id name flight_number").then(function(result){
+            res.send(result);
+        });
     }
-    res.send("GET");
+
 });
 
 
