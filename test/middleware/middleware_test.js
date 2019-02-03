@@ -1,5 +1,4 @@
 // Import mocha and assert to unit test the database
-const mocha = require("mocha");
 const assert = require("assert");
 const requestSplitter = require("../../src/middleware/middleware");
 // Equality function

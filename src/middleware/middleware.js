@@ -2,7 +2,7 @@
 const _ = require("lodash");
 
 // name of url paramters used to identify keys from the database
-identifiersKeys = ["mission_id", "flight_number"];
+let identifiersKeys = ["mission_id", "flight_number"];
 
 
 // Split the query parameters to two objects

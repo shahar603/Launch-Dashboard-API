@@ -1,6 +1,6 @@
 // Import
 const express = require("express");
-const launches = require("../controlers/launches");
+const launches = require("../controllers/launches");
 // Create an express router
 const router = express.Router();
 
@@ -9,11 +9,11 @@ const router = express.Router();
 
 
 // Get information about all avavilable launches
-router.get("/launches", launches.launches);
+router.get("/", launches.launches);
 
 
 // Add another launch to the database
-router.post("/launches", function(req, res, next){
+router.post("/", function(req, res, next){
 
 });
 
