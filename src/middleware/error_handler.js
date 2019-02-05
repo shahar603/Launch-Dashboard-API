@@ -1,7 +1,7 @@
 function handleError(err, req, res, next){
     res.
         status(422).
-        send({error: err._message});
+        send({error: err.message});
 
     next();
 }
