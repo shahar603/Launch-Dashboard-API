@@ -40,13 +40,7 @@ module.exports = {
 
         Launch.find(req.identifiers).
         then(function(result){
-            if (!_.isEmpty(result)){
-                res.send(result);
-            }else{
-                res.
-                status(404).
-                send({error: "Launch not found"});
-            }
+            res.send(result);
         }).
         catch(next);
     },

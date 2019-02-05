@@ -50,9 +50,6 @@ app.use("/v1/analysed", analysed);
 app.use("/v1/events", events);
 
 
-
-
-
 // ##################### MIDDLEWARE #####################
 
 // Promise rejection handling
