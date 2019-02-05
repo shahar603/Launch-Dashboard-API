@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 // Import middleware
 const bodyParser = require("body-parser");
-const requestSplitter = require("./middleware/middleware");
+const requestSplitter = require("./middleware/request_splitting");
 const errorHandler = require("./middleware/error_handler");
 // Import routes
 const launches = require("./routes/launches");
