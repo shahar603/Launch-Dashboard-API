@@ -5,17 +5,31 @@ const Schema = mongoose.Schema;
 
 
 
+// Raw telemetry entry
+const RawTelemetrySchema = new Schema({
+    time: Number,
+    velocity: Number,
+    altitude: Number
+}, { _id : false });
 
+// Analysed telemetry entry
+const AnalysedTelemetrySchema = new Schema({
+    time: Number,
+    velocity: Number,
+    altitude: Number,
+    velocity_y: Number,
+    velocity_x: Number,
+    acceleration: Number,
+    downrange_distance: Number,
+    angle: Number,
+    q: Number
+}, { _id : false });
 
 // Raw telemetry of a specific stage
 const StageRawTelemetrySchema = new Schema({
     stage: Number,
-    telemetry: [{
-        time: Number,
-        velocity: Number,
-        altitude: Number
-    }]
-});
+    telemetry: [RawTelemetrySchema]
+}, { _id : false });
 
 // Analysed telemetry of a specific stage
 const StageAnalysedTelemetrySchema = new Schema({
@@ -23,24 +37,14 @@ const StageAnalysedTelemetrySchema = new Schema({
         type: Number,
         min: 0
     },
-    telemetry: [{
-        time: Number,
-        velocity: Number,
-        altitude: Number,
-        velocity_y: Number,
-        velocity_x: Number,
-        acceleration: Number,
-        downrange_distance: Number,
-        angle: Number,
-        q: Number
-    }]
-});
+    telemetry: [AnalysedTelemetrySchema]
+}, { _id : false });
 
 // Define the event schema
 const EventSchema = new Schema({
     key: String,
     time: Number
-});
+}, { _id : false });
 
 // Define launch schema
 const LaunchSchema = new Schema({

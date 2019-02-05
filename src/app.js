@@ -7,6 +7,10 @@ const requestSplitter = require("./middleware/request_splitting");
 const errorHandler = require("./middleware/error_handler");
 // Import routes
 const launches = require("./routes/launches");
+const raw = require("./routes/raw");
+const analysed = require("./routes/analysed");
+const events = require("./routes/events");
+
 
 
 // Set the database connection string
@@ -29,19 +33,23 @@ mongoose.Promise = global.Promise;
 
 // ##################### MIDDLEWARE #####################
 
-// support parsing of application/json type post data
-app.use(bodyParser.json());
+// Alllow post requests with a lot of telemetry
+app.use(bodyParser.json({limit: "10mb"}));
 //support parsing of application/x-www-form-urlencoded post data
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({limit: "10mb", extended: true}));
 // Add request splitting middleware
 app.use(requestSplitter);
-
 
 // ##################### ROUTES #####################
 
 
 // Use the routes we set up on routes/api.js
 app.use("/v1/launches", launches);
+app.use("/v1/raw", raw);
+app.use("/v1/analysed", analysed);
+app.use("/v1/events", events);
+
+
 
 
 

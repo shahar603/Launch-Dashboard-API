@@ -3,17 +3,50 @@ const Launch = require("../models/launch");
 // Import util functions
 const _ = require("lodash");
 //
-const requestSplitter = require("../middleware/middleware");
+const requestSplitter = require("../middleware/request_splitting");
 
 
 
 module.exports = {
 
+    // Get information about launches from the database
+    info: function getInfo(req, res, next){
+        // Get all launches
+        if (_.isEmpty(req.identifiers)){
+            Launch.find({}, "mission_id name flight_number").
+                then(function(result){
+                    res.send(result);
+                }).
+                catch(next);
+        }
+        // Get a specific launches
+        else{
+            Launch.findOne(req.identifiers, "mission_id name flight_number").
+                then(function(result){
+                    res.send(result);
+                }).
+                catch(next);
+        }
+    },
+
+
     // Get all the available data about a specific launch
     getOne: function(req, res, next){
+
+        if (_.isEmpty(req.identifiers)){
+            module.exports.info(req, res, next);
+            return;
+        }
+
         Launch.find(req.identifiers).
         then(function(result){
-            res.send(result);
+            if (!_.isEmpty(result)){
+                res.send(result);
+            }else{
+                res.
+                status(404).
+                send({error: "Launch not found"});
+            }
         }).
         catch(next);
     },
@@ -53,25 +86,7 @@ module.exports = {
 
 
 
-    // Get information about launches from the database
-    info: function(req, res, next){
-        // Get all launches
-        if (_.isEmpty(req.identifiers)){
-            Launch.find({}, "mission_id name flight_number").
-                then(function(result){
-                    res.send(result);
-                }).
-                catch(next);
-        }
-        // Get a specific launches
-        else{
-            Launch.findOne(req.identifiers, "mission_id name flight_number").
-                then(function(result){
-                    res.send(result);
-                }).
-                catch(next);
-        }
-    }
+
 
 
 
