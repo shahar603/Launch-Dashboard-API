@@ -18,7 +18,9 @@
     "joigoose": "^4.0.4",
     "lodash": "^4.17.11",
     "mocha": "^5.2.0",
-    "mongoose": "^5.4.8"
+    "mongoose": "^5.4.8",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

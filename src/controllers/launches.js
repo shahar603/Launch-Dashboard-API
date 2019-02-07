@@ -19,7 +19,7 @@ module.exports = {
                 }).
                 catch(next);
         }
-        // Get a specific launches
+        // Get a specific launch
         else{
             Launch.findOne(req.identifiers, "mission_id name flight_number").
                 then(function(result){
