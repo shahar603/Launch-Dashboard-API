@@ -10,6 +10,15 @@ const launches = require("./routes/launches");
 const raw = require("./routes/raw");
 const analysed = require("./routes/analysed");
 const events = require("./routes/events");
+// Authentication imports
+const confirmAuth = require("./middleware/confirm_auth");
+const authRoutes = require("./routes/auth-routes");
+const keys = require("./auth/keys");
+const passportSetup = require("./auth/passport-setup");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
+
+
 
 
 
@@ -28,6 +37,20 @@ mongoose.connect(global.CONNECTION_STRING,  {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 
 
+// ######################### AUTHENTICATION COOKIE ###################
+
+
+// Session cookie settings
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [keys.session.cookieKey]
+}));
+
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 
 
@@ -37,8 +60,12 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.json({limit: "10mb"}));
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({limit: "10mb", extended: true}));
-// Add request splitting middleware
+// Parse the request
 app.use(requestSplitter);
+// If the user tries to modify the database, make sure he/she is authenticated
+app.use("*", confirmAuth);
+
+
 
 // ##################### ROUTES #####################
 
@@ -48,6 +75,10 @@ app.use("/v1/launches", launches);
 app.use("/v1/raw", raw);
 app.use("/v1/analysed", analysed);
 app.use("/v1/events", events);
+
+// set up authentiacation routes
+app.use("/auth", authRoutes);
+
 
 
 // ##################### MIDDLEWARE #####################
