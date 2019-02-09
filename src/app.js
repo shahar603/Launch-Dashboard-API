@@ -24,7 +24,8 @@ const passport = require("passport");
 
 // Set the database connection string
 global.DATABASE_NAME = "telemetry";
-global.CONNECTION_STRING = `mongodb://localhost:27017/${global.DATABASE_NAME}`;
+global.DATABASE_URI = `mongodb://api-access:${keys.mongodb.dbUserPassword}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
+global.CONNECTION_STRING = `${global.DATABASE_URI}/${global.DATABASE_NAME}`;
 
 
 // Create an express app

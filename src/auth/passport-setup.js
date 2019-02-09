@@ -42,7 +42,7 @@ passport.use(
                 console.log("User already exists");
                 done(null, result);
             }else{
-                addUserToDb(profile);
+                addUserToDb(profile, done);
             }
         });
 
