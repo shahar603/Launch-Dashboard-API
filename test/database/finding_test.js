@@ -88,7 +88,7 @@ describe("Finding record", function(){
 
     // Test the flight number property by searching a record using it
     it("Finds one record from the database by flight number", function(done){
-        Launch.findOne({ flight_number: 45 }).then(function(result){
+        Launch.findOne({ flight_number: 1337 }).then(function(result){
             assert(result.name === "SpaceX CRS-12");
             done();
         });
@@ -99,7 +99,7 @@ describe("Finding record", function(){
 
     // Finds one record from the database by flight number and mission_id
     it("Finds one record from the database by flight number and mission_id", function(done){
-        Launch.findOne({ mission_id: "crs-12", flight_number: 45 }).then(function(result){
+        Launch.findOne({ mission_id: "crs-12", flight_number: 1337 }).then(function(result){
             assert(result.name === "SpaceX CRS-12");
             done();
         });

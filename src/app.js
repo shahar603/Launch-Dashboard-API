@@ -20,22 +20,14 @@ const passport = require("passport");
 
 
 
+const connnectionString = `mongodb://${keys.atlas.dbUserName}:${keys.atlas.dbUserPassword}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true/${keys.atlas.dbName}`;
 
-
-// Set the database connection string
-global.DATABASE_NAME = "telemetry";
-global.DATABASE_URI = `mongodb://api-access:${keys.mongodb.dbUserPassword}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
-global.CONNECTION_STRING = `${global.DATABASE_URI}/${global.DATABASE_NAME}`;
 
 
 // Create an express app
 const app = express();
 
 
-// Connect to the database
-mongoose.connect(global.CONNECTION_STRING,  {useNewUrlParser: true});
-// Use the updated Promise instead of mongoose's deprecated one
-mongoose.Promise = global.Promise;
 
 
 // ######################### AUTHENTICATION COOKIE ###################
@@ -89,9 +81,10 @@ app.use(errorHandler);
 
 
 
+
 (function(){
     // Connect to monsgoose and create/connect to the db
-    mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
+    mongoose.connect(connnectionString, {useNewUrlParser: true});
 
     mongoose.connection.once("open", function(){
         // Start the server on port 3000
