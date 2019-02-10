@@ -19,7 +19,7 @@ describe("Testing the middleware", function(){
     });
 
 
-    it("More complex object splitting object splitting", function(done){
+    it("More complex object splitting", function(done){
         let req = {query: {mission_id: "crs-13", flight_number: 1337, finish: 1235, start: 1234}};
         let res = {};
         let next = function(){
@@ -30,4 +30,5 @@ describe("Testing the middleware", function(){
         requestSplitter(req, res, next);
         done();
     });
+
 });
