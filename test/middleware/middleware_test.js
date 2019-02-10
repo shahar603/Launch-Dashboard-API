@@ -31,4 +31,11 @@ describe("Testing the middleware", function(){
         done();
     });
 
+
+
+    it("A breaking change", function(done){
+        assert(false);
+        done();
+    });
+
 });
