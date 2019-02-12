@@ -20,7 +20,7 @@ const passport = require("passport");
 
 
 
-const connnectionString = `mongodb://${keys.atlas.dbUserName}:${keys.atlas.dbUserPassword}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true/${keys.atlas.dbName}`;
+global.CONNECTION_STRING =  "mongodb+srv://api-readonly-access:spacedashboard@spacecluster-duhqc.mongodb.net/test?retryWrites=true";
 
 
 
@@ -84,7 +84,7 @@ app.use(errorHandler);
 
 (function(){
     // Connect to monsgoose and create/connect to the db
-    mongoose.connect(connnectionString, {useNewUrlParser: true});
+    mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
 
     mongoose.connection.once("open", function(){
         // Start the server on port 3000

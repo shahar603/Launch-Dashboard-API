@@ -1,4 +1,3 @@
 node_modules/
 src/auth/keys.js
 Dockerfile
-test/database
