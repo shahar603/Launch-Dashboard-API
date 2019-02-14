@@ -33,7 +33,7 @@ jobs:
         docker:
             - image: circleci/node:10.15.0
         steps:
-            echo "Deploying..."
+            - checkout
             # Steps to be added
 
 workflows:
