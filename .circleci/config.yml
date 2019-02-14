@@ -33,8 +33,24 @@ jobs:
         docker:
             - image: circleci/node:10.15.0
         steps:
-            - checkout
-            # Steps to be added
+            # Log the current branch
+            - run:
+                name: Show current branch
+                command: echo ${CIRCLE_BRANCH}
+            # Install AWS cli
+            - run:
+                name: Install aws cli
+                command:
+                    sudo apt-get -y -qq install awscli
+            # Set the signature version for the S3 auth
+            - run:
+                name: Setting Signature Version 4 for S3 Request Authentication
+                command: aws configure set default.s3.signature_version s3v4
+            # Deploy to the S3 bucket corresponding to the current branch
+            - run:
+                name: Deploy to S3
+                command: aws --region us-east-2 s3 . sync s3://project-dev/ --delete
+
 
 workflows:
     version: 2
