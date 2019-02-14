@@ -1,37 +1,44 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
+
+# List of jobs
 jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:10.15.0
+    # The build job
+    build:
+        working_directory: ~/project
+        docker:
+            - image: circleci/node:10.15.0
+        steps:
+            - checkout
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
+            # Download and cache dependencies
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "package.json" }}
+                    # fallback to using the latest cache if no exact match is found
+                    - v1-dependencies-
 
-    working_directory: ~/repo
+            - run: npm install
 
-    steps:
-      - checkout
+            - save_cache:
+                paths:
+                    - node_modules
+                key: v1-dependencies-{{ checksum "package.json" }}
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            # run tests!
+            - run: npm test
 
-      - run: npm install
+    # The deploy job
+    deploy:
+        working_directory: ~/project
+        docker:
+            - image: circleci/node:10.15.0
+        steps:
+            # Steps to be added
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: npm test
+workflows:
+    version: 2
+    # The build and deploy workflow
+    build_and_deploy:
+        jobs:
+            - build
+            - deploy
