@@ -49,7 +49,7 @@ jobs:
             # Deploy to the S3 bucket corresponding to the current branch
             - run:
                 name: Deploy to S3
-                command: aws --region us-east-2 s3 . sync s3://project-dev/ --delete
+                command: aws --region us-east-2 s3 sync s3://project-dev/ --delete
 
 
 workflows:
