@@ -4,7 +4,8 @@
   "description": "A REST API for SpaceX Telemetry",
   "main": "src/app.js",
   "scripts": {
-    "test": "mocha --recursive --timeout 10000"
+    "test": "mocha --recursive --timeout 10000",
+    "start": "node src/app.js"
   },
   "repository": {
     "type": "git",
