@@ -21,11 +21,16 @@ const passport = require("passport");
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
 =======
 global.CONNECTION_STRING =  "mongodb+srv://api-readonly-access:spacedashboard@spacecluster-duhqc.mongodb.net/test?retryWrites=true";
 >>>>>>> 102639e5c46d1011252463fa6b01c4b4930e75a1
+=======
+
+global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
+>>>>>>> 85b932628b397dd661ea2e3dc4e4a2c284ae3f9e
 
 
 
