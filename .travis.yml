@@ -4,8 +4,9 @@ node_js: "10"
 
 cache: npm
 
-
-
+env:
+    - MONGO_USER_ID=$MONGO_USER_ID MONGO_USER_KEY=$MONGO_USER_KEY
+    
 deploy:
   provider: elasticbeanstalk
   access_key_id: $AWS_ACCESS_ID
