@@ -3,7 +3,7 @@ const Launch = require("../models/launch");
 
 
 async function eventsToStartEnd(events, modifiers){
-    let start, end;
+    let start, end, eventTime;
 
     if (events === null || events === undefined)
         return {start: undefined, end: undefined};
@@ -27,9 +27,13 @@ async function eventsToStartEnd(events, modifiers){
         return Number(event);
     }
 
+    // Get time values for "start", "end" and "eventTime"
     start = eventToTime(events, modifiers.start);
     end = eventToTime(events, modifiers.end);
+    eventTime = eventToTime(events, modifiers.event);
 
+
+    // Check the validity of "start", "end" and "eventTime"
     if (start === undefined && modifiers.start !== undefined)
         throw new Error("\"start\" has to a number or an event");
     else if (start === null && modifiers.start !== undefined)
@@ -40,15 +44,36 @@ async function eventsToStartEnd(events, modifiers){
     else if (end === null && modifiers.end !== undefined)
             throw new Error(`event ${modifiers.end} of "end" is not set in the data`);
 
-    return {start: start, end: end};
+    if (eventTime === undefined && modifiers.event !== undefined)
+            throw new Error("\"event\" has to a number or an event");
+        else if (eventTime === null && modifiers.event !== undefined)
+            throw new Error(`event ${modifiers.event} of "event" is not set in the data`);
+
+
+    // Apply offset modifiers
+    if (start !== undefined && modifiers.start_offset != undefined){
+        start += modifiers.start_offset;
+    }
+    if (end !== undefined && modifiers.end_offset != undefined){
+        end += modifiers.end_offset;
+    }
+    if (eventTime !== undefined && modifiers.event_offset != undefined){
+        eventTime += modifiers.event_offset;
+    }
+
+
+
+    return {start: start, end: end, event: eventTime};
 }
 
 
-function cropTelemetry(start, end, telemetry){
+function cropTelemetry(telemetry, start, end ,event){
     if (start === undefined)
         start = telemetry[0].time;
     if (end === undefined)
         end = telemetry[telemetry.length - 1].time;
+    if (event !== undefined)
+        start = end = event;
 
     let startIndex = telemetry.findIndex(function(element) {
         return element.time >= start;
@@ -63,14 +88,14 @@ function cropTelemetry(start, end, telemetry){
 
 
 
-function chooseStagesAndTelemetryRange(data, key, stage, start, end){
+function chooseStagesAndTelemetryRange(data, key, stage, start, end, event){
     let out = [];
 
     for (let i = 0; i < data[key].length; i++){
         if (stage === undefined || stage === data[key][i].stage){
             out.push({
                 stage: data[key][i].stage,
-                telemetry: cropTelemetry(start, end, data[key][i].telemetry)
+                telemetry: cropTelemetry(data[key][i].telemetry, start, end, event)
             });
         }
     }
@@ -84,14 +109,12 @@ async function getTelemetry(key, identifiers, modifiers){
     // Get the launch from the database
     let data = await Launch.findOne(identifiers, `${key} events`);
 
-
     if (!data){
         throw {status: 404, message: "Not Found"};
     }
 
-    let {start, end} = await eventsToStartEnd(data.events, modifiers);
-    console.log(start + ":" + end);
-    let out = chooseStagesAndTelemetryRange(data, key, modifiers.stage, start, end);
+    let {start, end, event} = await eventsToStartEnd(data.events, modifiers);
+    let out = chooseStagesAndTelemetryRange(data, key, modifiers.stage, start, end, event);
     return out;
 }
 

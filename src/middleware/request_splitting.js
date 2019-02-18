@@ -18,7 +18,10 @@ let modifierKeys = Joi.object({
     "event": Joi.string(),
     "start": Joi.alternatives().try(Joi.string(), Joi.number()),
     "end": Joi.alternatives().try(Joi.string(), Joi.number()),
-    "stage": Joi.number().integer().positive()
+    "stage": Joi.number().integer().positive(),
+    "start_offset": Joi.number(),
+    "end_offset": Joi.number(),
+    "event_offset": Joi.number()
 }).options({ stripUnknown: true });
 
 
