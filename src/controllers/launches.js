@@ -2,7 +2,7 @@
 const Launch = require("../models/launch");
 // Import util functions
 const _ = require("lodash");
-//
+// middleware
 const requestSplitter = require("../middleware/request_splitting");
 
 
@@ -15,6 +15,9 @@ module.exports = {
         if (_.isEmpty(req.identifiers)){
             Launch.find({}, "mission_id name flight_number").
                 then(function(result){
+                    if (!result)
+                        throw {status: 404, message: "Not Found"};
+
                     res.send(result);
                 }).
                 catch(next);
@@ -23,6 +26,9 @@ module.exports = {
         else{
             Launch.findOne(req.identifiers, "mission_id name flight_number").
                 then(function(result){
+                    if (!result)
+                        throw {status: 404, message: "Not Found"};
+
                     res.send(result);
                 }).
                 catch(next);
@@ -32,17 +38,14 @@ module.exports = {
 
     // Get all the available data about a specific launch
     getOne: function(req, res, next){
+        Launch.findOne(req.identifiers).
+            then(function(result){
+                if (!result)
+                    throw {status: 404, message: "Not Found"};
 
-        if (_.isEmpty(req.identifiers)){
-            module.exports.info(req, res, next);
-            return;
-        }
-
-        Launch.find(req.identifiers).
-        then(function(result){
-            res.send(result);
-        }).
-        catch(next);
+                res.send(result);
+            }).
+            catch(next);
     },
 
 
@@ -58,8 +61,6 @@ module.exports = {
 
 
     updateOne: function(req, res, next){
-        requestSplitter(req, null, () => {});
-
         Launch.findOneAndUpdate(req.identifiers, req.body).
             then(function(result){
                 res.send(result);
@@ -69,7 +70,9 @@ module.exports = {
 
 
     deleteOne: function(req, res, next){
-        requestSplitter(req, null, () => {});
+        if (_.isEmpty(req.identifiers)){
+            throw new Error("Missing \"flight_number\" and \"mission_id\"");
+        }
 
         Launch.findOneAndDelete(req.identifiers).
             then(function(result){

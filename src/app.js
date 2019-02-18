@@ -1,15 +1,18 @@
 // Import packages
 const express = require("express");
 const mongoose = require("mongoose");
+mongoose.set("useFindAndModify", false);
 // Import middleware
 const bodyParser = require("body-parser");
 const requestSplitter = require("./middleware/request_splitting");
 const errorHandler = require("./middleware/error_handler");
+const filter = require("content-filter");
 // Import routes
 const launches = require("./routes/launches");
 const raw = require("./routes/raw");
 const analysed = require("./routes/analysed");
 const events = require("./routes/events");
+const info = require("./routes/info");
 // Authentication imports
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
@@ -20,9 +23,8 @@ const passport = require("passport");
 
 
 
-
-global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
-
+//global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
+global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
 
 
 // Create an express app
@@ -54,6 +56,8 @@ app.use(passport.session());
 app.use(bodyParser.json({limit: "10mb"}));
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({limit: "10mb", extended: true}));
+// Validate the input to prevemt NoSQL injection
+app.use(filter());
 // Parse the request
 app.use(requestSplitter);
 // If the user tries to modify the database, make sure he/she is authenticated
@@ -69,16 +73,25 @@ app.use("/v1/launches", launches);
 app.use("/v1/raw", raw);
 app.use("/v1/analysed", analysed);
 app.use("/v1/events", events);
+app.use("/", info);
+
 
 // set up authentiacation routes
 app.use("/auth", authRoutes);
 
 
+// ##################### ERROR HANDLING #####################
 
-// ##################### MIDDLEWARE #####################
+
+
+// this is default in case of unmatched routes
+app.use(function(req, res) {
+    throw {status: 404, message: `path "${req.path}" does not exist`};
+});
 
 // Promise rejection handling
 app.use(errorHandler);
+
 
 
 
