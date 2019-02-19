@@ -5,8 +5,8 @@ const Launch = require("../models/launch");
 async function eventsToStartEnd(events, modifiers){
     let start, end, eventTime;
 
-    if (events === null || events === undefined)
-        return {start: undefined, end: undefined};
+    if (!events || !modifiers)
+        return {};
 
     function eventToTime(eventsArray, event){
         // If event is not defined then return 'undefined'
@@ -27,11 +27,11 @@ async function eventsToStartEnd(events, modifiers){
         return Number(event);
     }
 
+
     // Get time values for "start", "end" and "eventTime"
     start = eventToTime(events, modifiers.start);
     end = eventToTime(events, modifiers.end);
     eventTime = eventToTime(events, modifiers.event);
-
 
     // Check the validity of "start", "end" and "eventTime"
     if (start === undefined && modifiers.start !== undefined)
@@ -83,8 +83,15 @@ function cropTelemetry(telemetry, start, end ,event){
         return element.time >= end;
     });
 
-    return telemetry.slice(Math.max(0, startIndex-1), endIndex);
+    if (startIndex === -1 || endIndex === -1 || endIndex < startIndex)
+        return [];
+
+    if (startIndex < endIndex)
+        return telemetry.slice(Math.max(0, startIndex), endIndex);
+    else
+        return [telemetry[startIndex]];
 }
+
 
 
 
@@ -106,6 +113,9 @@ function chooseStagesAndTelemetryRange(data, key, stage, start, end, event){
 
 
 async function getTelemetry(key, identifiers, modifiers){
+    if (!key || _.isEmpty(identifiers) || _.isNil(modifiers))
+        throw {status: 404, message: "Not Found"};
+
     // Get the launch from the database
     let data = await Launch.findOne(identifiers, `${key} events`);
 

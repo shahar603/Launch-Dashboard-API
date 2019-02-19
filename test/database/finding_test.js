@@ -12,69 +12,6 @@ const _ = require("lodash");
 // Create a series of tests
 describe("Finding record", function(){
 
-    /* Don't add any record to the database
-    // Add a record to the database
-    beforeEach(function(done){
-
-        function addLaunch(data){
-            return Launch.create(data);
-        }
-
-        addLaunch({
-                mission_id: "crs-12",
-                name: "SpaceX CRS-12",
-                flight_number: 1337,
-                raw: [
-                    {
-                        stage: 0,
-                        telemetry: [
-                            {time: 0, velocity: 1, altitude: 2},
-                            {time: 4, velocity: 5, altitude: 6}
-                        ]
-                    },
-                    {
-                        stage: 1,
-                        telemetry: [
-                            {time: 7, velocity: 8, altitude: 9},
-                            {time: 10, velocity: 11, altitude: 12}
-                        ]
-                    }
-                ]
-        }).then(function(result){
-            assert(result !== null);
-
-            addLaunch({
-                mission_id: "crs-13",
-                name: "SpaceX CRS-13",
-                flight_number: 420,
-                raw: [
-                    {
-                        stage: 0,
-                        telemetry: [
-                            {time: 0, velocity: 1, altitude: 2},
-                            {time: 4, velocity: 5, altitude: 6}
-                        ]
-                    },
-                    {
-                        stage: 1,
-                        telemetry: [
-                            {time: 7, velocity: 8, altitude: 9},
-                            {time: 10, velocity: 11, altitude: 12}
-                        ]
-                    }
-                ]
-            }).then(function(result){
-                assert(result !== null);
-                done();
-            });
-        });
-
-
-
-    });
-    */
-
-
     // Find one record from the database using the mission_id
     it("Finds one record from the database by mission_id", function(done){
         Launch.findOne({ mission_id: "crs-12" }).then(function(result){
@@ -88,7 +25,7 @@ describe("Finding record", function(){
 
     // Test the flight number property by searching a record using it
     it("Finds one record from the database by flight number", function(done){
-        Launch.findOne({ flight_number: 1337 }).then(function(result){
+        Launch.findOne({ flight_number: 45 }).then(function(result){
             assert(result.name === "SpaceX CRS-12");
             done();
         });
@@ -99,7 +36,7 @@ describe("Finding record", function(){
 
     // Finds one record from the database by flight number and mission_id
     it("Finds one record from the database by flight number and mission_id", function(done){
-        Launch.findOne({ mission_id: "crs-12", flight_number: 1337 }).then(function(result){
+        Launch.findOne({ mission_id: "crs-12", flight_number: 45 }).then(function(result){
             assert(result.name === "SpaceX CRS-12");
             done();
         });
@@ -109,7 +46,7 @@ describe("Finding record", function(){
 
     // Give incorrect mission_id and correct flight number
     it("Find nothing due to incorrect mission_id and correct flight number", function(done){
-        Launch.findOne({ mission_id: "Hello", flight_number: 1337 }).then(function(result){
+        Launch.findOne({ mission_id: "Hello", flight_number: 45 }).then(function(result){
             assert(result === null);
             done();
         });

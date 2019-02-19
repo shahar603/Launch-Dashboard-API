@@ -12,13 +12,13 @@ const { checkIdentifiers } = require("../middleware/validator");
 router.get("/", checkIdentifiers, launches.getOne);
 
 // Add a launch to the database
-router.post("/", checkIdentifiers,launches.addOne);
+router.post("/", launches.addOne);
 
 // Update launch data
-router.put("/", checkIdentifiers, launches.updateOne);
+router.put("/", launches.updateOne);
 
 // Delete a launch from the database
-router.delete("/", checkIdentifiers, launches.deleteOne);
+router.delete("/", launches.deleteOne);
 
 // Get information about launches (all/single)
 router.get("/info", launches.info);
