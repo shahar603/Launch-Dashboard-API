@@ -47,9 +47,9 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const privateKey  = fs.readFileSync(__dirname + "\\sslcert\\key.pem", "utf8");
-const certificate = fs.readFileSync(__dirname + "\\sslcert\\cert.pem", "utf8");
-const credentials = {key: privateKey, cert: certificate, passphrase: "xyzw"};
+//const privateKey  = fs.readFileSync(__dirname + "\\sslcert\\key.pem", "utf8");
+//const certificate = fs.readFileSync(__dirname + "\\sslcert\\cert.pem", "utf8");
+//const credentials = {key: privateKey, cert: certificate, passphrase: "xyzw"};
 
 
 // ##################### MIDDLEWARE #####################
