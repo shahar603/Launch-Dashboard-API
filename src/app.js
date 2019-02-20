@@ -1,15 +1,21 @@
 // Import packages
 const express = require("express");
 const mongoose = require("mongoose");
+mongoose.set("useFindAndModify", false);
+const http = require("http");
+const https = require("https");
+const fs = require("fs");
 // Import middleware
 const bodyParser = require("body-parser");
 const requestSplitter = require("./middleware/request_splitting");
 const errorHandler = require("./middleware/error_handler");
+const filter = require("content-filter");
 // Import routes
 const launches = require("./routes/launches");
 const raw = require("./routes/raw");
 const analysed = require("./routes/analysed");
 const events = require("./routes/events");
+const info = require("./routes/info");
 // Authentication imports
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
@@ -20,15 +26,12 @@ const passport = require("passport");
 
 
 
-
 global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
-
+//global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
 
 
 // Create an express app
 const app = express();
-
-
 
 
 // ######################### AUTHENTICATION COOKIE ###################
@@ -44,8 +47,9 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
+//const privateKey  = fs.readFileSync(__dirname + "\\sslcert\\key.pem", "utf8");
+//const certificate = fs.readFileSync(__dirname + "\\sslcert\\cert.pem", "utf8");
+//const credentials = {key: privateKey, cert: certificate, passphrase: "xyzw"};
 
 
 // ##################### MIDDLEWARE #####################
@@ -54,6 +58,8 @@ app.use(passport.session());
 app.use(bodyParser.json({limit: "10mb"}));
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({limit: "10mb", extended: true}));
+// Validate the input to prevemt NoSQL injection
+app.use(filter());
 // Parse the request
 app.use(requestSplitter);
 // If the user tries to modify the database, make sure he/she is authenticated
@@ -69,18 +75,34 @@ app.use("/v1/launches", launches);
 app.use("/v1/raw", raw);
 app.use("/v1/analysed", analysed);
 app.use("/v1/events", events);
+app.use("/", info);
+
 
 // set up authentiacation routes
 app.use("/auth", authRoutes);
 
 
+app.get("/upload", function(req, res){
+    res.writeHead(200, {"Content-Type": "text/html"});
+    let myReadStream = fs.createReadStream(__dirname + "\\..\\static\\index.html", "utf8");
+    myReadStream.pipe(res);
+});
 
-// ##################### MIDDLEWARE #####################
+
+// ##################### ERROR HANDLING #####################
+
+
+
+// this is default in case of unmatched routes
+app.use(function(req, res) {
+    throw {status: 404, message: `path "${req.path}" does not exist`};
+});
 
 // Promise rejection handling
 app.use(errorHandler);
 
 
+module.exports = app;
 
 
 (function(){
@@ -92,6 +114,11 @@ app.use(errorHandler);
         app.listen(process.env.PORT || 3000, () => {
             console.log("Running on port 3000");
         });
+        /*const httpServer = http.createServer(app);
+        const httpsServer = https.createServer(credentials, app);
+
+        httpServer.listen(8080);
+        httpsServer.listen(3000);*/
     }).on("error", function(err){
         console.log(`Connection Error: ${err}`);
     });

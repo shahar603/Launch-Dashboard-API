@@ -1,13 +1,15 @@
-const Launch = require("../models/launch");
+const getTelemetry = require("../helpers/telemetry_helper");
+
 
 module.exports = {
     // Get the analysed telemetry from a specific launch
-    getOne: function(req, res, next){
-        Launch.find(req.identifiers, "analysed").
-            then(function(result){
-                res.send(result);
-            }).
-            catch(next);
+    getOne: async function(req, res, next){
+        try{
+            let out = await getTelemetry("analysed", req.identifiers, req.modifiers);
+            res.send(out);
+        }catch(err){
+            next(err, req, res, next);
+        }
     }
 
 
