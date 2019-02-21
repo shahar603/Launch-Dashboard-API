@@ -24,13 +24,14 @@ let name = document.getElementById('name');
 
 let last_data = null;
 let index = 0;
-let keys = ["velocity", "altitude", "downrange_distance", "acceleration"];
+let keys = ["acceleration"];
 let delay = 3;
 
 // Listen for events
 socket.on("raw", function(data){
+    data.acceleration /= 9.8;
     name.innerHTML = keys[index % keys.length];
-    field.innerHTML = Math.round(data[keys[index % keys.length]] * 100) / 100;
+    field.innerHTML = parseFloat(data[keys[index % keys.length]]).toFixed(2) + "g";
     last_data = data;
 });
 
@@ -41,7 +42,7 @@ setInterval(function() {
     name.innerHTML = keys[index % keys.length];
 
     if (last_data !== null)
-        field.innerHTML = Math.round(last_data[keys[index % keys.length]] * 100) / 100;
+        field.innerHTML = parseFloat(last_data[keys[index % keys.length]]).toFixed(2) + "g";
 
 }, 1000*delay)
 
