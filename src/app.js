@@ -90,6 +90,13 @@ app.get("/upload", function(req, res){
 });
 
 
+app.get("/client", function(req, res){
+    res.writeHead(200, {"Content-Type": "text/html"});
+    let myReadStream = fs.createReadStream("static/websockets.html", "utf8");
+    myReadStream.pipe(res);
+});
+
+
 // ##################### ERROR HANDLING #####################
 
 
