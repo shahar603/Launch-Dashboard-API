@@ -5,6 +5,7 @@ mongoose.set("useFindAndModify", false);
 const http = require("http");
 const https = require("https");
 const fs = require("fs");
+const socket = require("socket.io");
 // Import middleware
 const bodyParser = require("body-parser");
 const requestSplitter = require("./middleware/request_splitting");
@@ -84,13 +85,12 @@ app.use("/auth", authRoutes);
 
 app.get("/upload", function(req, res){
     res.writeHead(200, {"Content-Type": "text/html"});
-    let myReadStream = fs.createReadStream(__dirname + "\\..\\static\\index.html", "utf8");
+    let myReadStream = fs.createReadStream("static/index.html", "utf8");
     myReadStream.pipe(res);
 });
 
 
 // ##################### ERROR HANDLING #####################
-
 
 
 // this is default in case of unmatched routes
@@ -102,6 +102,11 @@ app.use(function(req, res) {
 app.use(errorHandler);
 
 
+
+
+
+
+
 module.exports = app;
 
 
@@ -111,9 +116,21 @@ module.exports = app;
 
     mongoose.connection.once("open", function(){
         // Start the server on port 3000
-        app.listen(process.env.PORT || 3000, () => {
+        const server = app.listen(process.env.PORT || 3000, () => {
             console.log("Running on port 3000");
         });
+
+        const io = socket(server);
+
+        io.on("connection", function(socket){
+            console.log("Made connection", socket.id);
+
+            socket.on("raw", function(data) {
+                socket.broadcast.emit("raw", data);
+            });
+        });
+
+
         /*const httpServer = http.createServer(app);
         const httpsServer = https.createServer(credentials, app);
 
