@@ -65,7 +65,12 @@ app.use(filter());
 app.use(requestSplitter);
 // If the user tries to modify the database, make sure he/she is authenticated
 app.use("*", confirmAuth);
-
+// Allow Cross Origin Requests
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 
 // ##################### ROUTES #####################
