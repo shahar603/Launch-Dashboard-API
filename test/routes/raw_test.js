@@ -149,7 +149,8 @@ describe("Testing the /raw endpoint is returning the correct data", function(){
                 assert(raw.length === 2);
                 assert(Object.keys(raw[0]).length === 2);
                 assert(raw[0].stage === 1);
-                assert(raw[0].telemetry !== undefined);
+                assert(raw[0].telemetry !== undefined && raw[0].telemetry.length > 0);
+                assert(raw[1].telemetry !== undefined && raw[1].telemetry.length === 0);
                 raw[0].telemetry.forEach((val) => {
                     assert(val.time >= -5);
                     assert(val.time <= 70);

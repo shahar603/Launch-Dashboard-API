@@ -83,8 +83,13 @@ function cropTelemetry(telemetry, start, end ,event){
         return element.time >= end;
     });
 
-    if (startIndex === -1 || endIndex === -1 || endIndex < startIndex)
+    // If start is after than all the telemetry or
+    // end is before than all the telemetry
+    if (startIndex === -1 || telemetry[0].time > end)
         return [];
+
+    if (endIndex === -1)
+        endIndex = telemetry.length;
 
     if (startIndex < endIndex)
         return telemetry.slice(Math.max(0, startIndex), endIndex);
