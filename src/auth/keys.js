@@ -9,8 +9,7 @@ module.exports = {
     },
 
     mongodb: {
-        userID: process.env.MONGO_USER_ID,
-        userKey: process.env.MONGO_USER_KEY
+        connectionString: process.env.DB_CONNECTION_STRING
     }
 
 };

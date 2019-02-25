@@ -20,7 +20,7 @@ module.exports = {
                 if (!result)
                     throw {status: 404, message: "Not Found"};
 
-                res.send(result.versions);
+                res.send(result.versions[0]);
             }).catch(next);
         },
 
