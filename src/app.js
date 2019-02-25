@@ -27,8 +27,8 @@ const passport = require("passport");
 
 
 
-//global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
-global.CONNECTION_STRING = keys.mongodb.connectionString;
+global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
+//global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
 
 // Create an express app
 const app = express();
@@ -122,11 +122,6 @@ app.use(errorHandler);
 
 module.exports = app;
 
-
-
-
-
-module.exports = app;
 
 
 (function(){

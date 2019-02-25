@@ -7,12 +7,8 @@ const keys = require("../../src/auth/keys");
 
 // Connect to the database before any test run
 before(function(done){
-    global.CONNECTION_STRING = keys.mongodb.connectionString;
+    global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
     // Connect to monsgoose and create/connect to the db
-
-    console.log(process.env.DB_CONNECTION_STRING === undefined);
-    console.log(keys.mongodb.connectionString === undefined);
-    console.log(global.CONNECTION_STRING === undefined);
 
     mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
 
