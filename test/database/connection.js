@@ -9,6 +9,11 @@ const keys = require("../../src/auth/keys");
 before(function(done){
     global.CONNECTION_STRING = keys.mongodb.connectionString;
     // Connect to monsgoose and create/connect to the db
+
+    console.log(process.env.DB_CONNECTION_STRING === undefined);
+    console.log(keys.mongodb.connectionString === undefined);
+    console.log(global.CONNECTION_STRING === undefined);
+
     mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
 
     mongoose.connection.once("open", function(){
