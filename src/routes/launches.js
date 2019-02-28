@@ -15,10 +15,10 @@ router.get("/", checkIdentifiers, launches.getOne);
 router.post("/", launches.addOne);
 
 // Update launch data
-router.put("/", launches.updateOne);
+router.put("/", checkIdentifiers, launches.updateOne);
 
 // Delete a launch from the database
-router.delete("/", launches.deleteOne);
+router.delete("/", checkIdentifiers, launches.deleteOne);
 
 // Get information about launches (all/single)
 router.get("/info", launches.info);

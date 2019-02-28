@@ -7,6 +7,7 @@ const requestSplitter = require("../middleware/request_splitting");
 
 
 
+
 module.exports = {
 
     // Get information about launches from the database
@@ -37,15 +38,25 @@ module.exports = {
 
 
     // Get all the available data about a specific launch
-    getOne: function(req, res, next){
-        Launch.findOne(req.identifiers).
-            then(function(result){
-                if (!result)
-                    throw {status: 404, message: "Not Found"};
+    getOne: async function(req, res, next){
+        //let result = await global.REDIS_CLIENT.getAsync(`launches:${JSON.stringify(req.identifiers)}`);
 
-                res.send(result);
-            }).
-            catch(next);
+        let result = null;
+
+        if (result){
+            res.type("json").send(result);
+        }else{
+            Launch.findOne(req.identifiers).
+                then(async function(result){
+                    if (!result)
+                        throw {status: 404, message: "Not Found"};
+
+                    await global.REDIS_CLIENT.setexAsync(`launches:${JSON.stringify(req.identifiers)}`, 60, JSON.stringify(result));
+
+                    res.send(result);
+                }).
+                catch(next);
+        }
     },
 
 
