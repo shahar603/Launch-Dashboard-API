@@ -39,9 +39,7 @@ module.exports = {
 
     // Get all the available data about a specific launch
     getOne: async function(req, res, next){
-        //let result = await global.REDIS_CLIENT.getAsync(`launches:${JSON.stringify(req.identifiers)}`);
-
-        let result = null;
+        let result = await global.REDIS_CLIENT.getAsync(`launches:${JSON.stringify(req.identifiers)}`);
 
         if (result){
             res.type("json").send(result);

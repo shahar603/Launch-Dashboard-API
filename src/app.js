@@ -3,8 +3,6 @@ const Promise = require("bluebird");
 const express = require("express");
 const mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
-const http = require("http");
-const https = require("https");
 const fs = require("fs");
 const socket = require("socket.io");
 const redis = Promise.promisifyAll(require("redis"));
@@ -28,6 +26,7 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 
 
+global.REDIS_CONNECTION_STRING = "launchdashboardcache-001.lqe1ay.0001.use2.cache.amazonaws.com";
 global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
 //global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
 
@@ -36,14 +35,17 @@ const app = express();
 
 
 // create and connect redis client to local instance.
-global.REDIS_CLIENT = redis.createClient();
+global.REDIS_CLIENT = redis.createClient(6379, global.REDIS_CONNECTION_STRING);
 
 // Print redis errors to the console
 global.REDIS_CLIENT.on("error", (err) => {
   console.log("Error " + err);
 });
 
-
+// Print redis errors to the console
+global.REDIS_CLIENT.on("connect", (err) => {
+  console.log("Connected to Redis");
+});
 
 
 // ######################### AUTHENTICATION COOKIE ###################
@@ -58,10 +60,6 @@ app.use(cookieSession({
 // Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-const privateKey  = fs.readFileSync(__dirname + "/sslcert/key.pem", "utf8");
-const certificate = fs.readFileSync(__dirname + "/sslcert/certificate.pem", "utf8");
-const credentials = {key: privateKey, cert: certificate};
 
 
 // ##################### MIDDLEWARE #####################
@@ -142,18 +140,12 @@ module.exports = app;
 
     mongoose.connection.once("open", function(){
         // Start the server on port 3000
-        //const server = app.listen(process.env.PORT || 3000, () => {
-        //    console.log("Running on port 3000");
-        //});
+        const server = app.listen(process.env.PORT || 3000, () => {
+            console.log("Running on port 3000");
+        });
 
 
-        const httpServer = http.createServer(app);
-        const httpsServer = https.createServer(credentials, app);
-
-        httpServer.listen(3001);
-        httpsServer.listen(3000);
-
-        const io = socket(httpsServer);
+        const io = socket(server);
 
         io.on("connection", function(socket){
             console.log("Made connection", socket.id);
