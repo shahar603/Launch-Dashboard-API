@@ -10,7 +10,7 @@ deploy:
   access_key_id: $AWS_ACCESS_ID
   secret_access_key: $AWS_ACCESS_KEY
   region: us-east-2
-  app: Space Dashboard
-  env: master-spacedashboard
+  app: Launch Dashboard
+  env: LaunchDashboard-env
   bucket_name: elasticbeanstalk-us-east-2-583257580903
   bucket_path: Code
