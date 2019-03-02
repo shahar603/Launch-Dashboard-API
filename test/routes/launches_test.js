@@ -16,9 +16,14 @@ describe("Testing the /launches endpoint is returning the correct data", functio
                 for(let i = 0; i < launches.length; i++){
                     Object.keys(launches[i].toJSON()).forEach((val) => assert(["_id", "name", "mission_id", "flight_number"].includes(val)));
                 }
-                //assert(launches[0].mission_id === "orbcomm-og2-m2");
-                //assert(launches[0].name === "Orbcomm OG2");
-                //assert(launches[0].flight_number === 25);
+
+                for(let i = 0; i < launches.length - 1; i++){
+                    assert(launches[i].toJSON().flight_number < launches[i+1].toJSON().flight_number);
+                }
+
+                assert(launches[0].mission_id === "orbcomm-og2-m2");
+                assert(launches[0].name === "Orbcomm OG2");
+                assert(launches[0].flight_number === 25);
                 done();
             },
             next: function(err){

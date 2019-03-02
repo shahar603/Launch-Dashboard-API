@@ -28,13 +28,15 @@ const passport = require("passport");
 
 global.REDIS_CONNECTION_STRING = "launchdashboardcache-001.lqe1ay.0001.use2.cache.amazonaws.com";
 global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
+
+//global.REDIS_CONNECTION_STRING = "localhost";
 //global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
 
 // Create an express app
 const app = express();
 
 
-// create and connect redis client to local instance.
+// create and connect redis client to Elasticache instance.
 global.REDIS_CLIENT = redis.createClient(6379, global.REDIS_CONNECTION_STRING);
 
 // Print redis errors to the console

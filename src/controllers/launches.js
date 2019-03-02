@@ -19,7 +19,7 @@ module.exports = {
                     if (!result)
                         throw {status: 404, message: "Not Found"};
 
-                    res.send(result);
+                    res.send(result.sort((elm1, elm2) => elm1.flight_number - elm2.flight_number));
                 }).
                 catch(next);
         }
@@ -49,7 +49,7 @@ module.exports = {
                     if (!result)
                         throw {status: 404, message: "Not Found"};
 
-                    await global.REDIS_CLIENT.setexAsync(`launches:${JSON.stringify(req.identifiers)}`, 60, JSON.stringify(result));
+                    global.REDIS_CLIENT.setexAsync(`launches:${JSON.stringify(req.identifiers)}`, 60, JSON.stringify(result));
 
                     res.send(result);
                 }).
@@ -72,6 +72,9 @@ module.exports = {
     updateOne: function(req, res, next){
         Launch.findOneAndUpdate(req.identifiers, req.body).
             then(function(result){
+                global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`, 60, JSON.stringify(result));
+                global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
+                global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
                 res.send(result);
             }).
             catch(next);
@@ -85,6 +88,9 @@ module.exports = {
 
         Launch.findOneAndDelete(req.identifiers).
             then(function(result){
+                global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
+                global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
+                global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
                 res.send(result);
             }).
             catch(next);
