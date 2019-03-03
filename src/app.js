@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
 const fs = require("fs");
 const socket = require("socket.io");
-const redis = Promise.promisifyAll(require("redis"));
+const Redis = require("ioredis");
 // Import middleware
 const bodyParser = require("body-parser");
 const requestSplitter = require("./middleware/request_splitting");
@@ -35,9 +35,19 @@ global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.user
 // Create an express app
 const app = express();
 
-
 // create and connect redis client to Elasticache instance.
-global.REDIS_CLIENT = redis.createClient(6379, global.REDIS_CONNECTION_STRING);
+global.REDIS_CLIENT = new Redis({
+    port: 6379,
+    host: global.REDIS_CONNECTION_STRING,
+  reconnectOnError: function (err) {
+    var targetError = "READONLY";
+    if (err.message.slice(0, targetError.length) === targetError) {
+      // Only reconnect when the error starts with "READONLY"
+      return true; // or `return 1;`
+    }
+  }
+});
+
 
 // Print redis errors to the console
 global.REDIS_CLIENT.on("error", (err) => {
