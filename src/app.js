@@ -60,6 +60,9 @@ global.REDIS_CLIENT.on("connect", (err) => {
 });
 
 
+app.use(express.static("static"));
+
+
 // ######################### AUTHENTICATION COOKIE ###################
 
 
@@ -143,6 +146,7 @@ module.exports = app;
             console.log("Made connection", socket.id);
 
             socket.on("raw", function(data) {
+                console.log(data);
                 socket.broadcast.emit("raw", data);
             });
         });

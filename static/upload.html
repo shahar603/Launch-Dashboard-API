@@ -1,0 +1,32 @@
+<html>
+    <head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+      var openFile = function(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function(){
+          var text = reader.result;
+          var node = document.getElementById('output');
+          //node.innerText = text;
+          $.ajax({
+              type: "POST",
+              url: "/v1/launches",
+              contentType: 'application/json',
+              data: text,
+              success: function(r) {
+                  node.innerText = "done!";
+              }
+          });
+        };
+        reader.readAsText(input.files[0]);
+      };
+    </script>
+    </head>
+    <body>
+    <input type='file' accept='text/json' onchange='openFile(event)'><br>
+    <div id='output'>
+    </div>
+    </body>
+</html>
