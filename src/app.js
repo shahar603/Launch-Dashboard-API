@@ -109,26 +109,6 @@ app.use("/", info);
 app.use("/auth", authRoutes);
 
 
-app.get("/upload", function(req, res){
-    res.writeHead(200, {"Content-Type": "text/html"});
-    let myReadStream = fs.createReadStream("static/index.html", "utf8");
-    myReadStream.pipe(res);
-});
-
-
-app.get("/client", function(req, res){
-    res.writeHead(200, {"Content-Type": "text/html"});
-    let myReadStream = fs.createReadStream("static/acceleration.html", "utf8");
-    myReadStream.pipe(res);
-});
-
-
-app.get("/mobile", function(req, res){
-    res.writeHead(200, {"Content-Type": "text/html"});
-    let myReadStream = fs.createReadStream("static/websockets.html", "utf8");
-    myReadStream.pipe(res);
-});
-
 
 // ##################### ERROR HANDLING #####################
 
