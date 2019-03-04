@@ -42,10 +42,9 @@ passport.use(
         User.findOne({googleId: crypto.createHash("sha256").update(profile.id).digest("hex")}).
         then((result) => {
             if (result){
-                console.log("User already exists");
                 done(null, result);
             }else{
-                addUserToDb(profile, done);
+                //addUserToDb(profile, done);
             }
         });
 
