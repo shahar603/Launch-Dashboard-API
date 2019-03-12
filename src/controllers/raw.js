@@ -1,5 +1,5 @@
 const Launch = require("../models/launch");
-const getTelemetry = require("../helpers/telemetry_helper");
+const {getTelemetry} = require("../helpers/telemetry_helper");
 
 
 
@@ -9,7 +9,7 @@ module.exports = {
     // Get the raw telemetry from a specific launch
     getOne: async (req, res, next) => {
         try{
-            if (req.modifiers === {}) {
+            if (!req.modifiers) {
                 let result = await global.REDIS_CLIENT.get(`raw:${JSON.stringify(req.identifiers)}`);
 
                 if (result){

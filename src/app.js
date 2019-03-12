@@ -17,6 +17,7 @@ const raw = require("./routes/raw");
 const analysed = require("./routes/analysed");
 const events = require("./routes/events");
 const info = require("./routes/info");
+const live = require("./routes/live");
 // Authentication imports
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
@@ -29,8 +30,8 @@ const passport = require("passport");
 global.REDIS_CONNECTION_STRING = "launchdashboardcache-001.lqe1ay.0001.use2.cache.amazonaws.com";
 global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
 
-//global.REDIS_CONNECTION_STRING = "localhost";
-//global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
+global.REDIS_CONNECTION_STRING = "localhost";
+global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
 
 // Create an express app
 const app = express();
@@ -105,6 +106,7 @@ app.use("/v1/launches", launches);
 app.use("/v1/raw", raw);
 app.use("/v1/analysed", analysed);
 app.use("/v1/events", events);
+app.use("/v1/live", live);
 app.use("/", info);
 
 
@@ -128,7 +130,6 @@ app.use(errorHandler);
 module.exports = app;
 
 
-
 (function(){
     // Connect to monsgoose and create/connect to the db
     mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
@@ -140,15 +141,40 @@ module.exports = app;
         });
 
 
+        const allowedEvents = ["raw", "analysed"];
+
         const io = socket(server);
 
-        io.on("connection", function(socket){
+        io.of("/live").on("connection", function(socket){
             console.log("Made connection", socket.id);
 
-            socket.on("raw", function(data) {
-                console.log(data);
-                socket.broadcast.emit("raw", data);
+
+            function registerEvent(event){
+                socket.on(event, function(data) {
+                    console.log(`Cookie: ${socket.handshake.headers.cookie}`);
+
+                    if (Object.keys(global.LIVE_TELEMETRY).includes(event)){
+                        global.LIVE_TELEMETRY[event].push(data);
+                        socket.broadcast.to(event).emit(event, data);
+                    }
+                });
+            }
+
+            socket.on("register", function(events) {
+                events.forEach((event) => {
+                    if (allowedEvents.includes(event))
+                        registerEvent(event);
+                });
             });
+
+
+            socket.on("join", function(rooms) {
+                rooms.forEach((room) => {
+                    if (allowedEvents.includes(room))
+                        socket.join(room);
+                });
+            });
+
         });
 
 

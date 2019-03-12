@@ -15,6 +15,7 @@ let identifierKeys = Joi.object({
 
 // name of url paramters used to modify lookup
 let modifierKeys = Joi.object({
+    "type": Joi.string(),
     "event": Joi.string(),
     "start": Joi.alternatives().try(Joi.string(), Joi.number()),
     "end": Joi.alternatives().try(Joi.string(), Joi.number()),

@@ -1,4 +1,4 @@
-const getTelemetry = require("../helpers/telemetry_helper");
+const {getTelemetry} = require("../helpers/telemetry_helper");
 
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
     getOne: async function(req, res, next){
         try{
 
-            if (req.modifiers === {}) {
+            if (!req.modifiers) {
                 let result = await global.REDIS_CLIENT.get(`analysed:${JSON.stringify(req.identifiers)}`);
 
                 if (result){

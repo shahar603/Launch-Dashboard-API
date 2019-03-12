@@ -68,6 +68,8 @@ async function eventsToStartEnd(events, modifiers){
 
 
 function cropTelemetry(telemetry, start, end ,event){
+    if (!telemetry || telemetry.length === 0)
+        return [];
     if (start === undefined)
         start = telemetry[0].time;
     if (end === undefined)
@@ -80,8 +82,10 @@ function cropTelemetry(telemetry, start, end ,event){
     });
 
     let endIndex = telemetry.findIndex(function(element) {
-        return element.time >= end;
+        return element.time > end;
     });
+
+
 
     // If start is after than all the telemetry or
     // end is before than all the telemetry
@@ -136,4 +140,7 @@ async function getTelemetry(key, identifiers, modifiers){
 
 
 
-module.exports = getTelemetry;
+module.exports = {
+    cropTelemetry: cropTelemetry,
+    getTelemetry: getTelemetry
+};
