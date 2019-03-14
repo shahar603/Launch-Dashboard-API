@@ -20,7 +20,9 @@ const apiSchema = {
         id: dynamo.types.uuid(),
         api_info: Joi.string(),
         versions: Joi.array().items(versionSchema)
-    }
+    },
+
+    tableName: "api"
 };
 
 const Api = dynamo.define("Api", apiSchema);
