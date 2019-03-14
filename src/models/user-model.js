@@ -1,11 +1,20 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const dynamo = require("dynamodb");
+const Joi = require("joi");
 
-const userSchema = new Schema({
-    username: String,
-    googleId: String
-});
 
-const User = mongoose.model("user", userSchema);
+
+const userSchema = {
+    hashKey : "googleId",
+
+    schema: {
+        username: Joi.string(),
+        googleId: Joi.string()
+    },
+
+    tableName: "users"
+};
+
+const User = dynamo.define("User", userSchema);
+
 
 module.exports = User;

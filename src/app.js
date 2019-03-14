@@ -1,8 +1,8 @@
 // Import packages
 const Promise = require("bluebird");
 const express = require("express");
-const mongoose = require("mongoose");
-mongoose.set("useFindAndModify", false);
+const dynamo = require("dynamodb");
+dynamo.AWS.config.update({region: "us-east-2"});
 const fs = require("fs");
 const socket = require("socket.io");
 const Redis = require("ioredis");
@@ -129,57 +129,57 @@ app.use(errorHandler);
 
 module.exports = app;
 
-
 (function(){
     // Connect to monsgoose and create/connect to the db
-    mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
 
-    mongoose.connection.once("open", function(){
-        // Start the server on port 3000
-        const server = app.listen(process.env.PORT || 3000, () => {
-            console.log("Running on port 3000");
-        });
-
-
-        const allowedEvents = ["raw", "analysed"];
-
-        const io = socket(server);
-
-        io.of("/live").on("connection", function(socket){
-            console.log("Made connection", socket.id);
-
-
-            function registerEvent(event){
-                socket.on(event, function(data) {
-                    console.log(`Cookie: ${socket.handshake.headers.cookie}`);
-
-                    if (Object.keys(global.LIVE_TELEMETRY).includes(event)){
-                        global.LIVE_TELEMETRY[event].push(data);
-                        socket.broadcast.to(event).emit(event, data);
-                    }
-                });
-            }
-
-            socket.on("register", function(events) {
-                events.forEach((event) => {
-                    if (allowedEvents.includes(event))
-                        registerEvent(event);
-                });
-            });
-
-
-            socket.on("join", function(rooms) {
-                rooms.forEach((room) => {
-                    if (allowedEvents.includes(room))
-                        socket.join(room);
-                });
-            });
-
-        });
-
-
-
-    }).on("error", function(err){
-        console.log(`Connection Error: ${err}`);
+    dynamo.createTables(function(err) {
+      if (err) {
+        console.log("Error creating tables: ", err);
+      } else {
+        console.log("Tables has been created");
+      }
     });
+
+
+
+    // Start the server on port 3000
+    const server = app.listen(process.env.PORT || 3000, () => {
+        console.log("Running on port 3000");
+    });
+
+    const allowedEvents = ["raw", "analysed"];
+
+    const io = socket(server);
+
+    io.of("/live").on("connection", function(socket){
+        console.log("Made connection", socket.id);
+
+
+        function registerEvent(event){
+            socket.on(event, function(data) {
+                console.log(`Cookie: ${socket.handshake.headers.cookie}`);
+
+                if (Object.keys(global.LIVE_TELEMETRY).includes(event)){
+                    global.LIVE_TELEMETRY[event].push(data);
+                    socket.broadcast.to(event).emit(event, data);
+                }
+            });
+        }
+
+        socket.on("register", function(events) {
+            events.forEach((event) => {
+                if (allowedEvents.includes(event))
+                    registerEvent(event);
+            });
+        });
+
+
+        socket.on("join", function(rooms) {
+            rooms.forEach((room) => {
+                if (allowedEvents.includes(room))
+                    socket.join(room);
+            });
+        });
+    });
+
 })();

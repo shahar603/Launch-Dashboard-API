@@ -121,20 +121,21 @@ function chooseStagesAndTelemetryRange(data, key, stage, start, end, event){
 
 
 
-async function getTelemetry(key, identifiers, modifiers){
+function getTelemetry(key, identifiers, modifiers){
     if (!key || _.isEmpty(identifiers) || _.isNil(modifiers))
         throw {status: 404, message: "Not Found"};
 
     // Get the launch from the database
-    let data = await Launch.findOne(identifiers, `${key} events`);
+    //let data = await Launch.get(identifiers, `${key} events`);
+    return Launch.get(identifiers).then(async function(data){
+        if (!data){
+            throw {status: 404, message: "Not Found"};
+        }
+        data = data.attrs;
 
-    if (!data){
-        throw {status: 404, message: "Not Found"};
-    }
-
-    let {start, end, event} = await eventsToStartEnd(data.events, modifiers);
-    let out = chooseStagesAndTelemetryRange(data, key, modifiers.stage, start, end, event);
-    return out;
+        let {start, end, event} = await eventsToStartEnd(data.events, modifiers);
+        return chooseStagesAndTelemetryRange(data, key, modifiers.stage, start, end, event);
+    });
 }
 
 

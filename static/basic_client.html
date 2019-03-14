@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"
+            integrity="sha256-RtMTraB5gGlLER0FkKBcaXCmZCQCxkKS/dXm7MSEoEY="
+            crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <button onclick="sendRaw();">Send Raw Data</button>
+    </body>
+    <script>
+    let sock = io.connect('http://localhost:3000/live', { query: "foo=bar" });
+
+    sock.on('connect', function() {
+
+        sock.emit('join', ["raw", "analysed"]);
+    
+        sock.on("raw", function(data) {
+            console.log(data);
+        });
+    });
+
+    let t = 0;
+    
+    function sendRaw(){
+        console.log("Sending raw data");
+        sock.emit("raw", {"time": t, "velocity": t, "altitude": t});
+        t++;
+    }
+
+</script>
+</html>

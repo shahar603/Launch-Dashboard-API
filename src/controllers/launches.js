@@ -12,27 +12,34 @@ module.exports = {
 
     // Get information about launches from the database
     info: function getInfo(req, res, next){
-        // Get all launches
+            // Get all launches
         if (_.isEmpty(req.identifiers)){
-            Launch.find({}, "mission_id name flight_number").
-                then(function(result){
-                    if (!result)
-                        throw {status: 404, message: "Not Found"};
+            Launch.
+            scan().
+            loadAll().
+            attributes(["mission_id", "name", "flight_number"]).
+            exec(function(err, result){
+                    try{
+                        if (err || !result)
+                            throw {status: 404, message: "Not Found"};
 
-                    res.send(result.sort((elm1, elm2) => elm1.flight_number - elm2.flight_number));
-                }).
-                catch(next);
+                        result = result.Items.map((model) => model.attrs);
+                        res.send(result.sort((elm1, elm2) => elm1.flight_number - elm2.flight_number));
+                    }catch(err){
+                        next(err);
+                    }
+                });
         }
         // Get a specific launch
         else{
-            Launch.findOne(req.identifiers, "mission_id name flight_number").
-                then(function(result){
+            Launch.get(req.identifiers, { ProjectionExpression : "mission_id, name, flight_number" }).
+                 then(function(err, result) {
                     if (!result)
                         throw {status: 404, message: "Not Found"};
 
+                    result = result.attrs;
                     res.send(result);
-                }).
-                catch(next);
+                });
         }
     },
 
@@ -44,42 +51,47 @@ module.exports = {
         if (result){
             res.type("json").send(result);
         }else{
-            Launch.findOne(req.identifiers).
-                then(async function(result){
+            result = Launch.get(req.identifiers).
+                then(function(result){
                     if (!result)
                         throw {status: 404, message: "Not Found"};
+
+                    result = result.attrs;
 
                     global.REDIS_CLIENT.set(`launches:${JSON.stringify(req.identifiers)}`, JSON.stringify(result));
                     global.REDIS_CLIENT.expire(`launches:${JSON.stringify(req.identifiers)}`, 60);
 
                     res.send(result);
-                }).
-                catch(next);
-        }
+                }).catch(next);
+            }
     },
 
 
     // Add a launch to the database
     addOne: function(req, res, next){
-        Launch.create(req.body).
-            then(function(result){
+        Launch.create(req.body).then(function(result){
+            if (!result){
+                next();
+            }else{
                 res.send(result);
-            }).
-            catch(next);
+            }
+        }).catch(next);
     },
 
 
 
     updateOne: function(req, res, next){
-        Launch.findOneAndUpdate(req.identifiers, req.body).
-            then(function(result){
-                global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
-                global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
-                global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
+        Launch.update(req.body).then(function(result){
+                if (!result){
+                    next();
+                }else{
+                    global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
+                    global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
+                    global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
 
-                res.send(result);
-            }).
-            catch(next);
+                    res.send(result);
+                }
+            }).catch(next);
     },
 
 
@@ -88,14 +100,16 @@ module.exports = {
             throw new Error("Missing \"flight_number\" and \"mission_id\"");
         }
 
-        Launch.findOneAndDelete(req.identifiers).
-            then(function(result){
+        Launch.destroy(req.identifiers).then(function(err){
+            if (err){
+                next();
+            }else{
                 global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
                 global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
                 global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
-                res.send(result);
-            }).
-            catch(next);
+                res.send({message: "Deleted item successfully"});
+            }
+        }).catch(next);
     },
 
 
