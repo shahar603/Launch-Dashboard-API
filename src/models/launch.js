@@ -1,64 +1,75 @@
-const dynamo = require("dynamodb");
-const Joi = require("joi");
+// Import mongoose and create a Schema
+const mongoose = require("mongoose");
+// Get the Schema object from mongoose
+const Schema = mongoose.Schema;
 
 
 
 // Raw telemetry entry
-const RawTelemetrySchema = {
-    time: Joi.number(),
-    velocity: Joi.number(),
-    altitude: Joi.number()
-};
+const RawTelemetrySchema = new Schema({
+    time: Number,
+    velocity: Number,
+    altitude: Number
+}, { _id : false });
 
 // Analysed telemetry entry
-const AnalysedTelemetrySchema = {
-    time: Joi.number(),
-    velocity: Joi.number(),
-    altitude: Joi.number(),
-    velocity_y: Joi.number(),
-    velocity_x: Joi.number(),
-    acceleration: Joi.number(),
-    downrange_distance: Joi.number(),
-    angle: Joi.number(),
-    q: Joi.number()
-};
+const AnalysedTelemetrySchema = new Schema({
+    time: Number,
+    velocity: Number,
+    altitude: Number,
+    velocity_y: Number,
+    velocity_x: Number,
+    acceleration: Number,
+    downrange_distance: Number,
+    angle: Number,
+    q: Number
+}, { _id : false });
 
 // Raw telemetry of a specific stage
-const StageRawTelemetrySchema = {
-    stage: Joi.number(),
-    telemetry: Joi.array().items(RawTelemetrySchema)
-};
+const StageRawTelemetrySchema = new Schema({
+    stage: Number,
+    telemetry: [RawTelemetrySchema]
+}, { _id : false });
 
 // Analysed telemetry of a specific stage
-const StageAnalysedTelemetrySchema = {
-    stage: Joi.number().integer().min(0),
-    telemetry: Joi.array().items(AnalysedTelemetrySchema)
-};
+const StageAnalysedTelemetrySchema = new Schema({
+    stage: {
+        type: Number,
+        min: 0
+    },
+    telemetry: [AnalysedTelemetrySchema]
+}, { _id : false });
 
 // Define the event schema
-const EventSchema = {
-    key: Joi.string(),
-    time: Joi.number().allow(null)
-};
+const EventSchema = new Schema({
+    key: String,
+    time: Number
+}, { _id : false });
 
 // Define launch schema
-const LaunchSchema = {
-  hashKey : "flight_number",
+const LaunchSchema = new Schema({
+    mission_id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    flight_number: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    raw: [StageRawTelemetrySchema],
+    analysed: [StageAnalysedTelemetrySchema],
+    events: [EventSchema]
+}, { collection: "launches"});
 
-  schema : {
-      flight_number: Joi.number().integer().positive().required(),
-      mission_id: Joi.string().required(),
-      name: Joi.string().required(),
-      raw: Joi.array().items(StageRawTelemetrySchema),
-      analysed: Joi.array().items(StageAnalysedTelemetrySchema),
-      events: Joi.array().items(EventSchema)
-  },
 
-  tableName: "launches"
-};
 
-// Define the DynamoDB model
-const Launch = dynamo.define("Launch", LaunchSchema);
 
+// Create the raw telemetry model
+const Launch = mongoose.model("launch", LaunchSchema);
 // Export the raw telemetry model
 module.exports = Launch;

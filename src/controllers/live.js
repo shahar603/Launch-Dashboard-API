@@ -19,12 +19,8 @@ module.exports = {
 
 
     telemetry: function(req, res, next){
-        if(!req.modifiers.type){
+        if(!req.modifiers.type || !allowedEvents.includes(req.modifiers.type)){
             throw {status: 404, message: "\"type\" not Found"};
-        }
-
-        if(!allowedEvents.includes(req.modifiers.type)){
-            throw {status: 422, message: `"type" '${req.modifiers.type}' is not allowed`};
         }
 
         res.send(cropTelemetry(

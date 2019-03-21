@@ -1,3 +1,4 @@
+const Launch = require("../models/launch");
 const {getTelemetry} = require("../helpers/telemetry_helper");
 
 

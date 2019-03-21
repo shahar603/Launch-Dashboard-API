@@ -225,7 +225,7 @@ describe("Testing the /analysed endpoint is returning the correct data", functio
                 assert(analysed[0].telemetry !== undefined);
                 analysed[0].telemetry.forEach((val) => {
                     assert(val.time >= 166);
-                    assert(val.time <= 211);
+                    assert(val.time <= 212);
                 });
                 done();
             },

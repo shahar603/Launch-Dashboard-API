@@ -8,16 +8,12 @@ const crypto = require("crypto");
 
 
 passport.serializeUser((user, done) => {
-    done(null, user.attrs.googleId);
+    done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-    User.get(id, (err, user) => {
-        if(!user)
-            done(null, null);
-        else{
-            done(null, user.attrs);
-        }
+    User.findById(id).then((user) => {
+        done(null, user);
     });
 });
 
@@ -28,9 +24,9 @@ function addUserToDb(profile, done){
     User.create({
         username: profile.displayName,
         googleId: crypto.createHash("sha256").update(profile.id).digest("hex")
-    }, function(err, result){
-        console.log(`New user created: ${result.attrs.username}`);
-        done(null, result.attrs);
+    }).then((result) => {
+        console.log(`New user created: ${result.username}`);
+        done(null, result);
     });
 }
 
@@ -43,16 +39,15 @@ passport.use(
         clientSecret: keys.google.clientSecret
     }, (accessToken, refreshToken, profile, done) => {
         // Check if user already exists in the database
-        User.get(
-         {googleId: crypto.createHash("sha256").update(profile.id).digest("hex")},
-         (err, result) => {
+        User.findOne({googleId: crypto.createHash("sha256").update(profile.id).digest("hex")}).
+        then((result) => {
             if (result){
                 done(null, result);
             }else{
-                //done(null, result);
-                addUserToDb(profile, done);
+                done(null, result);
+                //addUserToDb(profile, done);
             }
-
         });
+
     })
 );

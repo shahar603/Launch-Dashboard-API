@@ -1,8 +1,8 @@
 // Import packages
 const Promise = require("bluebird");
 const express = require("express");
-const dynamo = require("dynamodb");
-dynamo.AWS.config.update({region: "us-east-2"});
+const mongoose = require("mongoose");
+mongoose.set("useFindAndModify", false);
 const fs = require("fs");
 const socket = require("socket.io");
 const Redis = require("ioredis");
@@ -28,7 +28,9 @@ const passport = require("passport");
 
 
 global.REDIS_CONNECTION_STRING = "launchdashboardcache-001.lqe1ay.0001.use2.cache.amazonaws.com";
-global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
+global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@localhost:27017/test`;
+
+//global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
 
 global.REDIS_CONNECTION_STRING = "localhost";
 global.CONNECTION_STRING = "mongodb://localhost:27017/telemetry";
@@ -129,57 +131,57 @@ app.use(errorHandler);
 
 module.exports = app;
 
+
 (function(){
     // Connect to monsgoose and create/connect to the db
+    mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
 
-    dynamo.createTables(function(err) {
-      if (err) {
-        console.log("Error creating tables: ", err);
-      } else {
-        console.log("Tables has been created");
-      }
-    });
-
-
-
-    // Start the server on port 3000
-    const server = app.listen(process.env.PORT || 3000, () => {
-        console.log("Running on port 3000");
-    });
-
-    const allowedEvents = ["raw", "analysed"];
-
-    const io = socket(server);
-
-    io.of("/live").on("connection", function(socket){
-        console.log("Made connection", socket.id);
-
-
-        function registerEvent(event){
-            socket.on(event, function(data) {
-                console.log(`Cookie: ${socket.handshake.headers.cookie}`);
-
-                if (Object.keys(global.LIVE_TELEMETRY).includes(event)){
-                    global.LIVE_TELEMETRY[event].push(data);
-                    socket.broadcast.to(event).emit(event, data);
-                }
-            });
-        }
-
-        socket.on("register", function(events) {
-            events.forEach((event) => {
-                if (allowedEvents.includes(event))
-                    registerEvent(event);
-            });
+    mongoose.connection.once("open", function(){
+        // Start the server on port 3000
+        const server = app.listen(process.env.PORT || 3000, () => {
+            console.log("Running on port 3000");
         });
 
 
-        socket.on("join", function(rooms) {
-            rooms.forEach((room) => {
-                if (allowedEvents.includes(room))
-                    socket.join(room);
-            });
-        });
-    });
+        const allowedEvents = ["raw", "analysed"];
 
+        const io = socket(server);
+
+        io.of("/live").on("connection", function(socket){
+            console.log("Made connection", socket.id);
+
+
+            function registerEvent(event){
+                socket.on(event, function(data) {
+                    console.log(`Cookie: ${socket.handshake.headers.cookie}`);
+
+                    if (Object.keys(global.LIVE_TELEMETRY).includes(event)){
+                        global.LIVE_TELEMETRY[event].push(data);
+                        socket.broadcast.to(event).emit(event, data);
+                    }
+                });
+            }
+
+            socket.on("register", function(events) {
+                events.forEach((event) => {
+                    if (allowedEvents.includes(event))
+                        registerEvent(event);
+                });
+            });
+
+
+            socket.on("join", function(rooms) {
+                rooms.forEach((room) => {
+                    if (allowedEvents.includes(room))
+                        socket.join(room);
+                });
+            });
+
+        });
+
+
+
+    }).on("error", function(err){
+        console.log(`Connection Error: ${err}`);
+    });
 })();

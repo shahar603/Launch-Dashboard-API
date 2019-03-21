@@ -1,30 +1,23 @@
-const dynamo = require("dynamodb");
-const Joi = require("joi");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 
-const versionSchema = {
-    project_name: Joi.string(),
-    version: Joi.string(),
-    project_link: Joi.string(),
-    docs: Joi.string(),
-    organization: Joi.string(),
-    organization_link: Joi.string(),
-    description: Joi.string()
-};
+const versionSchema = new Schema({
+    project_name: String,
+    version: String,
+    project_link: String,
+    docs: String,
+    organization: String,
+    organization_link: String,
+    description: String
+}, { _id : false });
 
 
-const apiSchema = {
-    hashKey : "id",
+const apiSchema = new Schema({
+    api_info: String,
+    versions: [versionSchema]
+});
 
-    schema: {
-        id: dynamo.types.uuid(),
-        api_info: Joi.string(),
-        versions: Joi.array().items(versionSchema)
-    },
-
-    tableName: "api"
-};
-
-const Api = dynamo.define("Api", apiSchema);
+const Api = mongoose.model("api", apiSchema);
 
 module.exports = Api;
