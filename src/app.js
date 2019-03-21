@@ -39,6 +39,7 @@ global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.user
 const app = express();
 
 // create and connect redis client to Elasticache instance.
+/*
 global.REDIS_CLIENT = new Redis({
     port: 6379,
     host: global.REDIS_CONNECTION_STRING,
@@ -61,7 +62,7 @@ global.REDIS_CLIENT.on("error", (err) => {
 global.REDIS_CLIENT.on("connect", (err) => {
   console.log("Connected to Redis");
 });
-
+*/
 
 app.use(express.static("static"));
 

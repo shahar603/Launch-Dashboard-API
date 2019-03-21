@@ -7,7 +7,7 @@ module.exports = {
         try{
 
             if (!req.modifiers) {
-                let result = await global.REDIS_CLIENT.get(`analysed:${JSON.stringify(req.identifiers)}`);
+                let result = null; //await global.REDIS_CLIENT.get(`analysed:${JSON.stringify(req.identifiers)}`);
 
                 if (result){
                     res.type("json").send(result);
@@ -17,8 +17,8 @@ module.exports = {
 
 
             if (req.modifiers === {}){
-                global.REDIS_CLIENT.set(`analysed:${JSON.stringify(req.identifiers)}`, JSON.stringify(out));
-                global.REDIS_CLIENT.expire(`analysed:${JSON.stringify(req.identifiers)}`, 60);
+                //global.REDIS_CLIENT.set(`analysed:${JSON.stringify(req.identifiers)}`, JSON.stringify(out));
+                //global.REDIS_CLIENT.expire(`analysed:${JSON.stringify(req.identifiers)}`, 60);
 
             }
 

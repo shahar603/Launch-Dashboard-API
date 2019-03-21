@@ -39,7 +39,7 @@ module.exports = {
 
     // Get all the available data about a specific launch
     getOne: async function(req, res, next){
-        let result = await global.REDIS_CLIENT.get(`launches:${JSON.stringify(req.identifiers)}`);
+        let result = null; //await global.REDIS_CLIENT.get(`launches:${JSON.stringify(req.identifiers)}`);
 
         if (result){
             res.type("json").send(result);
@@ -49,8 +49,8 @@ module.exports = {
                     if (!result)
                         throw {status: 404, message: "Not Found"};
 
-                    global.REDIS_CLIENT.set(`launches:${JSON.stringify(req.identifiers)}`, JSON.stringify(result));
-                    global.REDIS_CLIENT.expire(`launches:${JSON.stringify(req.identifiers)}`, 60);
+                    //global.REDIS_CLIENT.set(`launches:${JSON.stringify(req.identifiers)}`, JSON.stringify(result));
+                    //global.REDIS_CLIENT.expire(`launches:${JSON.stringify(req.identifiers)}`, 60);
 
                     res.send(result);
                 }).
@@ -73,9 +73,9 @@ module.exports = {
     updateOne: function(req, res, next){
         Launch.findOneAndUpdate(req.identifiers, req.body).
             then(function(result){
-                global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
-                global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
-                global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
+                //global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
+                //global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
+                //global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
 
                 res.send(result);
             }).
@@ -90,9 +90,9 @@ module.exports = {
 
         Launch.findOneAndDelete(req.identifiers).
             then(function(result){
-                global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
-                global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
-                global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
+                //global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
+                //global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
+                //global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
                 res.send(result);
             }).
             catch(next);

@@ -10,7 +10,7 @@ module.exports = {
     getOne: async (req, res, next) => {
         try{
             if (!req.modifiers) {
-                let result = await global.REDIS_CLIENT.get(`raw:${JSON.stringify(req.identifiers)}`);
+                let result = null; //await global.REDIS_CLIENT.get(`raw:${JSON.stringify(req.identifiers)}`);
 
                 if (result){
                     res.type("json").send(result);
@@ -20,8 +20,8 @@ module.exports = {
             let out = await getTelemetry("raw", req.identifiers, req.modifiers);
 
             if (req.modifiers === {}){
-                global.REDIS_CLIENT.set(`raw:${JSON.stringify(req.identifiers)}`, JSON.stringify(out));
-                global.REDIS_CLIENT.expire(`raw:${JSON.stringify(req.identifiers)}`, 60);
+                //global.REDIS_CLIENT.set(`raw:${JSON.stringify(req.identifiers)}`, JSON.stringify(out));
+                //global.REDIS_CLIENT.expire(`raw:${JSON.stringify(req.identifiers)}`, 60);
             }
 
             res.send(out);
