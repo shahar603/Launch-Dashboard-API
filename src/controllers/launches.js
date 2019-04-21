@@ -1,10 +1,8 @@
-// Import model to interact with the database
 const Launch = require("../models/launch");
-// Import util functions
+const s3Helper = require("../helpers/s3_helper");
+const mongoHelper = require("../helpers/mongo_helper");
 const _ = require("lodash");
-// middleware
 const requestSplitter = require("../middleware/request_splitting");
-
 
 
 
@@ -16,6 +14,7 @@ module.exports = {
         if (_.isEmpty(req.identifiers)){
             Launch.find({}, "mission_id name flight_number").
                 then(function(result){
+
                     if (!result)
                         throw {status: 404, message: "Not Found"};
 
@@ -39,63 +38,89 @@ module.exports = {
 
     // Get all the available data about a specific launch
     getOne: async function(req, res, next){
-        let result = null; //await global.REDIS_CLIENT.get(`launches:${JSON.stringify(req.identifiers)}`);
+        console.time("getOne");
 
-        if (result){
-            res.type("json").send(result);
-        }else{
-            Launch.findOne(req.identifiers).
-                then(async function(result){
-                    if (!result)
-                        throw {status: 404, message: "Not Found"};
+        let result = await mongoHelper.findLaunchMetadata(req.identifiers);
 
-                    //global.REDIS_CLIENT.set(`launches:${JSON.stringify(req.identifiers)}`, JSON.stringify(result));
-                    //global.REDIS_CLIENT.expire(`launches:${JSON.stringify(req.identifiers)}`, 60);
-
-                    res.send(result);
-                }).
-                catch(next);
+        // If no launch was found return a "Not Found" error
+        if (!result){
+            next({status: 404, message: "Not Found"});
+            return;
         }
+
+        // Get the telemetry
+        let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
+
+        console.timeEnd("getOne");
+
+
+        // box the metadata and telemetry and send it
+        res.send(
+            {
+                mission_id: result.mission_id,
+                name: result.name,
+                flight_number: result.flight_number,
+                raw: rawData,
+                analysed: analysedData,
+                events: eventData
+            }
+        );
     },
 
 
     // Add a launch to the database
-    addOne: function(req, res, next){
-        Launch.create(req.body).
-            then(function(result){
-                res.send(result);
-            }).
-            catch(next);
+    addOne: async function(req, res, next){
+        // Put the telemetry in storage
+        let launchMetadata = await s3Helper.addOneLaunch(req.body);
+
+        // Put the metadata in the database
+        res.send(
+            mongoHelper.addLaunchMetadata(launchMetadata)
+        );
     },
 
 
 
-    updateOne: function(req, res, next){
-        Launch.findOneAndUpdate(req.identifiers, req.body).
-            then(function(result){
-                //global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
-                //global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
-                //global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
+    updateOne: async function(req, res, next){
+        // Update the telemetry in storage
+        let launchMetadata = await s3Helper.updateOneLaunch(req.body);
 
-                res.send(result);
-            }).
-            catch(next);
+        if (launchMetadata)
+            throw {status: 500, message: "Failed to update launch"};
+
+        // Update the metadata in the database
+        res.send(
+            await mongoHelper.updateOneLaunch(req.identifiers, launchMetadata)
+        );
     },
 
 
-    deleteOne: function(req, res, next){
+    deleteOne: async function(req, res, next){
         if (_.isEmpty(req.identifiers)){
             throw new Error("Missing \"flight_number\" and \"mission_id\"");
         }
 
-        Launch.findOneAndDelete(req.identifiers).
-            then(function(result){
-                //global.REDIS_CLIENT.del(`launches:${JSON.stringify(req.identifiers)}`);
-                //global.REDIS_CLIENT.del(`raw:${JSON.stringify(req.identifiers)}`);
-                //global.REDIS_CLIENT.del(`analysed:${JSON.stringify(req.identifiers)}`);
-                res.send(result);
-            }).
-            catch(next);
+        // Get launch file name (key) from db
+        let launch = await mongoHelper.findLaunchMetadata(req.identifiers);
+
+        if (!launch){
+            next({status: 404, message: "Not Found"});
+            return;
+        }
+
+        if (!await mongoHelper.deleteLaunchMetadata(req.identifiers)){
+            next({status: 500, message: "Failed to delete launch"});
+            return;
+        }
+
+        let deletedLaunch = await s3Helper.deleteOneLaunch(launch);
+
+        if (!deletedLaunch){
+            next({status: 500, message: "Failed to delete launch"});
+            return;
+        }
+
+        res.send(launch);
     },
 
 

@@ -1,5 +1,6 @@
 const _ = require("lodash");
-const Launch = require("../models/launch");
+const s3Helper = require("./s3_helper");
+const mongoHelper = require("./mongo_helper");
 
 
 async function eventsToStartEnd(events, modifiers){
@@ -104,14 +105,14 @@ function cropTelemetry(telemetry, start, end ,event){
 
 
 
-function chooseStagesAndTelemetryRange(data, key, stage, start, end, event){
+function chooseStagesAndTelemetryRange(data, stage, start, end, event){
     let out = [];
 
-    for (let i = 0; i < data[key].length; i++){
-        if (stage === undefined || stage === data[key][i].stage){
+    for (let i = 0; i < data.length; i++){
+        if (stage === undefined || stage === data[i].stage){
             out.push({
-                stage: data[key][i].stage,
-                telemetry: cropTelemetry(data[key][i].telemetry, start, end, event)
+                stage: data[i].stage,
+                telemetry: cropTelemetry(data[i].telemetry, start, end, event)
             });
         }
     }
@@ -120,20 +121,28 @@ function chooseStagesAndTelemetryRange(data, key, stage, start, end, event){
 }
 
 
-
+//  Get 'key' telemetry from the 'identifiers' and modified using 'modifiers'
 async function getTelemetry(key, identifiers, modifiers){
     if (!key || _.isEmpty(identifiers) || _.isNil(modifiers))
         throw {status: 404, message: "Not Found"};
 
     // Get the launch from the database
-    let data = await Launch.findOne(identifiers, `${key} events`);
+    let launchMetadata = await mongoHelper.findLaunchMetadata(identifiers);
 
-    if (!data){
+    if (!launchMetadata){
         throw {status: 404, message: "Not Found"};
     }
 
-    let {start, end, event} = await eventsToStartEnd(data.events, modifiers);
-    let out = chooseStagesAndTelemetryRange(data, key, modifiers.stage, start, end, event);
+    let events = await s3Helper.getFile(launchMetadata.events_path);
+    let data;
+
+    if (key === "raw")
+        data = await s3Helper.getFile(launchMetadata.raw_path);
+    else if (key === "analysed")
+        data = await s3Helper.getFile(launchMetadata.analysed_path);
+
+    let {start, end, event} = await eventsToStartEnd(events, modifiers);
+    let out = chooseStagesAndTelemetryRange(data, modifiers.stage, start, end, event);
     return out;
 }
 

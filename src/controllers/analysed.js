@@ -13,6 +13,7 @@ module.exports = {
                     res.type("json").send(result);
                 }
             }
+            
             let out = await getTelemetry("analysed", req.identifiers, req.modifiers);
 
 
