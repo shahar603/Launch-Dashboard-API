@@ -3,7 +3,7 @@ const s3Helper = require("./s3_helper");
 const mongoHelper = require("./mongo_helper");
 
 
-async function eventsToStartEnd(events, modifiers){
+function eventsToStartEnd(events, modifiers){
     let start, end, eventTime;
 
     if (!events || !modifiers)
@@ -68,15 +68,23 @@ async function eventsToStartEnd(events, modifiers){
 }
 
 
-function cropTelemetry(telemetry, start, end ,event){
+
+
+
+
+
+function cropTelemetry(telemetry, start, end ,event, eventWindow){
+    eventWindow = eventWindow || 1;
+
     if (!telemetry || telemetry.length === 0)
         return [];
-    if (start === undefined)
+    if (_.isNil(start))
         start = telemetry[0].time;
-    if (end === undefined)
+    if (_.isNil(end))
         end = telemetry[telemetry.length - 1].time;
-    if (event !== undefined)
+    if (!_.isNil(event))
         start = end = event;
+
 
     let startIndex = telemetry.findIndex(function(element) {
         return element.time >= start;
@@ -88,31 +96,82 @@ function cropTelemetry(telemetry, start, end ,event){
 
 
 
-    // If start is after than all the telemetry or
-    // end is before than all the telemetry
-    if (startIndex === -1 || telemetry[0].time > end)
+    // If start is after all the telemetry or
+    // end is before all the telemetry
+    if (startIndex === -1 || (start != end && telemetry[0].time > end))
         return [];
 
     if (endIndex === -1)
         endIndex = telemetry.length;
 
-    if (startIndex < endIndex)
+    if (startIndex < endIndex){
+        // Interval between start and end
         return telemetry.slice(Math.max(0, startIndex), endIndex);
-    else
-        return [telemetry[startIndex]];
+    }else{
+        // Event
+        let eventTelemetry = telemetry[startIndex];
+
+        // Check the telemetry is close enough to the requested time (in the window)
+        if (Math.abs(eventTelemetry.time - start) > eventWindow){
+            // Telemetry is out of the window
+            return [];
+        }else{
+            // Telemetry is in the window
+            return [eventTelemetry];
+        }
+    }
 }
 
 
 
 
-function chooseStagesAndTelemetryRange(data, stage, start, end, event){
+
+function intervalTelemetry(telemetry, interval){
+    if (_.isNil(telemetry) || telemetry.length === 0)
+        return [];
+
+    let filteredTelemetry = [telemetry[0]];
+    let prevTime = telemetry[0].time;
+
+    for(let i = 1; i < telemetry.length; i++){
+        if (telemetry[i].time - prevTime >= interval){
+            filteredTelemetry.push(telemetry[i]);
+            prevTime = telemetry[i].time;
+        }
+    }
+
+    return filteredTelemetry;
+}
+
+
+
+
+function getInterval(modifiers){
+    let interval = 0;
+
+    if (!_.isNil(modifiers.frame_rate) && modifiers.frame_rate != 0)
+        interval = 1/modifiers.frame_rate;
+
+    if (!_.isNil(modifiers.interval))
+        interval = modifiers.interval;
+
+    return interval;
+}
+
+
+
+function chooseStagesAndTelemetryRange(data, stage, start, end, event, eventWindow, interval){
     let out = [];
+    let tmpTelemetry;
 
     for (let i = 0; i < data.length; i++){
         if (stage === undefined || stage === data[i].stage){
+            tmpTelemetry = cropTelemetry(data[i].telemetry, start, end, event, eventWindow);
+            tmpTelemetry = intervalTelemetry(tmpTelemetry, interval);
+
             out.push({
                 stage: data[i].stage,
-                telemetry: cropTelemetry(data[i].telemetry, start, end, event)
+                telemetry: tmpTelemetry
             });
         }
     }
@@ -141,9 +200,15 @@ async function getTelemetry(key, identifiers, modifiers){
     else if (key === "analysed")
         data = await s3Helper.getFile(launchMetadata.analysed_path);
 
-    let {start, end, event} = await eventsToStartEnd(events, modifiers);
-    let out = chooseStagesAndTelemetryRange(data, modifiers.stage, start, end, event);
-    return out;
+    let {start, end, event} = eventsToStartEnd(events, modifiers);
+    let interval = getInterval(modifiers);
+    return chooseStagesAndTelemetryRange(data,
+        modifiers.stage,
+        start,
+        end,
+        event,
+        modifiers.event_window,
+        interval);
 }
 
 

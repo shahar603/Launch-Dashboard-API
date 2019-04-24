@@ -30,11 +30,12 @@ const passport = require("passport");
 //global.REDIS_CONNECTION_STRING = "launchdashboardcache-001.lqe1ay.0001.use2.cache.amazonaws.com";
 //global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@localhost:27017/test`;
 
-global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
+//global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
 global.CONNECTION_STRING = `mongodb+srv://${keys.mongodb.userID}:${keys.mongodb.userKey}@cluster0-q6hdl.mongodb.net/test?retryWrites=true`;
 
 //global.REDIS_CONNECTION_STRING = "localhost";
 //global.CONNECTION_STRING = "mongodb://localhost:27017/test";
+
 
 // Create an express app
 const app = express();
@@ -141,12 +142,12 @@ module.exports = app;
     mongoose.connection.once("open", function(){
         // Start the server on port 3000
         const server = app.listen(process.env.PORT || 3000, () => {
+            app.emit("ready");
             console.log("Running on port 3000");
         });
 
 
         const allowedEvents = ["raw", "analysed"];
-
         const io = socket(server);
 
         io.of("/live").on("connection", function(socket){

@@ -28,6 +28,7 @@ async function getFile(key){
         let obj = await s3.getObject(params).promise();
         return JSON.parse(obj.Body.toString("utf-8"));
     } catch(e){
+        console.log(e);
         return undefined;
     }
 }
@@ -74,7 +75,6 @@ async function getOneLaunch(launch){
 
     //global.REDIS_CLIENT.set(`launches:${JSON.stringify(req.identifiers)}`, JSON.stringify(result));
     //global.REDIS_CLIENT.expire(`launches:${JSON.stringify(req.identifiers)}`, 60);
-
 
     return {rawData: rawData,
             analysedData: analysedData,

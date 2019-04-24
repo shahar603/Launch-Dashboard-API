@@ -3,6 +3,8 @@ const assert = require("assert");
 const controller = require("../../src/controllers/launches");
 
 
+/*
+
 // Create a series of tests
 describe("Testing the /launches endpoint is returning the correct data", function(){
 
@@ -147,3 +149,5 @@ describe("Testing the /launches endpoint is returning the correct data", functio
         });
     });
 });
+
+*/

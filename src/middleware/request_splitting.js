@@ -22,7 +22,10 @@ let modifierKeys = Joi.object({
     "stage": Joi.number().integer().positive(),
     "start_offset": Joi.number(),
     "end_offset": Joi.number(),
-    "event_offset": Joi.number()
+    "event_offset": Joi.number(),
+    "event_window": Joi.number().positive(),
+    "frame_rate": Joi.number().positive(),
+    "interval": Joi.number().positive()
 }).options({ stripUnknown: true });
 
 

@@ -38,8 +38,6 @@ module.exports = {
 
     // Get all the available data about a specific launch
     getOne: async function(req, res, next){
-        console.time("getOne");
-
         let result = await mongoHelper.findLaunchMetadata(req.identifiers);
 
         // If no launch was found return a "Not Found" error
@@ -50,10 +48,7 @@ module.exports = {
 
         // Get the telemetry
         let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
-
-        console.timeEnd("getOne");
-
-
+                
         // box the metadata and telemetry and send it
         res.send(
             {

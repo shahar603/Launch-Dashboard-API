@@ -31,7 +31,7 @@ module.exports = {
     },
 
 
-    updateLaunchMetadata: async function(identifiers, launch, rawPath, analysedPath, eventsPath){
+    updateLaunchMetadata: async function(identifiers, launch){
         return updateLaunchInDb(identifiers, launch);
     },
 

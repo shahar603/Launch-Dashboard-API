@@ -3,6 +3,7 @@ const assert = require("assert");
 const controller = require("../../src/controllers/analysed");
 const _ = require("lodash");
 
+/*
 
 // Create a series of tests
 describe("Testing the /analysed endpoint is returning the correct data", function(){
@@ -377,3 +378,6 @@ describe("Testing the /analysed endpoint is returning the correct data", functio
     });
 
 });
+
+
+*/

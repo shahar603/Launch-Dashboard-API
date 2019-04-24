@@ -4,7 +4,7 @@
   "description": "A REST API for SpaceX Telemetry",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo x",
+    "test": "jest",
     "start": "node src/app.js"
   },
   "repository": {
@@ -20,16 +20,17 @@
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.4",
     "ioredis": "^4.6.2",
+    "jest": "^24.7.1",
     "joi": "^14.3.1",
     "joigoose": "^4.0.4",
     "lodash": "^4.17.11",
-    "mocha": "^5.2.0",
     "mongoose": "^5.4.8",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
