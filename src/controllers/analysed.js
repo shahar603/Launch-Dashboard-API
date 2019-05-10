@@ -14,8 +14,7 @@ module.exports = {
                 }
             }
             
-            let out = await getTelemetry("analysed", req.identifiers, req.modifiers);
-
+            let out = await getTelemetry("analysed", req.params.company, req.identifiers, req.modifiers);
 
             if (req.modifiers === {}){
                 //global.REDIS_CLIENT.set(`analysed:${JSON.stringify(req.identifiers)}`, JSON.stringify(out));

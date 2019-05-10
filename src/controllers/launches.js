@@ -1,44 +1,42 @@
-const Launch = require("../models/launch");
+const Company = require("../models/company");
 const s3Helper = require("../helpers/s3_helper");
 const mongoHelper = require("../helpers/mongo_helper");
 const _ = require("lodash");
-const requestSplitter = require("../middleware/request_splitting");
 
 
 
 module.exports = {
 
     // Get information about launches from the database
-    info: function getInfo(req, res, next){
+    info: async function getInfo(req, res, next){
+        try{
         // Get all launches
         if (_.isEmpty(req.identifiers)){
-            Launch.find({}, "mission_id name flight_number").
-                then(function(result){
+            let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number");
 
-                    if (!result)
-                        throw {status: 404, message: "Not Found"};
+            if (!result)
+                throw {status: 404, message: "Not Found"};
 
-                    res.send(result.sort((elm1, elm2) => elm1.flight_number - elm2.flight_number));
-                }).
-                catch(next);
+            res.send(result.launches.sort((elm1, elm2) => elm1.flight_number - elm2.flight_number));
         }
         // Get a specific launch
         else{
-            Launch.findOne(req.identifiers, "mission_id name flight_number").
-                then(function(result){
-                    if (!result)
-                        throw {status: 404, message: "Not Found"};
+            let result = await mongoHelper.findLaunchMetadata(req.params.company, req.identifiers);
+            
+            if (!result)
+                throw {status: 404, message: "Not Found"};
 
-                    res.send(result);
-                }).
-                catch(next);
+            res.send(result);
+        }
+        }catch(ex){
+        next(ex);
         }
     },
 
 
     // Get all the available data about a specific launch
     getOne: async function(req, res, next){
-        let result = await mongoHelper.findLaunchMetadata(req.identifiers);
+        let result = await mongoHelper.findLaunchMetadata(req.params.company, req.identifiers);
 
         // If no launch was found return a "Not Found" error
         if (!result){
@@ -68,9 +66,10 @@ module.exports = {
         // Put the telemetry in storage
         let launchMetadata = await s3Helper.addOneLaunch(req.body);
 
+        // TODO fix 
         // Put the metadata in the database
         res.send(
-            mongoHelper.addLaunchMetadata(launchMetadata)
+            mongoHelper.addLaunchMetadata("spacex", launchMetadata)
         );
     },
 

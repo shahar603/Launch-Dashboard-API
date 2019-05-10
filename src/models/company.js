@@ -22,11 +22,22 @@ const LaunchFileSchema = new Schema({
     raw_path: String,
     analysed_path: String,
     events_path: String
-}, { collection: "launchFiles"});
+});
 
 
 
-// Create the raw telemetry model
-const Launch = mongoose.model("launch", LaunchFileSchema);
-// Export the raw telemetry model
-module.exports = Launch;
+const CompanySchema = new Schema({
+    company_id: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    launches: [LaunchFileSchema]
+}, { collection: "company"});
+
+
+const Company = mongoose.model("company", CompanySchema);
+module.exports = Company;

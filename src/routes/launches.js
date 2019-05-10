@@ -9,7 +9,7 @@ const { checkIdentifiers } = require("../middleware/validator");
 
 
 // Get all the available data about a launch
-router.get("/", checkIdentifiers, launches.getOne);
+router.get("/:company", checkIdentifiers, launches.getOne);
 
 // Add a launch to the database
 router.post("/", launches.addOne);
@@ -21,7 +21,7 @@ router.put("/", checkIdentifiers, launches.updateOne);
 router.delete("/", checkIdentifiers, launches.deleteOne);
 
 // Get information about launches (all/single)
-router.get("/info", launches.info);
+router.get("/info/:company", launches.info);
 
 
 

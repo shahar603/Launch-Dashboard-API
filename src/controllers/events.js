@@ -1,15 +1,17 @@
-const Launch = require("../models/launch");
+const Company = require("../models/company");
+const _ = require("lodash");
 
 module.exports = {
     // Get the events of a specific launch
     getOne: async function(req, res, next){
         try{
-            // TODO change to 'get events' function
-            let data = await Launch.findOne(req.identifiers, "events");
+            let launches = await Company.findOne(req.params.company, "launches");
 
-            if (!data){
+            if (!launches){
                 throw {status: 404, message: "Not Found"};
             }
+
+            let data = _.some(launches, req.identifiers);
 
             res.send(data);
         }catch(err){

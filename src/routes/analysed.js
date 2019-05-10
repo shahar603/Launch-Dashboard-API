@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 // Get the analysed data from a launch
-router.get("/", checkIdentifiers, analysed.getOne);
+router.get("/:company", checkIdentifiers, analysed.getOne);
 
 
 module.exports = router;

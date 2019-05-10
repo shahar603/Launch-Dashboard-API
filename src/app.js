@@ -18,6 +18,7 @@ const analysed = require("./routes/analysed");
 const events = require("./routes/events");
 const info = require("./routes/info");
 const live = require("./routes/live");
+const company = require("./routes/company");
 // Authentication imports
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
@@ -31,10 +32,10 @@ const passport = require("passport");
 //global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@localhost:27017/test`;
 
 //global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
-global.CONNECTION_STRING = `mongodb+srv://${keys.mongodb.userID}:${keys.mongodb.userKey}@cluster0-q6hdl.mongodb.net/test?retryWrites=true`;
+//global.CONNECTION_STRING = `mongodb+srv://${keys.mongodb.userID}:${keys.mongodb.userKey}@cluster0-q6hdl.mongodb.net/test?retryWrites=true`;
 
 //global.REDIS_CONNECTION_STRING = "localhost";
-//global.CONNECTION_STRING = "mongodb://localhost:27017/test";
+global.CONNECTION_STRING = "mongodb://localhost:27017/etest";
 
 
 // Create an express app
@@ -107,6 +108,7 @@ app.use(function(req, res, next) {
 
 
 // Use the routes we set up on routes/api.js
+app.use("/v1/company", company);
 app.use("/v1/launches", launches);
 app.use("/v1/raw", raw);
 app.use("/v1/analysed", analysed);
