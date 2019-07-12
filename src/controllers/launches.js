@@ -2,6 +2,7 @@ const Company = require("../models/company");
 const s3Helper = require("../helpers/s3_helper");
 const mongoHelper = require("../helpers/mongo_helper");
 const _ = require("lodash");
+const { checkIdentifiers } = require("../middleware/validator");
 
 
 
@@ -39,36 +40,55 @@ module.exports = {
 
 
     // Provide help for the users with informative errors
-    getLaunches: async function(req, res, next){
+    getError: async function(req, res, next){
         next({status: 422, message: "Missing `company` parameter"});
     },
 
 
 
     // Get all the available data about a specific launch
-    getOne: async function(req, res, next){
-        let result = await mongoHelper.findLaunchMetadata(req.params.company, req.identifiers);
+    getLaunches: async function(req, res, next){
+        // Get all launches
+        if (_.isEmpty(req.identifiers)){
+            try{
+                let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number");
 
-        // If no launch was found return a "Not Found" error
-        if (!result){
-            next({status: 404, message: "Not Found"});
-            return;
-        }
-
-        // Get the telemetry
-        let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
-                
-        // box the metadata and telemetry and send it
-        res.send(
-            {
-                mission_id: result.mission_id,
-                name: result.name,
-                flight_number: result.flight_number,
-                raw: rawData,
-                analysed: analysedData,
-                events: eventData
+                if (!result)
+                    throw {status: 404, message: "Not Found`"};
+    
+                res.send(result.launches.sort((elm1, elm2) => elm1.flight_number - elm2.flight_number));
+            }catch(ex){
+                next(ex);
             }
-        );
+
+        }else if (checkIdentifiers(req, res, async () => {
+            try{
+                let result = await mongoHelper.findLaunchMetadata(req.params.company, req.identifiers);
+
+                // If no launch was found return a "Not Found" error
+                if (!result){
+                    next({status: 404, message: "Not Found"});
+                    return;
+                }
+        
+                // Get the telemetry
+                let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
+                        
+                // box the metadata and telemetry and send it
+                res.send(
+                    {
+                        mission_id: result.mission_id,
+                        name: result.name,
+                        flight_number: result.flight_number,
+                        raw: rawData,
+                        analysed: analysedData,
+                        events: eventData
+                    }
+                );
+            }catch(ex){
+                next(ex);
+            }
+        }));
     },
 
 
