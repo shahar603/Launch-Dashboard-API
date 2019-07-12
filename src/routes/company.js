@@ -1,22 +1,21 @@
-// Import
+// Imports
 const express = require("express");
 const company = require("../controllers/company");
 // Create an express router
 const router = express.Router();
 
-// another / route
 
-// Get all the available data about a launch
-router.get("/:company", company.getOneCompany);
+// Get all the available data about a company
+router.get("/:company", company.getOne);
 
-// Add a launch to the database
-router.post("/", company.addOneCompany);
+// Add a company to the database
+router.post("/", company.addOne);
 
-// Update launch data
-router.put("/", company.updateOneCompany);
+// Update company data
+router.put("/", company.updateOne);
 
-// Delete a launch from the database
-router.delete("/:company", company.deleteOneCompany);
+// Delete a company from the database
+router.delete("/:company", company.deleteOne);
 
 
 module.exports = router;

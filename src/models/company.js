@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 
-
+// Schema of Launch document
 const LaunchFileSchema = new Schema({
     mission_id: {
         type: String,
@@ -19,13 +19,14 @@ const LaunchFileSchema = new Schema({
         required: true,
         min: 0
     },
+    remark: String,
     raw_path: String,
     analysed_path: String,
     events_path: String
 });
 
 
-
+// Schema of Company document
 const CompanySchema = new Schema({
     company_id: {
         type: String,

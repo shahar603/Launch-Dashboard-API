@@ -5,6 +5,10 @@ const _ = require("lodash");
 
 
 
+
+
+
+
 module.exports = {
 
     // Get information about launches from the database
@@ -32,6 +36,13 @@ module.exports = {
         next(ex);
         }
     },
+
+
+    // Provide help for the users with informative errors
+    getLaunches: async function(req, res, next){
+        next({status: 422, message: "Missing `company` parameter"});
+    },
+
 
 
     // Get all the available data about a specific launch
@@ -66,10 +77,9 @@ module.exports = {
         // Put the telemetry in storage
         let launchMetadata = await s3Helper.addOneLaunch(req.body);
 
-        // TODO fix 
         // Put the metadata in the database
         res.send(
-            mongoHelper.addLaunchMetadata("spacex", launchMetadata)
+            mongoHelper.addLaunchMetadata(req.body.company_id, launchMetadata)
         );
     },
 
@@ -91,7 +101,7 @@ module.exports = {
 
     deleteOne: async function(req, res, next){
         if (_.isEmpty(req.identifiers)){
-            throw new Error("Missing \"flight_number\" and \"mission_id\"");
+            throw new Error("Missing \"flight_number\" or \"mission_id\"");
         }
 
         // Get launch file name (key) from db

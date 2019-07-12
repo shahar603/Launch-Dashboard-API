@@ -45,7 +45,7 @@ passport.use(
                 done(null, result);
             }else{
                 //done(null, result);
-                addUserToDb(profile, done);
+                //addUserToDb(profile, done);
             }
         });
 

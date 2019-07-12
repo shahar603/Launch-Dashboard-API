@@ -50,7 +50,10 @@ function eventsToStartEnd(events, modifiers){
         else if (eventTime === null && modifiers.event !== undefined)
             throw new Error(`event ${modifiers.event} of "event" is not set in the data`);
 
+    if (start && end && start > end)
+        throw new Error("\"end\" cannot be smaller than \"start\"");
 
+    
     // Apply offset modifiers
     if (start !== undefined && modifiers.start_offset != undefined){
         start += modifiers.start_offset;

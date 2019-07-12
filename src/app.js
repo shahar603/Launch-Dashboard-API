@@ -1,9 +1,7 @@
 // Import packages
-const Promise = require("bluebird");
 const express = require("express");
 const mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
-const fs = require("fs");
 const socket = require("socket.io");
 const Redis = require("ioredis");
 // Import middleware
@@ -23,51 +21,48 @@ const company = require("./routes/company");
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
 const keys = require("./auth/keys");
-const passportSetup = require("./auth/passport-setup");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
+const passportSetup = require("./auth/passport-setup");
+const cacheHelper = require("./helpers/cache_helper");
 
 
-//global.REDIS_CONNECTION_STRING = "launchdashboardcache-001.lqe1ay.0001.use2.cache.amazonaws.com";
-//global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@localhost:27017/test`;
-
-//global.CONNECTION_STRING = `mongodb://${keys.mongodb.userID}:${keys.mongodb.userKey}@spacecluster-shard-00-00-duhqc.mongodb.net:27017,spacecluster-shard-00-01-duhqc.mongodb.net:27017,spacecluster-shard-00-02-duhqc.mongodb.net:27017/test?ssl=true&replicaSet=SpaceCluster-shard-0&authSource=admin&retryWrites=true`;
-//global.CONNECTION_STRING = `mongodb+srv://${keys.mongodb.userID}:${keys.mongodb.userKey}@cluster0-q6hdl.mongodb.net/test?retryWrites=true`;
-
-//global.REDIS_CONNECTION_STRING = "localhost";
-global.CONNECTION_STRING = "mongodb://localhost:27017/etest";
+global.REDIS_CONNECTION_STRING = keys.redis.redisConnectionString;
+global.CONNECTION_STRING = keys.mongodb.connectionString;
 
 
 // Create an express app
 const app = express();
 
+
+
 // create and connect redis client to Elasticache instance.
-/*
-global.REDIS_CLIENT = new Redis({
-    port: 6379,
-    host: global.REDIS_CONNECTION_STRING,
-  reconnectOnError: function (err) {
-    var targetError = "READONLY";
-    if (err.message.slice(0, targetError.length) === targetError) {
-      // Only reconnect when the error starts with "READONLY"
-      return true; // or `return 1;`
-    }
-  }
-});
+if (cacheHelper.doCache()){
+    global.REDIS_CLIENT = new Redis({
+        port: 6379,
+        host: global.REDIS_CONNECTION_STRING,
+      reconnectOnError: function (err) {
+        var targetError = "READONLY";
+        if (err.message.slice(0, targetError.length) === targetError) {
+          // Only reconnect when the error starts with "READONLY"
+          return true; // or `return 1;`
+        }
+      }
+    });
+    
+    
+    // Print redis errors to the console
+    global.REDIS_CLIENT.on("error", (err) => {
+      console.log("Error " + err);
+    });
+    
+    // Print redis errors to the console
+    global.REDIS_CLIENT.on("connect", (err) => {
+      console.log("Connected to Redis");
+    });
+}
 
 
-// Print redis errors to the console
-global.REDIS_CLIENT.on("error", (err) => {
-  console.log("Error " + err);
-});
-
-// Print redis errors to the console
-global.REDIS_CLIENT.on("connect", (err) => {
-  console.log("Connected to Redis");
-});
-*/
-
-app.use(express.static("static"));
 
 
 // ######################### AUTHENTICATION COOKIE ###################
