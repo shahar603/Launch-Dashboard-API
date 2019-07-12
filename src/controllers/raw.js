@@ -18,7 +18,7 @@ module.exports = {
                 }
             }
 
-            let out = await getTelemetry("raw", req.identifiers, req.modifiers);
+            let out = await getTelemetry("raw", req.params.company, req.identifiers, req.modifiers);
 
             if (req.modifiers === {}){
                 cacheHelper.add(cacheKey, JSON.stringify(out), 60);
