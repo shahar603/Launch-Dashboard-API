@@ -99,6 +99,7 @@ app.use(function(req, res, next) {
 });
 
 
+
 // ##################### ROUTES #####################
 
 
@@ -111,10 +112,8 @@ app.use("/v1/events", events);
 app.use("/v1/live", live);
 app.use("/", info);
 
-
 // set up authentiacation routes
 app.use("/auth", authRoutes);
-
 
 
 // ##################### ERROR HANDLING #####################

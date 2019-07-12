@@ -5,6 +5,9 @@ const company = require("../controllers/company");
 const router = express.Router();
 
 
+// Get all available data about every company in the database
+router.get("/", company.getAll);
+
 // Get all the available data about a company
 router.get("/:company", company.getOne);
 

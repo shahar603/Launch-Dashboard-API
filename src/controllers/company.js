@@ -3,8 +3,21 @@ const Company = require("../models/company");
 
 
 module.exports = {
+    getAll: async function(req, res, next){
+        res.send(await Company.find({}, "-_id company_id name"));
+    },
+
     getOne: async function(req, res, next){
-        res.send(await Company.findOne({company_id: req.params.company}, "company_id name"));
+        try{
+            const result = await Company.findOne({company_id: req.params.company}, "-_id company_id name");
+            
+            if (!result)
+                throw {status: 404, message: `Company "${req.params.company}" does not exist`};
+            
+            res.send(result);
+        }catch(ex){
+            next(ex);
+        }
     },
 
 
@@ -34,8 +47,7 @@ module.exports = {
             res.send(result);
         }catch(ex){
             next(ex);
-        }
-    },
+        }    },
 
     deleteOne: async function(req, res, next){
         res.send(await Company.findOneAndDelete({company_id: req.params.company}));
