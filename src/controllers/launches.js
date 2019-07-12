@@ -120,19 +120,18 @@ module.exports = {
 
 
     deleteOne: async function(req, res, next){
-        if (_.isEmpty(req.identifiers)){
+        if (!req.params.company || _.isEmpty(req.identifiers)){
             throw new Error("Missing \"flight_number\" or \"mission_id\"");
         }
-
         // Get launch file name (key) from db
-        let launch = await mongoHelper.findLaunchMetadata(req.identifiers);
+        let launch = await mongoHelper.findLaunchMetadata(req.params.company, req.identifiers);
 
         if (!launch){
             next({status: 404, message: "Not Found"});
             return;
         }
 
-        if (!await mongoHelper.deleteLaunchMetadata(req.identifiers)){
+        if (!await mongoHelper.deleteLaunchMetadata(req.params.company, req.identifiers)){
             next({status: 500, message: "Failed to delete launch"});
             return;
         }

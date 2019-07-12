@@ -21,7 +21,7 @@ router.post("/", launches.addOne);
 router.put("/", checkIdentifiers, launches.updateOne);
 
 // Delete a launch from the database
-router.delete("/", checkIdentifiers, launches.deleteOne);
+router.delete("/:company", checkIdentifiers, launches.deleteOne);
 
 // Get information about launches (all/single)
 router.get("/info/:company", launches.info);

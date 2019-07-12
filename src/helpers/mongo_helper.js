@@ -12,7 +12,7 @@ module.exports = {
         
         function launchExists(identifiers, launch){
             let match = true;
-
+            
             for(let key in identifiers){
                 match = match && (identifiers[key] === launch[key]);
             }
@@ -22,7 +22,6 @@ module.exports = {
         
 
         let launches = await Company.findOne({company_id: company_id}, "launches");
-
 
         for(let i = 0; i < launches.launches.length; i++){
             if (launchExists(identifiers, launches.launches[i])){
