@@ -25,4 +25,4 @@ deploy:
   bucket_name: launch-dashboard-api-preprod-bucket-3523515352998
   bucket_path: Code
   on:
-    branch: develop
+    branch: preprod
