@@ -1,6 +1,5 @@
-const Launch = require("../models/launch");
 const {getTelemetry} = require("../helpers/telemetry_helper");
-
+const cacheHelper = require("../helpers/cache_helper");
 
 
 
@@ -8,20 +7,21 @@ const {getTelemetry} = require("../helpers/telemetry_helper");
 module.exports = {
     // Get the raw telemetry from a specific launch
     getOne: async (req, res, next) => {
+        const cacheKey = `raw:${JSON.stringify(req.identifiers)}`;
+
         try{
             if (!req.modifiers) {
-                let result = null; //await global.REDIS_CLIENT.get(`raw:${JSON.stringify(req.identifiers)}`);
+                let result = await cacheHelper.get(cacheKey);
 
                 if (result){
                     res.type("json").send(result);
                 }
             }
 
-            let out = await getTelemetry("raw", req.identifiers, req.modifiers);
+            let out = await getTelemetry("raw", req.params.company, req.identifiers, req.modifiers);
 
             if (req.modifiers === {}){
-                //global.REDIS_CLIENT.set(`raw:${JSON.stringify(req.identifiers)}`, JSON.stringify(out));
-                //global.REDIS_CLIENT.expire(`raw:${JSON.stringify(req.identifiers)}`, 60);
+                cacheHelper.add(cacheKey, JSON.stringify(out), 60);
             }
 
             res.send(out);

@@ -29,9 +29,6 @@ let modifierKeys = Joi.object({
 }).options({ stripUnknown: true });
 
 
-
-
-
 async function validate(req){
     req.identifiers = await Joi.validate(req.query, identifierKeys);
     req.modifiers = await Joi.validate(req.query, modifierKeys);

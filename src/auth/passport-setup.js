@@ -19,11 +19,15 @@ passport.deserializeUser((id, done) => {
 
 
 
+function getId(id){
+    return crypto.createHash("sha256").update(id).digest("hex");;
+}
+
 
 function addUserToDb(profile, done){
     User.create({
         username: profile.displayName,
-        googleId: crypto.createHash("sha256").update(profile.id).digest("hex")
+        googleId: getId(profile.id)
     }).then((result) => {
         console.log(`New user created: ${result.username}`);
         done(null, result);
@@ -38,14 +42,13 @@ passport.use(
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret
     }, (accessToken, refreshToken, profile, done) => {
+        const userId = getId(profile.id);
+
         // Check if user already exists in the database
-        User.findOne({googleId: crypto.createHash("sha256").update(profile.id).digest("hex")}).
+        User.findOne({googleId: userId}).
         then((result) => {
             if (result){
                 done(null, result);
-            }else{
-                //done(null, result);
-                addUserToDb(profile, done);
             }
         });
 

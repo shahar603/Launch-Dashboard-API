@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 // Get the events from a launch
-router.get("/", checkIdentifiers, events.getOne);
+router.get("/:company", checkIdentifiers, events.getOne);
 
 
 module.exports = router;

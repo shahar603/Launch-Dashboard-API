@@ -9,7 +9,10 @@ const { checkIdentifiers } = require("../middleware/validator");
 
 
 // Get all the available data about a launch
-router.get("/", checkIdentifiers, launches.getOne);
+router.get("/:company", launches.getLaunches);
+
+// Returns an error because not a valid query
+router.get("/", launches.getError);
 
 // Add a launch to the database
 router.post("/", launches.addOne);
@@ -18,10 +21,10 @@ router.post("/", launches.addOne);
 router.put("/", checkIdentifiers, launches.updateOne);
 
 // Delete a launch from the database
-router.delete("/", checkIdentifiers, launches.deleteOne);
+router.delete("/:company", checkIdentifiers, launches.deleteOne);
 
 // Get information about launches (all/single)
-router.get("/info", launches.info);
+router.get("/info/:company", launches.info);
 
 
 

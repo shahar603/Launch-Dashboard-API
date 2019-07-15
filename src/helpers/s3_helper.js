@@ -5,15 +5,18 @@ const _ = require("lodash");
 
 
 
+// configuring the AWS environment
+AWS.config.update({
+    region: Keys.s3.region,
+    accessKeyId: Keys.s3.keyID,
+    secretAccessKey: Keys.s3.secretKey
+});
+
+
 // create an S3 instance
 let s3 = new AWS.S3();
 
 
-//configuring the AWS environment
-AWS.config.update({
-    accessKeyId: Keys.s3.keyID,
-    secretAccessKey: Keys.s3.secretKey
-});
 
 
 
@@ -72,10 +75,7 @@ async function getOneLaunch(launch){
     rawData = await getFile(launch.raw_path);
     analysedData = await getFile(launch.analysed_path);
     eventData = await getFile(launch.events_path);
-
-    //global.REDIS_CLIENT.set(`launches:${JSON.stringify(req.identifiers)}`, JSON.stringify(result));
-    //global.REDIS_CLIENT.expire(`launches:${JSON.stringify(req.identifiers)}`, 60);
-
+    
     return {rawData: rawData,
             analysedData: analysedData,
             eventData: eventData};

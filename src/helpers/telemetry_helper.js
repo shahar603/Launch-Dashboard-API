@@ -50,7 +50,10 @@ function eventsToStartEnd(events, modifiers){
         else if (eventTime === null && modifiers.event !== undefined)
             throw new Error(`event ${modifiers.event} of "event" is not set in the data`);
 
+    if (start && end && start > end)
+        throw new Error("\"end\" cannot be smaller than \"start\"");
 
+    
     // Apply offset modifiers
     if (start !== undefined && modifiers.start_offset != undefined){
         start += modifiers.start_offset;
@@ -181,12 +184,12 @@ function chooseStagesAndTelemetryRange(data, stage, start, end, event, eventWind
 
 
 //  Get 'key' telemetry from the 'identifiers' and modified using 'modifiers'
-async function getTelemetry(key, identifiers, modifiers){
+async function getTelemetry(key, company, identifiers, modifiers){
     if (!key || _.isEmpty(identifiers) || _.isNil(modifiers))
         throw {status: 404, message: "Not Found"};
 
     // Get the launch from the database
-    let launchMetadata = await mongoHelper.findLaunchMetadata(identifiers);
+    let launchMetadata = await mongoHelper.findLaunchMetadata(company, identifiers);
 
     if (!launchMetadata){
         throw {status: 404, message: "Not Found"};

@@ -7,7 +7,7 @@ const { checkIdentifiers } = require("../middleware/validator");
 const router = express.Router();
 
 // Get the raw data from a launch
-router.get("/", checkIdentifiers, raw.getOne);
+router.get("/:company", checkIdentifiers, raw.getOne);
 
 
 module.exports = router;

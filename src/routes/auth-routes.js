@@ -3,7 +3,7 @@ const passport = require("passport");
 
 
 // Logging out
-router.get("/logout", (req, res) => {
+router.get("/logout", (req, res, next) => {
     // Handle with passport.js
     req.logout();
     res.redirect("/");
