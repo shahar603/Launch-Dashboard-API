@@ -33,7 +33,7 @@
 
 |App|Creator|
 |---|---|
-|[FlightClub.io](https://ww2.flightclub.io)|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)
+|[FlightClub.io](https://www2.flightclub.io/)|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)
 
 
 
