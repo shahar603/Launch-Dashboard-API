@@ -30,7 +30,7 @@
 
 
 ## Apps
-The apps and tools that use Launch Dashboard API
+The Apps and Tools that use Launch Dashboard API
 
 |App|Description|Creator|
 |-----|-----|----|
