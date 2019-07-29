@@ -31,10 +31,9 @@
 
 ## Apps
 
-|App||Description|Creator|
-|---|---|----|
+|App|Description|Creator|
+|-----|-----|----|
 |[FlightClub.io](https://www2.flightclub.io/)|Rocket Launch Simulation and Visualization|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
-
 
 
 ## Clients
