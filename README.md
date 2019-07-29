@@ -30,6 +30,7 @@
 
 
 ## Apps
+The apps and tools that use Launch Dashboard API
 
 |App|Description|Creator|
 |-----|-----|----|
@@ -41,6 +42,7 @@
 
 
 ## Data Sources
+The Source of the data in the API
 
 |Launch Provider|Tool|Creator|
 |----|-----|-----|
