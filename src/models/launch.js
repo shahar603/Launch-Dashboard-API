@@ -44,6 +44,7 @@ const SpaceXLaunchFile = Joi.object({
     company_id: Joi.string().required(),
     mission_id: Joi.string().required(),
     flight_number: Joi.number().integer().positive().required(),
+    launch_library_id: Joi.number().integer().required(),
     name: Joi.string().required(),
     raw: Joi.array().items(rawData),
     analysed: Joi.array().items(analysedData),
