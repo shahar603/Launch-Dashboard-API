@@ -17,16 +17,10 @@
 
 <h1 align="center">
   <a href="https://documenter.getpostman.com/view/6536395/S11Htyq1">Documentation</a> - 
-    <a href="docs/clients.md">Clients</a> - 
-  <a href="docs/apps.md">Apps</a>
+    <a href="#Clients">Clients</a> - 
+  <a href="#Apps">Apps</a>
 </h1>
 
-
-<p align="center">
-  <a href="https://documenter.getpostman.com/view/6536395/S11Htyq1?version=latest">
-    <img src="https://run.pstmn.io/button.svg"/>
-  </a>
-</p>
 
 
 ## Apps
