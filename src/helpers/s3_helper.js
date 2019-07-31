@@ -89,7 +89,8 @@ async function addOneLaunch(launch){
     let launchMetadata = {
         mission_id: launch.mission_id,
         name: launch.name,
-        flight_number: launch.flight_number
+        flight_number: launch.flight_number,
+        launch_library_id: launch.launch_library_id
     };
 
 
