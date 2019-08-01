@@ -39,7 +39,7 @@ The Apps and Tools that use Launch Dashboard API
 
 
 ## Clients
-Programm
+Clients and APIs using Launch Dashboard API
 
 |Client|Description|Creator|
 |-----|-----|----|
