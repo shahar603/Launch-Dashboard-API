@@ -19,7 +19,7 @@
   <a href="https://documenter.getpostman.com/view/6536395/S11Htyq1">Documentation</a> - 
   <a href="#Clients">Clients</a> - 
   <a href="#Apps">Apps</a> -
-  <a href="#Data Sources">Apps</a>
+  <a href="#Data Sources">Data Sources</a>
 </h1>
 
 
