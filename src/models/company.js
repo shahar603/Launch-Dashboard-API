@@ -19,6 +19,11 @@ const LaunchFileSchema = new Schema({
         required: true,
         min: 0
     },
+    launch_library_id: {
+        type: Number,
+        required: true,
+        min: 0 
+    },
     remark: String,
     raw_path: String,
     analysed_path: String,

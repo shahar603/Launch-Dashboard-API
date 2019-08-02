@@ -9,7 +9,8 @@ const Joi = require("joi");
 // name of url paramters used to identify keys from the database
 let identifierKeys = Joi.object({
     "mission_id": Joi.string(),
-    "flight_number": Joi.number().integer().positive()
+    "flight_number": Joi.number().integer().positive(),
+    "launch_library_id": Joi.number().integer().positive()
 }).options({ stripUnknown: true });
 
 

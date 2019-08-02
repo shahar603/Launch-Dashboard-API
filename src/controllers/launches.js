@@ -80,6 +80,7 @@ module.exports = {
                         mission_id: result.mission_id,
                         name: result.name,
                         flight_number: result.flight_number,
+                        launch_library_id: result.launch_library_id,
                         raw: rawData,
                         analysed: analysedData,
                         events: eventData
