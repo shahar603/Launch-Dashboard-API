@@ -1,15 +1,34 @@
 const Company = require("../models/company");
+const Joi = require("joi");
 
 
 
 module.exports = {
     getAll: async function(req, res, next){
-        res.send(await Company.find({}, "-_id company_id name"));
+
+        if(req.query.lsp){
+            try{
+                // Returned the parsed lsp value. Throws a validation exception if given lsp value isn't a positive integer
+                const lsp = await Joi.validate(req.query.lsp, Joi.number().positive().integer());
+
+                const result = await Company.findOne({lsp: lsp}, "-_id company_id name lsp");
+
+                if (result)
+                    res.send(result);
+                else
+                    throw {status: 404, message: `Company with lsp="${lsp}" does not exist`};
+            }catch(ex){
+                next(ex);
+            }
+        }
+        else{
+            res.send(await Company.find({}, "-_id company_id name lsp"));
+        }
     },
 
     getOne: async function(req, res, next){
         try{
-            const result = await Company.findOne({company_id: req.params.company}, "-_id company_id name");
+            const result = await Company.findOne({company_id: req.params.company}, "-_id company_id name lsp");
             
             if (!result)
                 throw {status: 404, message: `Company "${req.params.company}" does not exist`};

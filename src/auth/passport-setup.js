@@ -7,22 +7,9 @@ const crypto = require("crypto");
 
 
 
-
 function getId(id){
     return crypto.createHash("sha256").update(id).digest("hex");
 }
-
-
-function addUserToDb(profile, done){
-    User.create({
-        username: profile.displayName,
-        googleId: getId(profile.id)
-    }).then((result) => {
-        console.log(`New user created: ${result.username}`);
-        done(null, result);
-    });
-}
-
 
 
 
