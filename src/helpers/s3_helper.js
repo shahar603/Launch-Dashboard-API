@@ -20,6 +20,24 @@ let s3 = new AWS.S3();
 
 
 
+
+async function readFile(key){
+    let params = {
+        Bucket: Keys.s3.bucketName,
+        Key: key,
+    };
+
+    try{
+        let obj = await s3.getObject(params).promise();
+        return obj.Body.toString("utf-8");
+    } catch(e){
+        console.log(e);
+        return undefined;
+    }
+}
+
+
+
 // This function gets the content of the file with name 'key' from the S3 bucket
 async function getFile(key){
     let params = {
@@ -126,6 +144,7 @@ async function updateOneLaunch(launch){
 
 
 module.exports = {
+    readFile: readFile,
     getFile: getFile,
     getOneLaunch: getOneLaunch,
     addOneLaunch: addOneLaunch,

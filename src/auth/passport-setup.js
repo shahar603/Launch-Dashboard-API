@@ -7,20 +7,9 @@ const crypto = require("crypto");
 
 
 
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-    User.findById(id).then((user) => {
-        done(null, user);
-    });
-});
-
-
 
 function getId(id){
-    return crypto.createHash("sha256").update(id).digest("hex");;
+    return crypto.createHash("sha256").update(id).digest("hex");
 }
 
 
@@ -36,6 +25,7 @@ function addUserToDb(profile, done){
 
 
 
+
 passport.use(
     new GoogleStrategy({
         callbackURL: "/auth/google/redirect",
@@ -46,11 +36,13 @@ passport.use(
 
         // Check if user already exists in the database
         User.findOne({googleId: userId}).
-        then((result) => {
-            if (result){
-                done(null, result);
-            }
-        });
+            then((result) => {
+                if (result){
+                    done(null, result, null);
+                }else{
+                    done(null, null, null);
+                }
+            });
 
     })
 );

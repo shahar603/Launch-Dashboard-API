@@ -23,6 +23,12 @@ module.exports = {
 
     redis: {
         redisConnectionString: process.env.REDIS_CONNECTION_STRING
+    },
+
+    jwt: {
+        pubKey: process.env.JWT_PUBLIC_KEY,
+        priKey: process.env.JWT_PRIVATE_KEY
     }
 
 };
+
