@@ -21,7 +21,6 @@ const company = require("./routes/company");
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
 const keys = require("./auth/keys");
-const cookieSession = require("cookie-session");
 const passport = require("passport");
 const passportSetup = require("./auth/passport-setup");
 const cacheHelper = require("./helpers/cache_helper");
@@ -69,18 +68,8 @@ if (cacheHelper.doCache()){
 
 // ######################### AUTHENTICATION COOKIE ###################
 
-
-// Session cookie settings
-/*
-app.use(cookieSession({
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: [keys.session.cookieKey]
-}));
-*/
-
 // Initialize passport
 app.use(passport.initialize());
-//app.use(passport.session());
 
 
 // ##################### MIDDLEWARE #####################

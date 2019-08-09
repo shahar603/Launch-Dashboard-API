@@ -4,10 +4,6 @@ module.exports = {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET
     },
 
-    session: {
-        cookieKey: process.env.COOKIE_KEY
-    },
-
     mongodb: {
         connectionString: process.env.CONNECTION_STRING,
         userID: process.env.MONGO_USER_ID,
