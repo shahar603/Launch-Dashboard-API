@@ -21,10 +21,11 @@ const company = require("./routes/company");
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
 const keys = require("./auth/keys");
-const cookieSession = require("cookie-session");
 const passport = require("passport");
 const passportSetup = require("./auth/passport-setup");
 const cacheHelper = require("./helpers/cache_helper");
+const tokens = require("./auth/tokens");
+
 
 
 global.REDIS_CONNECTION_STRING = keys.redis.redisConnectionString;
@@ -67,25 +68,17 @@ if (cacheHelper.doCache()){
 
 // ######################### AUTHENTICATION COOKIE ###################
 
-
-// Session cookie settings
-app.use(cookieSession({
-    maxAge: 24 * 60 * 60 * 1000,
-    keys: [keys.session.cookieKey]
-}));
-
 // Initialize passport
 app.use(passport.initialize());
-app.use(passport.session());
 
 
 // ##################### MIDDLEWARE #####################
 
 // Alllow post requests with a lot of telemetry
 app.use(bodyParser.json({limit: "10mb"}));
-//support parsing of application/x-www-form-urlencoded post data
+// support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({limit: "10mb", extended: true}));
-// Validate the input to prevemt NoSQL injection
+// Validate the input to prevent NoSQL injection
 app.use(filter());
 // Parse the request
 app.use(requestSplitter);
@@ -131,10 +124,10 @@ app.use(errorHandler);
 module.exports = app;
 
 
-(function(){
+(async function(){
     // Connect to monsgoose and create/connect to the db
     mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
-
+    tokens.setKeys();
     mongoose.connection.once("open", function(){
         // Start the server on port 3000
         const server = app.listen(process.env.PORT || 3000, () => {

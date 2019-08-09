@@ -63,7 +63,9 @@ module.exports = {
 
         }else if (checkIdentifiers(req, res, async () => {
             try{
+                console.time("start");
                 let result = await mongoHelper.findLaunchMetadata(req.params.company, req.identifiers);
+                console.timeEnd("start");
 
                 // If no launch was found return a "Not Found" error
                 if (!result){
@@ -71,9 +73,11 @@ module.exports = {
                     return;
                 }
         
+                console.time("end");
                 // Get the telemetry
                 let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
-                        
+                console.timeEnd("end");
+
                 // box the metadata and telemetry and send it
                 res.send(
                     {

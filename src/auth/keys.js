@@ -4,10 +4,6 @@ module.exports = {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET
     },
 
-    session: {
-        cookieKey: process.env.COOKIE_KEY
-    },
-
     mongodb: {
         connectionString: process.env.CONNECTION_STRING,
         userID: process.env.MONGO_USER_ID,
@@ -23,6 +19,12 @@ module.exports = {
 
     redis: {
         redisConnectionString: process.env.REDIS_CONNECTION_STRING
+    },
+
+    jwt: {
+        pubKey: process.env.JWT_PUBLIC_KEY,
+        priKey: process.env.JWT_PRIVATE_KEY
     }
 
 };
+

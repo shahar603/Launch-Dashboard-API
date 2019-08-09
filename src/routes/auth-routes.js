@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const tokens = require("../auth/tokens");
 
 
 // Logging out
@@ -17,8 +19,9 @@ router.get("/google", passport.authenticate("google", {
 
 
 // Callback uri
-router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-    res.send(req.user);
+router.get("/google/redirect", passport.authenticate("google", { session: false }), (req, res) => {
+    const token = jwt.sign({ user: { id: req.user._id, username: req.user.username } }, tokens.priKey, { algorithm: "RS256"});
+    res.status(200).json({token});
 });
 
 
