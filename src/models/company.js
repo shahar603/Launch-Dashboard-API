@@ -43,7 +43,7 @@ const CompanySchema = new Schema({
     },
     lsp: {
         type: Number,
-        required: true
+        required: false
     },
     launches: [LaunchFileSchema]
 }, { collection: "company"});

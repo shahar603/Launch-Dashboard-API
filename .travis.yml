@@ -15,14 +15,3 @@ deploy:
     bucket_path: Code
     on:
       branch: master
-  
-  - provider: elasticbeanstalk
-    access_key_id: $AWS_ACCESS_ID
-    secret_access_key: $AWS_ACCESS_KEY
-    region: us-east-2
-    app: Launch Dashboard
-    env: LaunchDashboard-preprod
-    bucket_name: launch-dashboard-api-preprod-bucket-3523515352998
-    bucket_path: Code
-    on:
-      branch: preprod
