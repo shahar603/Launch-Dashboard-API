@@ -8,6 +8,8 @@ const { checkIdentifiers } = require("../middleware/validator");
 const { checkLaunch } = require("../middleware/launch_validator.js");
 
 
+// Get launch using launch_library_id
+router.get("/", launches.getLaunchFromLaunchLibraryProvider);
 
 // Get all the available data about a launch
 router.get("/:company", launches.getLaunches);

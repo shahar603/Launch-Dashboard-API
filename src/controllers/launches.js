@@ -12,6 +12,20 @@ async function exists(company_id, identifiers){
 
 
 
+
+function findLaunch(companies, launch_library_id){
+    for(let company of companies){
+        for(let launch of company.launches) {
+            if(launch_library_id === launch.launch_library_id){
+                return {company: company, launch: launch};
+            }
+        }
+    }
+
+    return {company: null, launch: null};
+}
+
+
 module.exports = {
     // Get information about launches from the database
     info: async function getInfo(req, res, next){
@@ -45,6 +59,50 @@ module.exports = {
         next({status: 422, message: "Missing `company` parameter"});
     },
 
+
+
+
+    getLaunchFromLaunchLibraryProvider: async function(req, res, next){
+        try{
+            if(!req.identifiers.launch_library_id){
+                throw new Error("Missing \"launch_library_id\" or \"ccompany\" parameters");
+            }
+
+            const companies = await Company.find({});
+            const {company, launch} = findLaunch(companies, req.identifiers.launch_library_id);
+
+            if (!launch){
+                next({status: 404, message: `Launch with launch_library_id: ${req.identifiers.launch_library_id} doesn't exists`}); 
+                return;
+            }
+
+            let result = await mongoHelper.findLaunchMetadata(company.company_id, {launch_library_id: launch.launch_library_id});
+
+            // If no launch was found return a "Not Found" error
+            if (!result){
+                next({status: 404, message: "Not Found"});
+                return;
+            }
+    
+            // Get the telemetry
+            let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
+
+            // box the metadata and telemetry and send it
+            res.send(
+                {
+                    mission_id: result.mission_id,
+                    name: result.name,
+                    flight_number: result.flight_number,
+                    launch_library_id: result.launch_library_id,
+                    raw: rawData,
+                    analysed: analysedData,
+                    events: eventData
+                }
+            );
+        }catch(ex){
+            next(ex);
+        }
+    },
 
 
     // Get all the available data about a specific launch
