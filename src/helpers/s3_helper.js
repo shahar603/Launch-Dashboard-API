@@ -112,9 +112,9 @@ async function addOneLaunch(launch){
     };
 
 
-    rawPath = await addFile(launch.raw, `raw-${launchMetadata.flight_number}.json`);
-    analysedPath = await addFile(launch.analysed, `analysed-${launchMetadata.flight_number}.json`);
-    eventsPath = await addFile(launch.events, `events-${launchMetadata.flight_number}.json`);
+    rawPath = await addFile(launch.raw, `Telemetry/raw-${launch.company_id}-${launchMetadata.flight_number}.json`);
+    analysedPath = await addFile(launch.analysed, `Telemetry/analysed-${launch.company_id}-${launchMetadata.flight_number}.json`);
+    eventsPath = await addFile(launch.events, `Telemetry/events-${launch.company_id}-${launchMetadata.flight_number}.json`);
 
     if (rawPath)
         launchMetadata.raw_path = rawPath.key;

@@ -3,15 +3,16 @@ const s3Helper = require("../helpers/s3_helper");
 const mongoHelper = require("../helpers/mongo_helper");
 const _ = require("lodash");
 const { checkIdentifiers } = require("../middleware/validator");
+const company = require("./company");
 
 
-
-
+async function exists(company_id, identifiers){
+    return await mongoHelper.findLaunchMetadata(company_id, identifiers) != null;
+}
 
 
 
 module.exports = {
-
     // Get information about launches from the database
     info: async function getInfo(req, res, next){
         try{
@@ -48,10 +49,15 @@ module.exports = {
 
     // Get all the available data about a specific launch
     getLaunches: async function(req, res, next){
+        if(!await company.exists(req.params.company)){
+            next({status: 404, message: `Company "${req.params.company}" is not found`});
+            return;
+        }
+
         // Get all launches
         if (_.isEmpty(req.identifiers)){
             try{
-                let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number");
+                let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number launches.launch_library_id");
 
                 if (!result)
                     throw {status: 404, message: "Not Found`"};
@@ -95,13 +101,25 @@ module.exports = {
 
     // Add a launch to the database
     addOne: async function(req, res, next){
-        // Put the telemetry in storage
-        let launchMetadata = await s3Helper.addOneLaunch(req.body);
+        try{
+            // If the company doesn't exist or if the launch already exists throw an error
+            if(!await company.exists(req.body.company_id))
+                throw new Error(`Company "${req.body.company_id}" doesn't exists`);
 
-        // Put the metadata in the database
-        res.send(
-            mongoHelper.addLaunchMetadata(req.body.company_id, launchMetadata)
-        );
+            if (await exists(req.body.company_id, {flight_number: req.body.flight_number}))
+                throw new Error(`Launch "${req.body.mission_id}" already exists`);
+
+
+            // Put the telemetry in storage
+            let launchMetadata = await s3Helper.addOneLaunch(req.body);
+
+            // Put the metadata in the database
+            res.send(
+                mongoHelper.addLaunchMetadata(req.body.company_id, launchMetadata)
+            );
+        }catch(e){
+            next(e);
+        }
     },
 
 

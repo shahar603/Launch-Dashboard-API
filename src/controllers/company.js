@@ -1,9 +1,16 @@
 const Company = require("../models/company");
 const Joi = require("joi");
 
-
+async function getCompany(company_id){
+    return await Company.findOne({company_id: company_id}, "-_id company_id name lsp");
+}
 
 module.exports = {
+    exists: async function(company_id){
+        return await getCompany(company_id) != null;
+    },
+
+
     getAll: async function(req, res, next){
 
         if(req.query.lsp){
@@ -28,7 +35,7 @@ module.exports = {
 
     getOne: async function(req, res, next){
         try{
-            const result = await Company.findOne({company_id: req.params.company}, "-_id company_id name lsp");
+            const result = getCompany(req.params.company);
             
             if (!result)
                 throw {status: 404, message: `Company "${req.params.company}" does not exist`};
