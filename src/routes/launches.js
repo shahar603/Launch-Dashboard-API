@@ -5,6 +5,7 @@ const launches = require("../controllers/launches");
 const router = express.Router();
 // middleware
 const { checkIdentifiers } = require("../middleware/validator");
+const { checkLaunch } = require("../middleware/launch_validator.js");
 
 
 
@@ -15,10 +16,10 @@ router.get("/:company", launches.getLaunches);
 router.get("/", launches.getError);
 
 // Add a launch to the database
-router.post("/", launches.addOne);
+router.post("/", checkLaunch, launches.addOne);
 
 // Update launch data
-router.put("/", checkIdentifiers, launches.updateOne);
+router.put("/", checkLaunch, launches.updateOne);
 
 // Delete a launch from the database
 router.delete("/:company", checkIdentifiers, launches.deleteOne);
