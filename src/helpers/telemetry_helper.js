@@ -242,5 +242,6 @@ function modifyData(rawData, analysedData, eventData, modifiers){
 
 module.exports = {
     modifyData: modifyData,
+    cropTelemetry: cropTelemetry,
     getTelemetry: getTelemetry
 };
