@@ -157,6 +157,51 @@ module.exports = {
     },
 
 
+    getLatestLaunch: async function(req, res, next){
+       if(!await company.exists(req.params.company)){
+            next({status: 404, message: `Company "${req.params.company}" is not found`});
+            return;
+       }
+
+    
+        try{
+            const flight_numbers = await Company.findOne({company_id: req.params.company}, "launches.flight_number");
+               
+            if (flight_numbers.length === 0)
+                throw new Error(`No launches found for ${req.params.company}`);
+               
+
+            // Inefficent but easy in JS
+            const launches = flight_numbers.launches.sort((elm1, elm2) => elm1.flight_number - elm2.flight_number);
+            const result = await mongoHelper.findLaunchMetadata(req.params.company, {flight_number: launches[launches.length-1].flight_number});
+                
+            // If no launch was found return a "Not Found" error
+            if (!result){
+                next({status: 404, message: "Not Found"});
+                return;
+            }
+            
+            // Get the telemetry
+            let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
+    
+            // box the metadata and telemetry and send it
+            res.send(
+                {
+                    mission_id: result.mission_id,
+                    name: result.name,
+                    flight_number: result.flight_number,
+                    launch_library_id: result.launch_library_id,
+                    raw: rawData,
+                    analysed: analysedData,
+                    events: eventData
+                }
+            );
+        }catch(ex){
+            next(ex);
+        }  
+    },
+
+
     // Add a launch to the database
     addOne: async function(req, res, next){
         try{
