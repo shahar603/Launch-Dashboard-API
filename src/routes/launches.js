@@ -14,8 +14,8 @@ router.get("/", launches.getLaunchFromLaunchLibraryProvider);
 // Get all the available data about a launch
 router.get("/:company", launches.getLaunches);
 
-// Returns an error because not a valid query
-router.get("/", launches.getError);
+// Get the latest launch of a launch provider
+router.get("/latest/:company", launches.getLatestLaunch);
 
 // Add a launch to the database
 router.post("/", checkLaunch, launches.addOne);
