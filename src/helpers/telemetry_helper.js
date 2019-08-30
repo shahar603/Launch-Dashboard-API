@@ -217,7 +217,31 @@ async function getTelemetry(key, company, identifiers, modifiers){
 
 
 
+function modifyData(rawData, analysedData, eventData, modifiers){
+    let {start, end, event} = eventsToStartEnd(eventData, modifiers);
+    let interval = getInterval(modifiers);
+    rawData = chooseStagesAndTelemetryRange(rawData,
+        modifiers.stage,
+        start,
+        end,
+        event,
+        modifiers.event_window,
+        interval);
+
+    analysedData = chooseStagesAndTelemetryRange(analysedData,
+        modifiers.stage,
+        start,
+        end,
+        event,
+        modifiers.event_window,
+        interval);
+
+    return {raw: rawData, analysed: analysedData};
+}
+
+
 module.exports = {
+    modifyData: modifyData,
     cropTelemetry: cropTelemetry,
     getTelemetry: getTelemetry
 };

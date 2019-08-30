@@ -4,6 +4,7 @@ const mongoHelper = require("../helpers/mongo_helper");
 const _ = require("lodash");
 const { checkIdentifiers } = require("../middleware/validator");
 const company = require("./company");
+const {modifyData} = require("../helpers/telemetry_helper");
 
 
 async function exists(company_id, identifiers){
@@ -54,12 +55,6 @@ module.exports = {
     },
 
 
-    // Provide help for the users with informative errors
-    getError: async function(req, res, next){
-        next({status: 422, message: "Missing `company` parameter"});
-    },
-
-
 
 
     getLaunchFromLaunchLibraryProvider: async function(req, res, next){
@@ -87,6 +82,8 @@ module.exports = {
             // Get the telemetry
             let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
 
+            const {raw, analysed} = modifyData(rawData, analysedData, eventData, req.modifiers);
+
             // box the metadata and telemetry and send it
             res.send(
                 {
@@ -94,8 +91,8 @@ module.exports = {
                     name: result.name,
                     flight_number: result.flight_number,
                     launch_library_id: result.launch_library_id,
-                    raw: rawData,
-                    analysed: analysedData,
+                    raw: raw,
+                    analysed: analysed,
                     events: eventData
                 }
             );
@@ -138,6 +135,8 @@ module.exports = {
                 // Get the telemetry
                 let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
 
+                const {raw, analysed} = modifyData(rawData, analysedData, eventData, req.modifiers);
+
                 // box the metadata and telemetry and send it
                 res.send(
                     {
@@ -145,8 +144,8 @@ module.exports = {
                         name: result.name,
                         flight_number: result.flight_number,
                         launch_library_id: result.launch_library_id,
-                        raw: rawData,
-                        analysed: analysedData,
+                        raw: raw,
+                        analysed: analysed,
                         events: eventData
                     }
                 );
@@ -184,6 +183,8 @@ module.exports = {
             // Get the telemetry
             let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
     
+            const {raw, analysed} = modifyData(rawData, analysedData, eventData, req.modifiers);
+
             // box the metadata and telemetry and send it
             res.send(
                 {
@@ -191,8 +192,8 @@ module.exports = {
                     name: result.name,
                     flight_number: result.flight_number,
                     launch_library_id: result.launch_library_id,
-                    raw: rawData,
-                    analysed: analysedData,
+                    raw: raw,
+                    analysed: analysed,
                     events: eventData
                 }
             );
