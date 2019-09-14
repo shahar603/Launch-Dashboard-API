@@ -26,7 +26,51 @@
 ## Usage
 
 ```javascript
+curl -s https://api.launchdashboard.space/v1/launches/latest/spacex | jq
+```
 
+```javascript
+{
+  "mission_id": "amos-17",
+  "name": "Amos-17",
+  "flight_number": 83,
+  "launch_library_id": 1388,
+  "raw": [
+    {
+      "stage": 2,
+      "telemetry": [
+        { "time": 0, "velocity": 0.277, "altitude": 0 },
+        { "time": 0.033, "velocity": 0.555, "altitude": 0 },
+        { "time": 0.067, "velocity": 0.555, "altitude": 0},
+        { "time": 0.1, "velocity": 0.555, "altitude": 0 },
+        { "time": 0.133, "velocity": 0.555, "altitude": 0 },
+        { "time": 0.166, "velocity": 0.833, "altitude": 0 },
+        { "time": 0.2, "velocity": 0.833, "altitude": 0 },
+        ...
+        { "time": 1918.333, "velocity": 9518.333, "altitude": 525},
+        { "time": 1918.366, "velocity": 9518.333, "altitude": 525}
+      ]
+    }
+  ],
+  "analysed": [
+    {
+      "stage": 2,
+      "telemetry": [
+        { "time": 0, "velocity": 0.277, "altitude": 0, "velocity_y": -0.219, "velocity_x": 0.168, "acceleration": 10.698 "downrange_distance": 0, "angle": 90, "q": 0.046996480116054146 },
+        { "time": 1, "velocity": 1.97, "altitude": 0.001, "velocity_y": 2.039, "velocity_x": -0.038, "acceleration": 11.285, "downrange_distance": 0, "angle": 90, "q": 2.3762015600538513 },
+        ...
+        { "time": 506, "velocity": 7424.372, "altitude": 163.85, "velocity_y": -32.707, "velocity_x": 7424.301, "acceleration": -0.016, "downrange_distance": 1585.22, "angle": -0.252, "q": 0 }
+      ]
+    }
+  ],
+  "events": [
+    { "key": "maxq", "time": 66 },
+    { "key": "throttle_down_start", "time": 45 },
+    { "key": "throttle_down_end", "time": 91 },
+    { "key": "meco", "time": 169 },
+    ...
+  ]
+}
 ```
 
 
