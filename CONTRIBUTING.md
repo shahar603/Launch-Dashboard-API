@@ -19,3 +19,7 @@ Add a comment with your addition to on the [Features, Data and Telemetry Suggest
 ## Corrections
 
 Open a new issue on [Launch-Dashboard-API/issues](https://github.com/shahar603/Launch-Dashboard-API/issues)
+
+## Have any questions?
+
+Open a new issue [here](https://github.com/shahar603/Launch-Dashboard-API/issues/). Please mark it with a 'Question' tag.
