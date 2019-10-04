@@ -2,7 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
-const socket = require("socket.io");
+const socketio = require("socket.io");
 const Redis = require("ioredis");
 // Import middleware
 const bodyParser = require("body-parser");
@@ -25,6 +25,8 @@ const passport = require("passport");
 const passportSetup = require("./auth/passport-setup");
 const cacheHelper = require("./helpers/cache_helper");
 const tokens = require("./auth/tokens");
+const jwt = require("jsonwebtoken");
+
 
 
 
@@ -137,16 +139,26 @@ module.exports = app;
 
 
         const allowedEvents = ["raw", "analysed"];
-        const io = socket(server);
+        const io = socketio(server);
+ 
+        io.on("connect", async function(socket){
+            console.log("Made a connection", socket.id);
 
-        io.of("/live").on("connection", function(socket){
-            console.log("Made connection", socket.id);
+            try{
+                const user = await jwt.verify(socket.handshake.query.access_token, tokens.pubKey, { algorithm: "RS256"});
+
+                // Some checks and stuff
+
+                socket.admin = true;
+            }catch(ex){
+                console.log(ex);
+            }
+            
 
 
             function registerEvent(event){
                 socket.on(event, function(data) {
-                    console.log(`Cookie: ${socket.handshake.headers.cookie}`);
-
+                    console.log(data);
                     if (Object.keys(global.LIVE_TELEMETRY).includes(event)){
                         global.LIVE_TELEMETRY[event].push(data);
                         socket.broadcast.to(event).emit(event, data);
@@ -155,6 +167,8 @@ module.exports = app;
             }
 
             socket.on("register", function(events) {
+                if (!socket.admin) return;
+
                 events.forEach((event) => {
                     if (allowedEvents.includes(event))
                         registerEvent(event);
