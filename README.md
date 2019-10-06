@@ -75,7 +75,7 @@ curl -s https://api.launchdashboard.space/v1/launches/latest/spacex | jq
 
 ## Contributions
 
-See [Contributing.md](https://github.com/shahar603/Launch-Dashboard-API/blob/master/CONTRIBUTING.md) for contribution instrcutions.
+See [Contributing.md](https://github.com/shahar603/Launch-Dashboard-API/blob/master/CONTRIBUTING.md) for contribution instructions.
 
 
 
