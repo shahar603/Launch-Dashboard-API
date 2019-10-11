@@ -16,7 +16,7 @@
 </p>
 
 <h1 align="center">
-  <a href="https://documenter.getpostman.com/view/6536395/S11Htyq1">Documentation</a> - 
+  <a href="https://github.com/shahar603/Launch-Dashboard-API/wiki">Documentation</a> - 
   <a href="#Clients">Clients</a> - 
   <a href="#Apps">Apps</a> -
   <a href="#data-sources">Data Sources</a>
