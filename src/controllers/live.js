@@ -27,6 +27,7 @@ module.exports = {
             global.LIVE_TELEMETRY[req.modifiers.type],
             req.modifiers.start,
             req.modifiers.end,
+            undefined,
             undefined
         ));
     },

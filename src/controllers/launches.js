@@ -33,7 +33,7 @@ module.exports = {
         try{
         // Get all launches
         if (_.isEmpty(req.identifiers)){
-            let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number");
+            let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number launches.launch_library_id");
 
             if (!result)
                 throw {status: 404, message: "Not Found"};
@@ -47,7 +47,12 @@ module.exports = {
             if (!result)
                 throw {status: 404, message: "Not Found"};
 
-            res.send(result);
+            res.send({
+                mission_id: result.mission_id,
+                name: result.name,
+                flight_number: result.flight_number,
+                launch_library_id: result.launch_library_id
+            });
         }
         }catch(ex){
         next(ex);
