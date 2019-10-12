@@ -14,31 +14,32 @@
   "author": "Shahar603",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.493.0",
-    "bluebird": "^3.5.5",
-    "config": "^3.2.0",
+    "aws-sdk": "^2.548.0",
+    "bluebird": "^3.7.0",
+    "config": "^3.2.3",
     "content-filter": "^1.1.2",
     "express": "^4.17.1",
-    "ioredis": "^4.11.2",
-    "jest": "^24.8.0",
+    "ioredis": "^4.14.1",
+    "jest": "^24.9.0",
     "joi": "^14.3.1",
     "joigoose": "^4.0.8",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.14",
-    "mongoose": "^5.6.4",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.4",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.3.0",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.2",
+    "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.12.0",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-mocha": "^5.3.0",
-    "eslint-plugin-react": "^7.14.2"
+    "eslint-plugin-react": "^7.16.0"
   }
 }
