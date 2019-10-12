@@ -2,7 +2,7 @@
 
 **NOTE**: Make sure every change is covered by a unit test.
 
-1. Fork the repo, make changes, add tests, commit, and submit a Pull Request
+1. Fork the repo, create a new branch from `develop`, make changes, add tests, commit, and submit a Pull Request (to `develop`)
 
 2. New Pull Requests will automatically trigger a Travis CI Build
 
@@ -19,3 +19,7 @@ Add a comment with your addition to on the [Features, Data and Telemetry Suggest
 ## Corrections
 
 Open a new issue on [Launch-Dashboard-API/issues](https://github.com/shahar603/Launch-Dashboard-API/issues)
+
+## Have any questions?
+
+Open a new issue [here](https://github.com/shahar603/Launch-Dashboard-API/issues/). Please mark it with a 'Question' tag.
