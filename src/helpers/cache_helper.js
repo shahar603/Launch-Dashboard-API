@@ -7,9 +7,7 @@ module.exports = {
     doCache: doCache,
 
     add: (key, value, expire) => {
-        console.log("Caching: " + key);
         if (doCache() && key && value){
-            console.log("actually caching");
             global.REDIS_CLIENT.set(key, value);
 
             if (expire)
