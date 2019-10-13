@@ -200,7 +200,7 @@ module.exports = {
             const {raw, analysed} = modifyData(rawData, analysedData, eventData, req.modifiers);
 
             // box the metadata and telemetry and send it
-            res.send(
+            /*res.send(
                 {
                     mission_id: result.mission_id,
                     name: result.name,
@@ -210,7 +210,8 @@ module.exports = {
                     analysed: analysed,
                     events: eventData
                 }
-            );
+            );*/
+            res.send("done");
         }catch(ex){
             next(ex);
         }  
