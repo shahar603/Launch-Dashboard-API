@@ -2,6 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const tokens = require("../auth/tokens");
+const keys = require("../auth/keys");
 const moment = require("moment");
 
 
@@ -21,7 +22,7 @@ router.get("/google", passport.authenticate("google", {
 
 // Callback uri
 router.get("/google/redirect", passport.authenticate("google", { session: false }), (req, res) => {
-    const token = jwt.sign({ user: { id: req.user._id, username: req.user.username, date: moment().unix() } }, tokens.priKey, { algorithm: "RS256"});
+    const token = jwt.sign({ user: { id: req.user._id, username: req.user.username, date: moment().unix() } }, {key: tokens.priKey, passphrase: keys.jwt.passphrase}, { algorithm: "RS256"});
     res.status(200).json({token});
 });
 

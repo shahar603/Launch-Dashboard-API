@@ -21,7 +21,8 @@ module.exports = {
 
     jwt: {
         pubKey: process.env.JWT_PUBLIC_KEY,
-        priKey: process.env.JWT_PRIVATE_KEY
+        priKey: process.env.JWT_PRIVATE_KEY,
+        passphrase: process.env.JWT_PASSPHRASE
     }
 
 };
