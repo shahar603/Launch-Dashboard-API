@@ -7,11 +7,14 @@ module.exports = {
     doCache: doCache,
 
     add: (key, value, expire) => {
-        if (doCache() && key && value)
+        console.log("Caching: " + key);
+        if (doCache() && key && value){
+            console.log("actually caching");
             global.REDIS_CLIENT.set(key, value);
 
             if (expire)
                 global.REDIS_CLIENT.expire(key, expire);
+        }
     },
 
     get: async (key) => {
