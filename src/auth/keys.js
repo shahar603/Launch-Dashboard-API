@@ -5,9 +5,7 @@ module.exports = {
     },
 
     mongodb: {
-        connectionString: process.env.CONNECTION_STRING,
-        userID: process.env.MONGO_USER_ID,
-        userKey: process.env.MONGO_USER_KEY
+        connectionString: process.env.CONNECTION_STRING
     },
 
     s3: {

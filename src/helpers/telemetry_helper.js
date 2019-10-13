@@ -203,6 +203,9 @@ async function getTelemetry(key, company, identifiers, modifiers){
     else if (key === "analysed")
         data = await s3Helper.getFile(launchMetadata.analysed_path);
 
+    if (!data)
+        return undefined;
+
     let {start, end, event} = eventsToStartEnd(events, modifiers);
     let interval = getInterval(modifiers);
     return chooseStagesAndTelemetryRange(data,

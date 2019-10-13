@@ -87,6 +87,9 @@ module.exports = {
             // Get the telemetry
             let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
 
+            if (!rawData || !analysedData || !eventData)
+                throw new Error("Telemetry data is unavailable (even thought it should be)\nPlease report this issue on the Launch Dashboard API GitHub Repository");
+
             const {raw, analysed} = modifyData(rawData, analysedData, eventData, req.modifiers);
 
             // box the metadata and telemetry and send it
@@ -140,6 +143,9 @@ module.exports = {
                 // Get the telemetry
                 let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
 
+                if (!rawData || !analysedData || !eventData)
+                    throw new Error("Telemetry data is unavailable (even thought it should be)\nPlease report this issue on the Launch Dashboard API GitHub Repository");
+
                 const {raw, analysed} = modifyData(rawData, analysedData, eventData, req.modifiers);
 
                 // box the metadata and telemetry and send it
@@ -187,6 +193,9 @@ module.exports = {
             
             // Get the telemetry
             let { rawData, analysedData, eventData } = await s3Helper.getOneLaunch(result);
+
+            if (!rawData || !analysedData || !eventData)
+                    throw new Error("Telemetry data is unavailable (even thought it should be)\nPlease report this issue on the Launch Dashboard API GitHub Repository");
     
             const {raw, analysed} = modifyData(rawData, analysedData, eventData, req.modifiers);
 

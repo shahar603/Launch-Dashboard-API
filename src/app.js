@@ -68,7 +68,7 @@ if (cacheHelper.doCache()){
 
 
 
-// ######################### AUTHENTICATION COOKIE ###################
+// ######################### AUTHENTICATION TOKEN ###################
 
 // Initialize passport
 app.use(passport.initialize());

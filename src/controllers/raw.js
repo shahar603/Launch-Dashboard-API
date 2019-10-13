@@ -15,10 +15,14 @@ module.exports = {
 
                 if (result){
                     res.type("json").send(result);
+                    return;
                 }
             }
 
             let out = await getTelemetry("raw", req.params.company, req.identifiers, req.modifiers);
+
+            if (!out)
+                throw new Error("Telemetry data is unavailable (even thought it should be)\nPlease report this issue on the Launch Dashboard API GitHub Repository");
 
             if (req.modifiers === {}){
                 cacheHelper.add(cacheKey, JSON.stringify(out), 60);
