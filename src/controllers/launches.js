@@ -273,12 +273,7 @@ module.exports = {
             return;
         }
 
-        let deletedLaunch = await s3Helper.deleteOneLaunch(launch);
-
-        if (!deletedLaunch){
-            next({status: 500, message: "Failed to delete launch"});
-            return;
-        }
+        await s3Helper.deleteOneLaunch(launch);
 
         res.send(launch);
     },

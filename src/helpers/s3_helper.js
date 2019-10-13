@@ -127,10 +127,10 @@ async function addOneLaunch(launch){
 }
 
 
-async function deleteOneLaunch(launch){
-    return (!launch.raw_path || !_.isEmpty(await deleteFile(launch.raw_path))) &&
-            (!launch.analysed_path || !_.isEmpty(await deleteFile(launch.analysed_path))) &&
-            (!launch.events_path || !_.isEmpty(await deleteFile(launch.events_path)));
+async function deleteOneLaunch(launch){      
+    await deleteFile(launch.raw_path);
+    await deleteFile(launch.analysed_path);
+    await deleteFile(launch.events_path);
 }
 
 
