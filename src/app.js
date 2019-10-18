@@ -171,8 +171,6 @@ module.exports = app;
 
             function registerEvent(event){
                 socket.on(event, function(data) {
-                    console.log(`${JSON.stringify(socket.user)} registered ${event}`);
-                    
                     if (Object.keys(global.LIVE_TELEMETRY).includes(event)){
                         global.LIVE_TELEMETRY[event].push(data);
                         socket.broadcast.to(event).emit(event, data);

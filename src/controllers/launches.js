@@ -211,7 +211,6 @@ module.exports = {
                     events: eventData
                 }
             );
-            res.send("done");
         }catch(ex){
             next(ex);
         }  
