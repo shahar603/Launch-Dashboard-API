@@ -29,7 +29,7 @@ const passportSetup = require("./auth/passport-setup");
 const cacheHelper = require("./helpers/cache_helper");
 const tokens = require("./auth/tokens");
 const jwt = require("jsonwebtoken");
-
+var morgan = require("morgan");
 
 
 
@@ -97,6 +97,8 @@ app.use(function(req, res, next) {
 });
 
 
+// Logging the request (without identifing detaills);
+app.use(morgan("tiny"));
 
 // ##################### ROUTES #####################
 
