@@ -9,7 +9,7 @@
 3. If the build fails, look at the [Build Logs](https://travis-ci.org/shahar603/Launch-Dashboard-API/).
 Changes will not be merged unless the build passes
 
-4. If the build succeeds, the pull request will be reviewd, and when merged will be automatically
+4. If the build succeeds, the pull request will be reviewed, and when merged will be automatically
 pushed to the production server at [api.launchdashboard.space](https://api.launchdashboard.space)
 
 ## Suggestions for new features, data or telemetry
