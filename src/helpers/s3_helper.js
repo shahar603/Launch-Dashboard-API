@@ -66,6 +66,8 @@ async function addFile(content, targetPath){
         ContentType: "application/json"
     };
 
+    console.log(params);
+
     return await s3.upload(params).promise();
  }
 
