@@ -30,7 +30,7 @@ const cacheHelper = require("./helpers/cache_helper");
 const tokens = require("./auth/tokens");
 const jwt = require("jsonwebtoken");
 var morgan = require("morgan");
-
+process.setMaxListeners(0);
 
 
 global.REDIS_CONNECTION_STRING = keys.redis.redisConnectionString;
