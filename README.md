@@ -87,6 +87,13 @@ The Apps and Tools that use Launch Dashboard API
 |[FlightClub.io](https://www2.flightclub.io/)|Rocket Launch Simulation and Visualization|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
 
 
+## Derivative Content
+Creations made using Launch Dashboard API
+
+|Content|Description|Creator|
+|-----|-----|----|
+|[Aerodynamic Pressure animation](https://twitter.com/JcAsHcan/status/1188125678396493825)|An animation of the aerodynamic pressure(Q) during ascent on the AMOS-17 mission|[Jake Hannan](https://twitter.com/JcAsHcan)|
+
 ## Clients
 Clients and APIs using Launch Dashboard API
 
