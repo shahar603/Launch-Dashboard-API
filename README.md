@@ -87,6 +87,15 @@ The Apps and Tools that use Launch Dashboard API
 |[FlightClub.io](https://www2.flightclub.io/)|Rocket Launch Simulation and Visualization|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
 
 
+## Derivative Content
+Creations made using Launch Dashboard API
+
+|Content|Description|Creator|
+|-----|-----|----|
+|[Aerodynamic Pressure animation](https://twitter.com/JcAsHcan/status/1188125678396493825)|An animation of the aerodynamic pressure(Q) during ascent on the AMOS-17 mission|[Jake Hannan](https://twitter.com/JcAsHcan)|
+|[Mission Creation](https://twitter.com/flightclubio/status/1199805613749915648)|A tools that builds a flight plan that matches the webcast telemetry in the API |[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
+|[Falcon Boosters' Entry Energy Comparison](https://www.reddit.com/r/spacex/comments/elzp52/falcon_boosters_entry_energy_comparison/)|A diagram that compares total energy of the Falcon boosters' reentry energy|[Shahar603](https://github.com/shahar603)
+
 ## Clients
 Clients and APIs using Launch Dashboard API
 
