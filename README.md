@@ -88,7 +88,7 @@ The Apps and Tools that use Launch Dashboard API
 
 
 ## Derivative Content
-Creations made using Launch Dashboard API
+Content made using Launch Dashboard API
 
 |Content|Description|Creator|
 |-----|-----|----|
