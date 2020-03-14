@@ -1,7 +1,7 @@
 {
-  "name": "space-dashboard-api",
+  "name": "launch-dashboard-api",
   "version": "1.0.0",
-  "description": "A REST API for SpaceX Telemetry",
+  "description": "A REST API for rocket Telemetry",
   "main": "src/app.js",
   "scripts": {
     "test": "jest",
@@ -9,38 +9,39 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/shahar603/SpaceX-Telemetry-API.git"
+    "url": "https://github.com/shahar603/Launch-Dashboard-API"
   },
   "author": "Shahar603",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.556.0",
-    "bluebird": "^3.7.1",
-    "config": "^3.2.3",
+    "aws-sdk": "^2.639.0",
+    "bluebird": "^3.7.2",
+    "config": "^3.3.0",
     "content-filter": "^1.1.2",
     "express": "^4.17.1",
-    "ioredis": "^4.14.1",
-    "jest": "^24.9.0",
+    "ioredis": "^4.16.0",
+    "jest": "^25.1.0",
     "joi": "^14.3.1",
-    "joigoose": "^4.0.8",
+    "joigoose": "^7.0.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.7",
+    "mongoose": "^5.9.4",
     "morgan": "^1.9.1",
-    "passport": "^0.4.0",
-    "passport-google-oauth20": "^1.0.0",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
     "socket.io": "^2.3.0",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
-    "eslint-config-google": "^0.12.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-mocha": "^5.3.0",
-    "eslint-plugin-react": "^7.16.0"
+    "acorn": "^7.1.1",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-mocha": "^6.3.0",
+    "eslint-plugin-react": "^7.19.0"
   }
 }
