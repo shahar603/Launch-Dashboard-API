@@ -26,7 +26,7 @@
 ## Usage
 
 ```javascript
-curl -s https://api.launchdashboard.space/v1/launches/latest/spacex | jq
+curl -s http://api.launchdashboard.space/v1/launches/latest/spacex | jq
 ```
 
 ```javascript
