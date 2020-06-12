@@ -101,8 +101,7 @@ Clients and APIs using Launch Dashboard API
 
 |Client|Description|Creator|
 |-----|-----|----|
-
-Nothing here yet...
+|https://www.nuget.org/packages/DotNetLaunchDashboard/| .NET Wrapper for Launch Dashboard API|[Tearth](https://github.com/Tearth)
 
 ## Data Sources
 The Source of the data in the API
