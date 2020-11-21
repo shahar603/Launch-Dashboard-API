@@ -4,7 +4,7 @@ const mongoHelper = require("../../helpers/v1/mongo_helper");
 const _ = require("lodash");
 const { checkIdentifiers } = require("../../middleware/v1/validator");
 const company = require("./company");
-const {modifyData} = require("../../helpers/telemetry_helper");
+const {modifyData} = require("../../helpers/v1/telemetry_helper");
 
 
 async function exists(company_id, identifiers){

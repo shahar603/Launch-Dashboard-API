@@ -33,10 +33,9 @@ const jwt = require("jsonwebtoken");
 var morgan = require("morgan");
 process.setMaxListeners(0);
 
-
 global.REDIS_CONNECTION_STRING = keys.redis.redisConnectionString;
-global.CONNECTION_STRING = keys.mongodb.connectionString;
-
+global.CONNECTION_STRING_V1 = keys.mongodb.connectionStringV1;
+global.CONNECTION_STRING_V2 = keys.mongodb.connectionStringV2;
 
 // Create an express app
 const app = express();
@@ -153,10 +152,12 @@ module.exports = app;
 
 
 (async function(){
-    // Connect to monsgoose and create/connect to the db
-    mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
+    global.connectionV1 = mongoose.createConnection(global.CONNECTION_STRING_V1, {useNewUrlParser: true});
+    global.connectionV2 = mongoose.createConnection(global.CONNECTION_STRING_V2, {useNewUrlParser: true});
+    
     tokens.setKeys();
-    mongoose.connection.once("open", function(){
+    
+    function setupLive(){
         // Start the server on port 3000
         const server = app.listen(process.env.PORT || 3000, () => {
             app.emit("ready");
@@ -207,9 +208,6 @@ module.exports = app;
 
         });
 
-
-
-    }).on("error", function(err){
-        console.log(`Connection Error: ${err}`);
-    });
+    }
+setupLive();
 })();
