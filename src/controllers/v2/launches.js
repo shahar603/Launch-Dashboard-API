@@ -1,6 +1,6 @@
 const Company = require("../../models/v2/company");
 const s3Helper = require("../../helpers/s3_helper");
-const mongoHelper = require("../../helpers/v1/mongo_helper");
+const mongoHelper = require("../../helpers/v2/mongo_helper");
 const _ = require("lodash");
 const { checkIdentifiers } = require("../../middleware/v2/validator");
 const company = require("./company");
