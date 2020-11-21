@@ -152,11 +152,12 @@ module.exports = app;
 
 
 (async function(){
-    const connectionV1 = mongoose.createConnection(global.CONNECTION_STRING_V1, {useNewUrlParser: true})
-    const connectionV2 = mongoose.createConnection(global.CONNECTION_STRING_V2, {useNewUrlParser: true})
+    global.connectionV1 = mongoose.createConnection(global.CONNECTION_STRING_V1, {useNewUrlParser: true});
+    global.connectionV2 = mongoose.createConnection(global.CONNECTION_STRING_V2, {useNewUrlParser: true});
+    
     tokens.setKeys();
     
-    Promise.all([connectionV1, connectionV2]).once("open", function(){
+    function setupLive(){
         // Start the server on port 3000
         const server = app.listen(process.env.PORT || 3000, () => {
             app.emit("ready");
@@ -207,9 +208,6 @@ module.exports = app;
 
         });
 
-
-
-    }).on("error", function(err){
-        console.log(`Connection Error: ${err}`);
-    });
+    }
+setupLive();
 })();

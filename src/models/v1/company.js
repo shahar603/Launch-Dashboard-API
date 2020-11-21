@@ -49,5 +49,5 @@ const CompanySchema = new Schema({
 }, { collection: "company"});
 
 
-const Company = mongoose.model("company", CompanySchema);
+const Company = global.connectionV1.model("company", CompanySchema);
 module.exports = Company;
