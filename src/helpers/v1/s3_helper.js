@@ -1,6 +1,6 @@
 // This file contains functions to put, get, update and delete data from the AWS S3 bucket
 const AWS = require("aws-sdk");
-const Keys = require("../auth/keys");
+const Keys = require("../../auth/keys");
 
 // configuring the AWS environment
 AWS.config.update({
