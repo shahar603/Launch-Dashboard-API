@@ -23,12 +23,12 @@ const eventsV1 = require("./routes/v1/events");
 const infoV1 = require("./routes/v1/info");
 const companyV1 = require("./routes/v1/company");
 // Import routes V2
-const launchesV2 = require("./routes/v1/launches");
-const rawV2 = require("./routes/v1/raw");
-const analysedV2 = require("./routes/v1/analysed");
-const eventsV2 = require("./routes/v1/events");
-const infoV2 = require("./routes/v1/info");
-const companyV2 = require("./routes/v1/company");
+const launchesV2 = require("./routes/v2/launches");
+const rawV2 = require("./routes/v2/raw");
+const analysedV2 = require("./routes/v2/analysed");
+const eventsV2 = require("./routes/v2/events");
+const infoV2 = require("./routes/v2/info");
+const companyV2 = require("./routes/v2/company");
 // Authentication imports
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
