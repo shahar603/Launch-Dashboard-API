@@ -13,14 +13,22 @@ const requestSplitterV1 = require("./middleware/v1/request_splitting");
 const requestSplitterV2 = require("./middleware/v2/request_splitting");
 const errorHandler = require("./middleware/error_handler");
 const filter = require("content-filter");
-// Import routes
-const launches = require("./routes/v1/launches");
-const raw = require("./routes/v1/raw");
-const analysed = require("./routes/v1/analysed");
-const events = require("./routes/v1/events");
-const info = require("./routes/v1/info");
+// Live
 const live = require("./routes/v1/live");
-const company = require("./routes/v1/company");
+// Import routes V1
+const launchesV1 = require("./routes/v1/launches");
+const rawV1 = require("./routes/v1/raw");
+const analysedV1 = require("./routes/v1/analysed");
+const eventsV1 = require("./routes/v1/events");
+const infoV1 = require("./routes/v1/info");
+const companyV1 = require("./routes/v1/company");
+// Import routes V2
+const launchesV2 = require("./routes/v1/launches");
+const rawV2 = require("./routes/v1/raw");
+const analysedV2 = require("./routes/v1/analysed");
+const eventsV2 = require("./routes/v1/events");
+const infoV2 = require("./routes/v1/info");
+const companyV2 = require("./routes/v1/company");
 // Authentication imports
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
@@ -113,23 +121,23 @@ app.use(morgan(function (tokens, req, res) {
 
 app.all("/v1/*", requestSplitterV1);
 // Use the routes we set up on routes/api.js
-app.use("/v1/company", company);
-app.use("/v1/launches", launches);
-app.use("/v1/raw", raw);
-app.use("/v1/analysed", analysed);
-app.use("/v1/events", events);
+app.use("/v1/company", companyV1);
+app.use("/v1/launches", launchesV1);
+app.use("/v1/raw", rawV1);
+app.use("/v1/analysed", analysedV1);
+app.use("/v1/events", eventsV1);
 app.use("/v1/live", live);
-app.use("/", info);
+app.use("/", infoV1);
 
 app.all("/v2/*", requestSplitterV2);
 // Use the routes we set up on routes/api.js
-app.use("/v2/company", company);
-app.use("/v2/launches", launches);
-app.use("/v2/raw", raw);
-app.use("/v2/analysed", analysed);
-app.use("/v2/events", events);
+app.use("/v2/company", companyV2);
+app.use("/v2/launches", launchesV2);
+app.use("/v2/raw", rawV2);
+app.use("/v2/analysed", analysedV2);
+app.use("/v2/events", eventsV2);
 app.use("/v2/live", live);
-app.use("/", info);
+app.use("/", infoV2);
 
 // set up authentiacation routes
 app.use("/auth", authRoutes);
