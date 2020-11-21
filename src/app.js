@@ -129,7 +129,7 @@ app.use("/v1/raw", rawV1);
 app.use("/v1/analysed", analysedV1);
 app.use("/v1/events", eventsV1);
 app.use("/v1/live", live);
-app.use("/", infoV1);
+app.use("/v1", infoV1);
 
 app.all("/v2/*", requestSplitterV2);
 // Use the routes we set up on routes/api.js
@@ -139,7 +139,7 @@ app.use("/v2/raw", rawV2);
 app.use("/v2/analysed", analysedV2);
 app.use("/v2/events", eventsV2);
 app.use("/v2/live", live);
-app.use("/", infoV2);
+app.use("/v2", infoV2);
 
 // set up authentiacation routes
 app.use("/auth", authRoutes);
