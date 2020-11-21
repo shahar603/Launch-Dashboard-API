@@ -5,7 +5,7 @@ const Joi = require("joi");
 let identifierKeys = Joi.object({
     "mission_id": Joi.string(),
     "flight_number": Joi.number().integer().positive(),
-    "launch_library_2_id": Joi.number().integer().positive()
+    "launch_library_2_id": Joi.string()
 }).options({ stripUnknown: true });
 
 

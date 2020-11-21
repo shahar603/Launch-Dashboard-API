@@ -20,7 +20,7 @@ const LaunchFileSchema = new Schema({
         min: 0
     },
     launch_library_2_id: {
-        type: Number,
+        type: String,
         required: true,
         min: 0 
     },
