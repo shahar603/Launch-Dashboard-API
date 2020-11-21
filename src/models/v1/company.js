@@ -46,8 +46,8 @@ const CompanySchema = new Schema({
         required: false
     },
     launches: [LaunchFileSchema]
-}, { collection: "company"});
+}, { collection: "companyV1"});
 
 
-const Company = mongoose.model("company", CompanySchema);
+const Company = mongoose.model("companyV1", CompanySchema);
 module.exports = Company;

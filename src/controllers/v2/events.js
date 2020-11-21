@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const mongoHelper = require("../../helpers/v1/mongo_helper");
+const mongoHelper = require("../../helpers/v2/mongo_helper");
 const s3Helper = require("../../helpers/s3_helper");
 
 
