@@ -1,4 +1,4 @@
-const s3 = require("../helpers/s3_helper");
+const s3 = require("../helpers/v1/s3_helper");
 const keys = require("./keys");
 
 module.exports = {
