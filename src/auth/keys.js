@@ -5,8 +5,7 @@ module.exports = {
     },
 
     mongodb: {
-        connectionStringV1: process.env.CONNECTION_STRING_V1,
-        connectionStringV2: process.env.CONNECTION_STRING_V2
+        connectionString: process.env.CONNECTION_STRING,
     },
 
     s3: {

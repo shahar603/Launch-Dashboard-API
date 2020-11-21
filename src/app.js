@@ -34,8 +34,7 @@ var morgan = require("morgan");
 process.setMaxListeners(0);
 
 global.REDIS_CONNECTION_STRING = keys.redis.redisConnectionString;
-global.CONNECTION_STRING_V1 = keys.mongodb.connectionStringV1;
-global.CONNECTION_STRING_V2 = keys.mongodb.connectionStringV2;
+global.CONNECTION_STRING = keys.mongodb.connectionString;
 
 // Create an express app
 const app = express();
@@ -152,9 +151,7 @@ module.exports = app;
 
 
 (async function(){
-    global.connectionV1 = mongoose.createConnection(global.CONNECTION_STRING_V1, {useNewUrlParser: true});
-    global.connectionV2 = mongoose.createConnection(global.CONNECTION_STRING_V2, {useNewUrlParser: true});
-    
+    mongoose.connect(global.CONNECTION_STRING, {useNewUrlParser: true});
     tokens.setKeys();
     
     function setupLive(){
