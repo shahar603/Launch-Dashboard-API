@@ -1,4 +1,4 @@
-const Company = require("../../models/v1/company");
+const Company = require("../../models/v2/company");
 const Joi = require("joi");
 
 async function getCompany(company_id){
