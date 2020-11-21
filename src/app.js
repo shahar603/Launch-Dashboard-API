@@ -15,6 +15,7 @@ const errorHandler = require("./middleware/error_handler");
 const filter = require("content-filter");
 // Live
 const live = require("./routes/v1/live");
+const info = require("./routes/info");
 // Import routes V1
 const launchesV1 = require("./routes/v1/launches");
 const rawV1 = require("./routes/v1/raw");
@@ -118,6 +119,7 @@ app.use(morgan(function (tokens, req, res) {
 
 // ##################### ROUTES #####################
 
+app.use("/", info);
 
 app.all("/v1/*", requestSplitterV1);
 // Use the routes we set up on routes/api.js
