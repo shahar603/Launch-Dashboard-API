@@ -1,4 +1,4 @@
-const telemety_helper = require("../../../src/helpers/telemetry_helper");
+const telemety_helper = require("../../../src/helpers/v1/telemetry_helper");
 
 describe("Testing crop_telemetry", () => {
     let telemetry, telemetryWithGap;

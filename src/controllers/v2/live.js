@@ -1,4 +1,4 @@
-const {cropTelemetry} = require("../../helpers/telemetry_helper");
+const {cropTelemetry} = require("../../helpers/v2/telemetry_helper");
 
 
 global.LIVE_TELEMETRY = {

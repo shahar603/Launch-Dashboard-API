@@ -1,6 +1,6 @@
 const _ = require("lodash");
-const s3Helper = require("./s3_helper");
-const mongoHelper = require("./v1/mongo_helper");
+const s3Helper = require("../s3_helper");
+const mongoHelper = require("./mongo_helper");
 
 function eventsToStartEnd(events, modifiers){
     let start, end, eventTime;
