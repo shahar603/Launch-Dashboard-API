@@ -18,6 +18,6 @@ const apiSchema = new Schema({
     versions: [versionSchema]
 });
 
-const Api = global.connectionV1.model("api", apiSchema);
+const Api = mongoose.model("api", apiSchema);
 
 module.exports = Api;
