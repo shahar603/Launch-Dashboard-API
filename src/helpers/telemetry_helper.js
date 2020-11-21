@@ -1,7 +1,6 @@
 const _ = require("lodash");
 const s3Helper = require("./s3_helper");
-const mongoHelper = require("./mongo_helper");
-
+const mongoHelper = require("./v1/mongo_helper");
 
 function eventsToStartEnd(events, modifiers){
     let start, end, eventTime;
@@ -65,16 +64,8 @@ function eventsToStartEnd(events, modifiers){
         eventTime += modifiers.event_offset;
     }
 
-
-
     return {start: start, end: end, event: eventTime};
 }
-
-
-
-
-
-
 
 function cropTelemetry(telemetry, start, end ,event, eventWindow){
     eventWindow = eventWindow || 1;
@@ -96,8 +87,6 @@ function cropTelemetry(telemetry, start, end ,event, eventWindow){
     let endIndex = telemetry.findIndex(function(element) {
         return element.time > end;
     });
-
-
 
     // If start is after all the telemetry or
     // end is before all the telemetry
@@ -125,10 +114,6 @@ function cropTelemetry(telemetry, start, end ,event, eventWindow){
     }
 }
 
-
-
-
-
 function intervalTelemetry(telemetry, interval){
     if (_.isNil(telemetry) || telemetry.length === 0)
         return [];
@@ -146,9 +131,6 @@ function intervalTelemetry(telemetry, interval){
     return filteredTelemetry;
 }
 
-
-
-
 function getInterval(modifiers){
     let interval = 0;
 
@@ -160,8 +142,6 @@ function getInterval(modifiers){
 
     return interval;
 }
-
-
 
 function chooseStagesAndTelemetryRange(data, stage, start, end, event, eventWindow, interval){
     let out = [];
@@ -182,8 +162,7 @@ function chooseStagesAndTelemetryRange(data, stage, start, end, event, eventWind
     return out;
 }
 
-
-//  Get 'key' telemetry from the 'identifiers' and modified using 'modifiers'
+// Get 'key' telemetry from the 'identifiers' and modified using 'modifiers'
 async function getTelemetry(key, company, identifiers, modifiers){
     if (!key || _.isEmpty(identifiers) || _.isNil(modifiers))
         throw {status: 404, message: "Not Found"};
@@ -217,9 +196,6 @@ async function getTelemetry(key, company, identifiers, modifiers){
         interval);
 }
 
-
-
-
 function modifyData(rawData, analysedData, eventData, modifiers){
     let {start, end, event} = eventsToStartEnd(eventData, modifiers);
     let interval = getInterval(modifiers);
@@ -241,7 +217,6 @@ function modifyData(rawData, analysedData, eventData, modifiers){
 
     return {raw: rawData, analysed: analysedData};
 }
-
 
 module.exports = {
     modifyData: modifyData,

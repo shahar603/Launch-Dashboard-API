@@ -1,5 +1,5 @@
-const {getTelemetry} = require("../helpers/telemetry_helper");
-const cacheHelper = require("../helpers/cache_helper");
+const {getTelemetry} = require("../../helpers/telemetry_helper");
+const cacheHelper = require("../../helpers/cache_helper");
 
 
 

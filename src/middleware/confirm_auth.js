@@ -2,7 +2,6 @@ const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const tokens = require("../auth/tokens");
 
-
 function checkAuth(req, res, next){
     let authorization = req.get("Authorization");
 
@@ -26,7 +25,6 @@ function checkAuth(req, res, next){
         }   
     });
 }
-
 
 router.post("*", checkAuth);
 router.put("*", checkAuth);

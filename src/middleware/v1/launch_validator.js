@@ -1,6 +1,3 @@
-const _ = require("lodash");
-
-
 module.exports = {
 
     checkLaunch: function(req, res, next){

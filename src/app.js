@@ -9,17 +9,18 @@ const socketio = require("socket.io");
 const Redis = require("ioredis");
 // Import middleware
 const bodyParser = require("body-parser");
-const requestSplitter = require("./middleware/request_splitting");
+const requestSplitterV1 = require("./middleware/v1/request_splitting");
+const requestSplitterV2 = require("./middleware/v2/request_splitting");
 const errorHandler = require("./middleware/error_handler");
 const filter = require("content-filter");
 // Import routes
-const launches = require("./routes/launches");
-const raw = require("./routes/raw");
-const analysed = require("./routes/analysed");
-const events = require("./routes/events");
-const info = require("./routes/info");
-const live = require("./routes/live");
-const company = require("./routes/company");
+const launches = require("./routes/v1/launches");
+const raw = require("./routes/v1/raw");
+const analysed = require("./routes/v1/analysed");
+const events = require("./routes/v1/events");
+const info = require("./routes/v1/info");
+const live = require("./routes/v1/live");
+const company = require("./routes/v1/company");
 // Authentication imports
 const confirmAuth = require("./middleware/confirm_auth");
 const authRoutes = require("./routes/auth-routes");
@@ -48,7 +49,7 @@ if (cacheHelper.doCache()){
         port: 6379,
         host: global.REDIS_CONNECTION_STRING,
       reconnectOnError: function (err) {
-        var targetError = "READONLY";
+        const targetError = "READONLY";
         if (err.message.slice(0, targetError.length) === targetError) {
           // Only reconnect when the error starts with "READONLY"
           return true; // or `return 1;`
@@ -62,7 +63,7 @@ if (cacheHelper.doCache()){
       console.log("Error " + err);
     });
     
-    // Print redis errors to the console
+    // Print redis connection to the console
     global.REDIS_CLIENT.on("connect", (err) => {
       console.log("Connected to Redis");
     });
@@ -85,8 +86,6 @@ app.use(bodyParser.json({limit: "10mb"}));
 app.use(bodyParser.urlencoded({limit: "10mb", extended: true}));
 // Validate the input to prevent NoSQL injection
 app.use(filter());
-// Parse the request
-app.use(requestSplitter);
 // If the user tries to modify the database, make sure he/she is authenticated
 app.use("*", confirmAuth);
 // Allow Cross Origin Requests
@@ -99,7 +98,7 @@ app.use(function(req, res, next) {
 
 
 
-// Logging the request (without identifing detaills);
+// Logging the request (without identifing details);
 app.use(morgan(function (tokens, req, res) {
     return [
         "[", tokens.date(req, res), "]",
@@ -114,6 +113,7 @@ app.use(morgan(function (tokens, req, res) {
 // ##################### ROUTES #####################
 
 
+app.all("/v1/*", requestSplitterV1);
 // Use the routes we set up on routes/api.js
 app.use("/v1/company", company);
 app.use("/v1/launches", launches);
@@ -121,6 +121,16 @@ app.use("/v1/raw", raw);
 app.use("/v1/analysed", analysed);
 app.use("/v1/events", events);
 app.use("/v1/live", live);
+app.use("/", info);
+
+app.all("/v2/*", requestSplitterV2);
+// Use the routes we set up on routes/api.js
+app.use("/v2/company", company);
+app.use("/v2/launches", launches);
+app.use("/v2/raw", raw);
+app.use("/v2/analysed", analysed);
+app.use("/v2/events", events);
+app.use("/v2/live", live);
 app.use("/", info);
 
 // set up authentiacation routes

@@ -4,14 +4,9 @@ const keys = require("./keys");
 const User = require("../models/user-model");
 const crypto = require("crypto");
 
-
-
-
 function getId(id){
     return crypto.createHash("sha256").update(id).digest("hex");
 }
-
-
 
 passport.use(
     new GoogleStrategy({

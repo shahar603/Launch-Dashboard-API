@@ -1,11 +1,11 @@
 // Import
 const express = require("express");
-const launches = require("../controllers/launches");
+const launches = require("../../controllers/v2/launches");
 // Create an express router
 const router = express.Router();
 // middleware
-const { checkIdentifiers } = require("../middleware/validator");
-const { checkLaunch } = require("../middleware/launch_validator.js");
+const { checkIdentifiers } = require("../../middleware/v2/validator");
+const { checkLaunch } = require("../../middleware/v2/launch_validator");
 
 
 // Get launch using launch_library_id

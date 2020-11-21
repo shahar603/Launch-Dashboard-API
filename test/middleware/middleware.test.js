@@ -1,6 +1,6 @@
 // Import mocha and assert to unit test the database
 const assert = require("assert");
-const requestSplitter = require("../../src/middleware/request_splitting");
+const requestSplitter = require("../../src/middleware/v1/request_splitting");
 // Equality function
 const _ = require("lodash");
 

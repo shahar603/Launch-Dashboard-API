@@ -1,9 +1,6 @@
 // This file contains functions to put, get, update and delete data from the AWS S3 bucket
 const AWS = require("aws-sdk");
 const Keys = require("../auth/keys");
-const _ = require("lodash");
-
-
 
 // configuring the AWS environment
 AWS.config.update({
@@ -12,14 +9,8 @@ AWS.config.update({
     secretAccessKey: Keys.s3.secretKey
 });
 
-
 // create an S3 instance
 let s3 = new AWS.S3();
-
-
-
-
-
 
 async function readFile(key){
     let params = {
@@ -35,8 +26,6 @@ async function readFile(key){
         return undefined;
     }
 }
-
-
 
 // This function gets the content of the file with name 'key' from the S3 bucket
 async function getFile(key){
@@ -54,9 +43,6 @@ async function getFile(key){
     }
 }
 
-
-
-
   // This function writes content as a file to the S3 bucket
 async function addFile(content, targetPath){
     let params = {
@@ -69,9 +55,6 @@ async function addFile(content, targetPath){
     return await s3.upload(params).promise();
  }
 
-
-
-
   // This function deletes a file named 'key' from the S3 bucket
 async function deleteFile(key){
     let params = {
@@ -81,11 +64,6 @@ async function deleteFile(key){
 
     return await s3.deleteObject(params).promise();
 }
-
-
-
-
-
 
 async function getOneLaunch(launch){
     let rawData, analysedData, eventData;
@@ -98,8 +76,6 @@ async function getOneLaunch(launch){
             analysedData: analysedData,
             eventData: eventData};
 }
-
-
 
 async function addOneLaunch(launch){
     let rawPath, analysedPath, eventsPath;
@@ -126,13 +102,11 @@ async function addOneLaunch(launch){
     return launchMetadata;
 }
 
-
 async function deleteOneLaunch(launch){      
     await deleteFile(launch.raw_path);
     await deleteFile(launch.analysed_path);
     await deleteFile(launch.events_path);
 }
-
 
 async function updateOneLaunch(launch){
     if (deleteOneLaunch(launch))
@@ -140,8 +114,6 @@ async function updateOneLaunch(launch){
 
     return undefined;
 }
-
-
 
 module.exports = {
     readFile: readFile,

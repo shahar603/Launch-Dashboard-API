@@ -1,7 +1,7 @@
 // Import
 const express = require("express");
-const analysed = require("../controllers/analysed");
-const { checkIdentifiers } = require("../middleware/validator");
+const analysed = require("../../controllers/v1/analysed");
+const { checkIdentifiers } = require("../../middleware/v1/validator");
 // Create an express router
 const router = express.Router();
 

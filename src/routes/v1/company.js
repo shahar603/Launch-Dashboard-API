@@ -1,6 +1,6 @@
 // Imports
 const express = require("express");
-const company = require("../controllers/company");
+const company = require("../../controllers/v1/company");
 // Create an express router
 const router = express.Router();
 

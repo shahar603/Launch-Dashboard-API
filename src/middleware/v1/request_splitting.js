@@ -1,10 +1,5 @@
 // Require the utilities function
-const _ = require("lodash");
 const Joi = require("joi");
-
-
-
-
 
 // name of url paramters used to identify keys from the database
 let identifierKeys = Joi.object({
@@ -12,7 +7,6 @@ let identifierKeys = Joi.object({
     "flight_number": Joi.number().integer().positive(),
     "launch_library_id": Joi.number().integer().positive()
 }).options({ stripUnknown: true });
-
 
 // name of url paramters used to modify lookup
 let modifierKeys = Joi.object({
@@ -29,14 +23,11 @@ let modifierKeys = Joi.object({
     "interval": Joi.number().positive()
 }).options({ stripUnknown: true });
 
-
 async function validate(req){
     req.identifiers = await Joi.validate(req.query, identifierKeys);
     req.modifiers = await Joi.validate(req.query, modifierKeys);
     return req;
 }
-
-
 
 // Split the query parameters to two objects
 // identifiers: keys used to find data in the database
@@ -55,7 +46,6 @@ function requestSplitter(req, res, next){
         }
     });
 }
-
 
 // Export the function
 module.exports = requestSplitter;

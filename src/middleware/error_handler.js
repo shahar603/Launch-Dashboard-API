@@ -10,11 +10,7 @@ function handleError(err, req, res, next){
             send({error: err.message});
     }
 
-
-
-
     next();
 }
-
 
 module.exports = handleError;

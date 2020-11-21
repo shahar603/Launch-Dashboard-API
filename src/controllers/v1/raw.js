@@ -1,11 +1,13 @@
-const {getTelemetry} = require("../helpers/telemetry_helper");
-const cacheHelper = require("../helpers/cache_helper");
+const {getTelemetry} = require("../../helpers/telemetry_helper");
+const cacheHelper = require("../../helpers/cache_helper");
+
+
 
 
 module.exports = {
-    // Get the analysed telemetry from a specific launch
-    getOne: async function(req, res, next){
-        const cacheKey = `analysed:${JSON.stringify(req.identifiers)}`;
+    // Get the raw telemetry from a specific launch
+    getOne: async (req, res, next) => {
+        const cacheKey = `raw:${JSON.stringify(req.identifiers)}`;
 
         try{
             if (!req.modifiers) {
@@ -16,8 +18,8 @@ module.exports = {
                     return;
                 }
             }
-            
-            let out = await getTelemetry("analysed", req.params.company, req.identifiers, req.modifiers);
+
+            let out = await getTelemetry("raw", req.params.company, req.identifiers, req.modifiers);
 
             if (!out)
                 throw new Error("Telemetry data is unavailable (even thought it should be)\nPlease report this issue on the Launch Dashboard API GitHub Repository");
@@ -30,6 +32,7 @@ module.exports = {
         }catch(err){
             next(err, req, res, next);
         }
+
     }
 
 

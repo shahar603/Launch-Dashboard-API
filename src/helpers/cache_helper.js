@@ -2,7 +2,6 @@ function doCache() {
     return process.env.caching != undefined;
 }
 
-
 module.exports = {
     doCache: doCache,
 
@@ -21,5 +20,4 @@ module.exports = {
         
         return null;
     }
-
-}
+};

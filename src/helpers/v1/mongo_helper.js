@@ -1,11 +1,4 @@
-const Company = require("../models/company");
-
-
-
-
-
-
-
+const Company = require("../../models/v1/company");
 
 module.exports = {
     findLaunchMetadata: async function(company_id, identifiers){

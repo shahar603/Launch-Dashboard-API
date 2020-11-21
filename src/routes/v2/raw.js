@@ -1,8 +1,8 @@
 // Import
 const express = require("express");
-const raw = require("../controllers/raw");
+const raw = require("../../controllers/v2/raw");
 // middleware
-const { checkIdentifiers } = require("../middleware/validator");
+const { checkIdentifiers } = require("../../middleware/v2/validator");
 // Create an express router
 const router = express.Router();
 

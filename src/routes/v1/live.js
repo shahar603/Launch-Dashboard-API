@@ -1,6 +1,6 @@
 // Imports
 const express = require("express");
-const live = require("../controllers/live");
+const live = require("../../controllers/v1/live");
 // Create an express router
 const router = express.Router();
 
