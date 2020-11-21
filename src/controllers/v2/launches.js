@@ -28,7 +28,7 @@ module.exports = {
         try{
         // Get all launches
         if (_.isEmpty(req.identifiers)){
-            let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number launches.launch_library_id");
+            let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number launches.launch_library_2_id");
 
             if (!result)
                 throw {status: 404, message: "Not Found"};
@@ -115,7 +115,7 @@ module.exports = {
         // Get all launches
         if (_.isEmpty(req.identifiers)){
             try{
-                let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number launches.launch_library_id");
+                let result = await Company.findOne({company_id: req.params.company}, "launches.mission_id launches.name launches.flight_number launches.launch_library_2_id");
 
                 if (!result)
                     throw {status: 404, message: "Not Found`"};
@@ -149,7 +149,7 @@ module.exports = {
                         mission_id: result.mission_id,
                         name: result.name,
                         flight_number: result.flight_number,
-                        launch_library_id: result.launch_library_id,
+                        launch_library_2_id: result.launch_library_2_id,
                         raw: raw,
                         analysed: analysed,
                         events: eventData
@@ -200,7 +200,7 @@ module.exports = {
                     mission_id: result.mission_id,
                     name: result.name,
                     flight_number: result.flight_number,
-                    launch_library_id: result.launch_library_id,
+                    launch_library_2_id: result.launch_library_2_id,
                     raw: raw,
                     analysed: analysed,
                     events: eventData
@@ -253,7 +253,7 @@ module.exports = {
 
     deleteOne: async function(req, res, next){
         if (!req.params.company || _.isEmpty(req.identifiers)){
-            throw new Error("Missing \"flight_number\", \"mission_id\" or \"launch_library_id\"");
+            throw new Error("Missing \"flight_number\", \"mission_id\" or \"launch_library_2_id\"");
         }
         // Get launch file name (key) from db
         let launch = await mongoHelper.findLaunchMetadata(req.params.company, req.identifiers);
