@@ -48,6 +48,5 @@ const CompanySchema = new Schema({
     launches: [LaunchFileSchema]
 }, { collection: "company"});
 
-
 const Company = global.connectionV1.model("company", CompanySchema);
 module.exports = Company;
