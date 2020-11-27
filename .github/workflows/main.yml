@@ -43,4 +43,4 @@ jobs:
               /ci/clean_docker.sh
               docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN   
               docker pull docker.pkg.github.com/shahar603/Launch-Dashboard-API/launch_dashboard_api:latest
-              docker run -dit -p 3000:3000 docker.pkg.github.com/shahar603/digitalocean-party/my_image_name:latest
+              docker run -dit -p 3000:3000 docker.pkg.github.com/shahar603/Launch-Dashboard-API/launch_dashboard_api:latest
