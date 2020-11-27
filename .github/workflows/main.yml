@@ -1,0 +1,46 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy-to-digital-ocean-droplet:
+      runs-on: ubuntu-latest
+      name: Deploy App
+      steps:
+        - name: Checkout main
+          uses: actions/checkout@v2
+        - name: Publish to Github Packages Registry
+          uses: elgohr/Publish-Docker-Github-Action@master
+          with:
+            name: shahar603/Launch-Dashboard-API/launch_dashboard_api
+            registry: docker.pkg.github.com
+            username: ${{ secrets.USERNAME }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+            dockerfile: Dockerfile
+            tags: latest
+            
+        - name: Deploy package to digitalocean
+          uses: appleboy/ssh-action@master
+          env:
+              GITHUB_USERNAME: ${{ secrets.USERNAME }}
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            host: ${{ secrets.HOST_IP }}
+            username: ${{ secrets.HOST_USERNAME }}
+            password: ${{ secrets.HOST_PASSWORD }}
+            port: ${{ secrets.HOST_PORT }}
+            envs: GITHUB_USERNAME, GITHUB_TOKEN
+            script: |
+              /ci/clean_docker.sh
+              docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN   
+              docker pull docker.pkg.github.com/shahar603/Launch-Dashboard-API/launch_dashboard_api:latest
+              docker run -dit -p 3000:3000 docker.pkg.github.com/shahar603/digitalocean-party/my_image_name:latest
