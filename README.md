@@ -34,7 +34,7 @@ curl -s http://api.launchdashboard.space/v2/launches/latest/spacex | jq
   "mission_id": "amos-17",
   "name": "Amos-17",
   "flight_number": 83,
-  "launch_library_2_id":	"68ecf878-2491-4209-95fe-54f74fb163aa",
+  "launch_library_2_id": "68ecf878-2491-4209-95fe-54f74fb163aa",
   "raw": [
     {
       "stage": 2,
