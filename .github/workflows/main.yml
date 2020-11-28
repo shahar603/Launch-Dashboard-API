@@ -21,7 +21,7 @@ jobs:
         - name: Publish to Github Packages Registry
           uses: elgohr/Publish-Docker-Github-Action@master
           with:
-            name: shahar603/launch_dashboard_api/launch_dashboard_api
+            name: shahar603/launch-dashboard-api/launch_dashboard_api
             registry: docker.pkg.github.com
             username: ${{ secrets.USERNAME }}
             password: ${{ secrets.GITHUB_TOKEN }}
@@ -42,5 +42,5 @@ jobs:
             script: |
               /ci/clean_docker.sh
               docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN   
-              docker pull docker.pkg.github.com/shahar603/launch_dashboard_api/launch_dashboard_api:latest
-              docker run -dit -p 3000:3000 docker.pkg.github.com/shahar603/launch_dashboard_api/launch_dashboard_api:latest
+              docker pull docker.pkg.github.com/shahar603/launch-dashboard-api/launch_dashboard_api:latest
+              docker run -dit -p 3000:3000 docker.pkg.github.com/shahar603/launch-dashboard-api/launch_dashboard_api:latest
