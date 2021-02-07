@@ -85,7 +85,7 @@ The Apps and Tools that use Launch Dashboard API
 |App|Description|Creator|
 |-----|-----|----|
 |[FlightClub.io](https://www2.flightclub.io/)|Rocket Launch Simulation and Visualization|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
-
+|[spacexdash](https://spacexdash.github.io/x/)|Search the SpaceX Archive|[spacexdash](https://github.com/spacexdash/x)|
 
 ## Clients
 Clients and APIs using Launch Dashboard API
