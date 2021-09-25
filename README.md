@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://travis-ci.org/shahar603/Launch-Dashboard-API">
-    <img src="https://travis-ci.org/shahar603/Launch-Dashboard-API.svg?branch=master">
+    <img src="https://github.com/shahar603/Launch-Dashboard-API/actions/workflows/main.yml/badge.svg">
   </a>
   <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">
     <img src="https://img.shields.io/badge/interface-REST-brightgreen.svg?longCache=true&style=flat-square">
