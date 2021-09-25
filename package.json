@@ -14,12 +14,12 @@
   "author": "Shahar603",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.838.0",
+    "aws-sdk": "^2.995.0",
     "bluebird": "^3.7.2",
-    "config": "^3.3.3",
+    "config": "^3.3.6",
     "content-filter": "^1.1.2",
     "express": "^4.17.1",
-    "ioredis": "^4.19.4",
+    "ioredis": "^4.27.9",
     "jest": "^26.6.3",
     "joi": "^14.3.1",
     "joigoose": "^7.1.2",
@@ -40,8 +40,8 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-mocha": "^6.3.0",
-    "eslint-plugin-react": "^7.22.0"
+    "eslint-plugin-react": "^7.26.0"
   }
 }
