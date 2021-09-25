@@ -1,8 +1,6 @@
 // Import packages
 const express = require("express");
 const mongoose = require("mongoose");
-mongoose.set("useNewUrlParser", true);
-mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true);
 const socketio = require("socket.io");
