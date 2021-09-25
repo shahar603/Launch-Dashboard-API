@@ -7,7 +7,7 @@
 
 
 <p align="center">
-  <a href="https://travis-ci.org/shahar603/Launch-Dashboard-API">
+  <a href="https://github.com/shahar603/Launch-Dashboard-API/actions">
     <img src="https://github.com/shahar603/Launch-Dashboard-API/actions/workflows/main.yml/badge.svg">
   </a>
   <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">
