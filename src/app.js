@@ -1,8 +1,6 @@
 // Import packages
 const express = require("express");
 const mongoose = require("mongoose");
-mongoose.set("useCreateIndex", true);
-mongoose.set("useUnifiedTopology", true);
 const socketio = require("socket.io");
 const Redis = require("ioredis");
 // Import middleware
