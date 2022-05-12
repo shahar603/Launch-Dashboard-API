@@ -5,6 +5,12 @@
   <img src="https://imgur.com/sklQxcI.png"/>
 </p>
 
+<p align="center">Architecture</p>
+
+<p align="center">
+  <img src="https://imgur.com/YSaSLdz.png/>
+</p>
+
 
 <p align="center">
   <a href="https://github.com/shahar603/Launch-Dashboard-API/actions">
