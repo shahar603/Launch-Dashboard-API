@@ -8,7 +8,7 @@
 <p align="center">Architecture</p>
 
 <p align="center">
-  <img src="https://imgur.com/YSaSLdz.png"/>
+  <img src="https://imgur.com/YtSfXsj.png"/>
 </p>
 
 
