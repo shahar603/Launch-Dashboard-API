@@ -2,7 +2,7 @@
 <p align="center">An Open Source REST API of Rocket Launch telemetry</p>
 
 <p align="center">
-  <img src="https://i.imgur.com/1awBiUj.png"/>
+  <img src="https://imgur.com/sklQxcI.png"/>
 </p>
 
 
