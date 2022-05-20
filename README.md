@@ -98,6 +98,7 @@ Content made using Launch Dashboard API
 
 |Content|Description|Creator|
 |-----|-----|----|
+|[Comparison between Falcon 9 Block 4 and Block 5 ASDS landings](https://www.reddit.com/r/spacex/comments/af7bco/iridium_8_telemetry_comparison_between_block_4/) | A post I've written comparing two versions (blocks) of the Falcon 9 rocket and how the latest upgrades have allowed SpaceX to reuse block 5 much faster than block 4 by reducing the stress from launch to landing | [Shahar603](https://github.com/shahar603) |
 |[Starlink-18 First Stage Telemetry and Analysis](https://www.reddit.com/r/spacex/comments/ldkz7c/starlink18_first_stage_telemetry_and_analysis/)| My analysis of first stage telemetry of a SpaceX Starlink (SpaceX's internet constellation) launch|[Shahar603](https://github.com/shahar603)|
 |[Unplanned engine shutdown of Falcon 9 rocket](https://www.reddit.com/r/SpaceXLounge/comments/fkpb37/starlink5_telemetry_confirming_the_early_engine/)|Acceleration graph from LD API affirmed the space community suspicion of an unplanned engine shutdown during Falcon 9 ascent. Later confirmed by [Elon Musk on twitter](https://twitter.com/elonmusk/status/1240262636547100672)|[Shahar603](https://github.com/shahar603)|
 |[Aerodynamic Pressure animation](https://twitter.com/JcAsHcan/status/1188125678396493825)|An animation of the aerodynamic pressure(Q) during ascent on the AMOS-17 mission|[Jake Hannan](https://twitter.com/JcAsHcan)|
