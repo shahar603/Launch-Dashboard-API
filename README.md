@@ -2,6 +2,15 @@
 <p align="center">An Open Source REST API of Rocket Launch telemetry</p>
 
 <p align="center">
+  <a href="https://github.com/shahar603/Launch-Dashboard-API/actions">
+    <img src="https://github.com/shahar603/Launch-Dashboard-API/actions/workflows/main.yml/badge.svg">
+  </a>
+  <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">
+    <img src="https://img.shields.io/badge/interface-REST-brightgreen.svg?longCache=true&style=flat-square">
+  </a>
+</p>
+
+<p align="center">
   <img src="https://imgur.com/sklQxcI.png"/>
 </p>
 
@@ -12,14 +21,7 @@
 </p>
 
 
-<p align="center">
-  <a href="https://github.com/shahar603/Launch-Dashboard-API/actions">
-    <img src="https://github.com/shahar603/Launch-Dashboard-API/actions/workflows/main.yml/badge.svg">
-  </a>
-  <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">
-    <img src="https://img.shields.io/badge/interface-REST-brightgreen.svg?longCache=true&style=flat-square">
-  </a>
-</p>
+
 
 <h1 align="center">
   <a href="https://github.com/shahar603/Launch-Dashboard-API/wiki">Documentation</a> - 
@@ -84,32 +86,27 @@ curl -s http://api.launchdashboard.space/v2/launches/latest/spacex | jq
 See [Contributing.md](https://github.com/shahar603/Launch-Dashboard-API/blob/master/CONTRIBUTING.md) for contribution instructions.
 
 
+## Derivative Content and Features
+Content and features made using Launch Dashboard API
 
-## Apps
-The Apps and Tools that use Launch Dashboard API
+|Content|Description|Creator|Preview|
+|-----|-----|----|---|
+|[Comparison between Falcon 9 Block 4 and Block 5 ASDS landings](https://www.reddit.com/r/spacex/comments/af7bco/iridium_8_telemetry_comparison_between_block_4/) | A post I've written comparing two versions (blocks) of the Falcon 9 rocket and how the latest upgrades have allowed SpaceX to reuse block 5 much faster than block 4 by reducing the stress from launch to landing | [Shahar603](https://github.com/shahar603) | <img src="https://i.imgur.com/9LMAiNR.png"/> |
+|[Starlink-18 First Stage Telemetry and Analysis](https://www.reddit.com/r/spacex/comments/ldkz7c/starlink18_first_stage_telemetry_and_analysis/)| My analysis of first stage telemetry of a SpaceX Starlink (SpaceX's internet constellation) launch|[Shahar603](https://github.com/shahar603)|<img src="https://imgur.com/KLbmg3n.png"/>|
+|[Unplanned engine shutdown of Falcon 9 rocket](https://www.reddit.com/r/SpaceXLounge/comments/fkpb37/starlink5_telemetry_confirming_the_early_engine/)|Acceleration graph from LD API affirmed the space community suspicion of an unplanned engine shutdown during Falcon 9 ascent. Later confirmed by [Elon Musk on twitter](https://twitter.com/elonmusk/status/1240262636547100672)|[Shahar603](https://github.com/shahar603)|<img src="https://i.redd.it/tcsoj4bvkfn41.png"/>|
+|[Webcast vs Simulation graph](https://twitter.com/flightclubio/status/1131794017606340608)|Used by trajectory creators on FlightClub.io to compare their simulations to the real telemetry|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|<img src="https://pbs.twimg.com/media/D7TvqaHX4AAX2pD?format=jpg&name=4096x4096">|
+|[Aerodynamic Pressure animation](https://twitter.com/JcAsHcan/status/1188125678396493825)|An animation of the aerodynamic pressure(Q) during ascent on the AMOS-17 mission|[Jake Hannan](https://twitter.com/JcAsHcan)||
+|[Mission Creation](https://twitter.com/flightclubio/status/1344060720892166146)|A tools that builds a flight plan that matches the webcast telemetry in the API |[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)||
+|[Falcon Boosters' Entry Energy Comparison](https://www.reddit.com/r/spacex/comments/elzp52/falcon_boosters_entry_energy_comparison/)|A diagram that compares total energy of the Falcon boosters' reentry energy|[Shahar603](https://github.com/shahar603)||
 
-|App|Description|Creator|
-|-----|-----|----|
-|[FlightClub.io](https://www2.flightclub.io/)|Rocket Launch Simulation and Visualization|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
 
 
-## Derivative Content
-Content made using Launch Dashboard API
-
-|Content|Description|Creator|
-|-----|-----|----|
-|[Comparison between Falcon 9 Block 4 and Block 5 ASDS landings](https://www.reddit.com/r/spacex/comments/af7bco/iridium_8_telemetry_comparison_between_block_4/) | A post I've written comparing two versions (blocks) of the Falcon 9 rocket and how the latest upgrades have allowed SpaceX to reuse block 5 much faster than block 4 by reducing the stress from launch to landing | [Shahar603](https://github.com/shahar603) |
-|[Starlink-18 First Stage Telemetry and Analysis](https://www.reddit.com/r/spacex/comments/ldkz7c/starlink18_first_stage_telemetry_and_analysis/)| My analysis of first stage telemetry of a SpaceX Starlink (SpaceX's internet constellation) launch|[Shahar603](https://github.com/shahar603)|
-|[Unplanned engine shutdown of Falcon 9 rocket](https://www.reddit.com/r/SpaceXLounge/comments/fkpb37/starlink5_telemetry_confirming_the_early_engine/)|Acceleration graph from LD API affirmed the space community suspicion of an unplanned engine shutdown during Falcon 9 ascent. Later confirmed by [Elon Musk on twitter](https://twitter.com/elonmusk/status/1240262636547100672)|[Shahar603](https://github.com/shahar603)|
-|[Aerodynamic Pressure animation](https://twitter.com/JcAsHcan/status/1188125678396493825)|An animation of the aerodynamic pressure(Q) during ascent on the AMOS-17 mission|[Jake Hannan](https://twitter.com/JcAsHcan)|
-|[Mission Creation](https://twitter.com/flightclubio/status/1199805613749915648)|A tools that builds a flight plan that matches the webcast telemetry in the API |[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
-|[Falcon Boosters' Entry Energy Comparison](https://www.reddit.com/r/spacex/comments/elzp52/falcon_boosters_entry_energy_comparison/)|A diagram that compares total energy of the Falcon boosters' reentry energy|[Shahar603](https://github.com/shahar603)
-
-## Clients
-Clients and APIs using Launch Dashboard API
+## Apps and Clients
+Clients and Apps using Launch Dashboard API
 
 |Client|Description|Creator|
 |-----|-----|----|
+|[FlightClub.io](https://www2.flightclub.io/)|Rocket Launch Simulation and Visualization|[u/TheVehicleDestroyer](https://www.reddit.com/user/thevehicledestroyer)|
 |[.NET Launch Dashboard](https://github.com/Tearth/.NET-Launch-Dashboard)| .NET Wrapper for Launch Dashboard API|[Tearth](https://github.com/Tearth)
 
 ## Data Sources
